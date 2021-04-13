@@ -1,0 +1,133 @@
+header {
+    background-color: rgb(255, 255, 255);
+    /* padding: 0px 0px; */
+    margin: 0;
+    /* border-bottom: 0.2px solid #687385; */
+    color: var(--color-muted);
+    height: min-content;
+
+}
+
+.menu {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.menu__left {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.menu__left p{
+    color: var(--color-muted);
+    /* margin: 16px 0; */
+    margin: 0;
+}
+
+.menu__left input {
+    margin-left: 10px;
+    padding: 3px 10px;
+    height: 20px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid var(--color-muted);
+}
+
+
+ /* //687385 */
+.menu__right {
+    /* padding: 5px; */
+    /* border: 1px solid rgba(170, 156, 156, 0.103); */
+    color: var(--color-muted);
+    font-size: 15px;
+    height: min-content;
+    display: flex;
+    align-items: center;
+    
+}
+
+.menu__right ul {
+    margin: 0;
+}
+
+
+
+
+.menu__right ul li {
+    display: inline-block;
+    cursor: pointer;
+    list-style: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+
+}
+
+.menu__right--avatar {
+    margin-left: 5px;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    padding-top: 5px;
+}
+
+.menu__right--avatar img {
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+
+.menu__right--dropdown {
+    display: none;
+    position: absolute;
+    background-color:#fff;
+    right: 1px;
+    min-width: 150px;
+    border-radius: 5px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    color: rgba(0,0,0,0.75) ;
+    border-radius: 12px;
+}
+
+.menu__right--dropdown a {
+    color: rgba(0,0,0,0.75);
+    display: flex;
+    padding: 10px 12px;
+    border-radius: 10px;
+
+}
+
+.menu__right--avatar:hover .menu__right--dropdown {
+    display: block;
+}
+
+
+.p-edit {
+    padding-left: 6px  !important ;
+}
+
+.menu__right--dropdown a p {
+    padding-left: 10px;
+}
+
+
+
+.menu__right--dropdown a:hover {
+    background-color: rgba(65, 59, 59, 0.199);
+}
+
+
+.menu__right i {
+    margin-right: 5px;
+}
+
+.menu__left i{
+    margin-right: 5px;
+}

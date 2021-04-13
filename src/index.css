@@ -1,5 +1,11 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   margin: 0;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -11,3 +17,75 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+:root {
+  --color-white: #fff;
+  --color-primary : #5869DA;
+  --color-muted: #687385;
+  --box-shadow-normal: 0 10px 10px rgba(0,0,0,0.08);
+  --box-shadow-hover: 0 4px 60px 0 rgba(0,0,0,0.2);
+}
+
+
+a:hover{
+  text-decoration: none;
+}
+
+ul{
+  list-style: none;
+}
+
+
+
+.App {
+  /* max-width: 1200px; */
+  width: 100%;
+  min-height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+}
+
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  margin-bottom: .5rem;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.2;
+  color: inherit;
+}
+/* @media (min-width: 576px){
+  .container {
+      max-width: 540px;
+  }
+}
+
+@media (min-width: 768px){
+  .container {
+      max-width: 720px;
+  }
+}
+
+@media (min-width : 992px){
+  .container {
+      max-width: 960px;
+  }
+}
+@media (min-width: 1200px){
+  .container {
+      max-width: 1200px;
+  }
+}
+
+.container {
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-right: auto;
+  margin-left: auto;
+} */
+
+@import url("./components/header/header.css");
+@import url("./components/body/auth/auth.css");
+@import url("./components//footer//footer.css");
+@import url("./components//body/home/home.css");

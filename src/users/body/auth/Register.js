@@ -8,7 +8,7 @@ const handleSubmit = async e => {
 
 function Register() {
     return (
-        <main>
+        <main className="main__auth">
         <div class="register">
             <h3>Creat an account</h3>
             <form onSubmit={handleSubmit}>

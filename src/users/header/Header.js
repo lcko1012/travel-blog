@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import {useSelector} from 'react-redux'
 import avatar from '../../asset/images/avatar.jpg'
 
 function Header() {
+    const auth = useSelector(state => state.auth)
 
     const loginMenu = () => {
         return (
@@ -23,8 +25,11 @@ function Header() {
             
                         <ul>
                             <li>
+                                <Link to="/posts/new">
                                 <i class="far fa-edit"></i>
                                 Viết Bài
+                                </Link>
+                                
                             </li>
                             <li >
                                 <i class="far fa-bookmark"></i>
@@ -63,28 +68,30 @@ function Header() {
 
     return (
         <>
-            {loginMenu()}
+            {auth.isLogged ? loginMenu() :  
+            <header>
+            <div className="menu container">
+                <div className="menu__left">
+                    <Link to="/">
+                        <p>
+                            <i className="fal fa-map-marker-edit"></i>
+                            Lang Thang
+                        </p>
+                    </Link>
+                    
+                </div>
+                <Link to="/login">
+                    <div className="menu__right menu__right__login">
+                        <i className="far fa-user"></i>
+                        Đăng nhập
+                    </div>
+                </Link>
+            </div>
+            </header>
+            
+            } 
         </>
         
-        // <header>
-        // <div className="menu container">
-        //     <div className="menu__left">
-        //         <Link to="/">
-        //             <p>
-        //                 <i className="fal fa-map-marker-edit"></i>
-        //                 Lang Thang
-        //             </p>
-        //         </Link>
-                
-        //     </div>
-        //     <Link to="/login">
-        //         <div className="menu__right">
-        //             <i className="far fa-user"></i>
-        //             Đăng nhập
-        //         </div>
-        //     </Link>
-        // </div>
-        // </header>
     )
 }
 

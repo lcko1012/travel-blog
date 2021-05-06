@@ -1,16 +1,17 @@
 footer {
-    padding-top: 20px;
+    padding-top: 30px !important;
     color: var(--color-muted);
+    padding-bottom: 30px !important ;
 }
 
 
 
-.row {
+/* .row {
     display: flex;
     flex-wrap: wrap;
     width: 80%;
     margin: 0 auto;
-}
+} */
 
 .footer--col {
     flex-basis: 50%;

@@ -1,0 +1,35 @@
+.ck-editor__editable {
+    max-height: 500px;
+    min-height: 500px;
+}
+
+.newpost {
+    height: auto;
+}
+
+.newpost input {
+    padding: 10px;
+    width: 100%;
+    margin: 20px 0;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    font-weight: 600;
+    font-size: x-large;
+}
+
+.newpost button {
+    margin-top: 10px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--color-primary) !important;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    outline: none !important;
+    transition: 0.3s;
+}
+
+.newpost button:hover {
+    transform: translate(0px, -3px);
+}
+

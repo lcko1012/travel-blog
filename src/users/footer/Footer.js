@@ -3,8 +3,8 @@ import React from 'react'
 function Footer() {
     return (
         <footer>
-        <div class="grid wide">
-            <div class="row" >
+        <div class="container">
+            <div style={{display: 'flex', flexWrap:'wrap'}} >
                 <div class="footer--col">
                     <h5>Contact me</h5>
                     <div>

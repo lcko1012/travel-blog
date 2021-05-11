@@ -119,8 +119,88 @@ ul{
   }
 }
 
+.mt-5 {
+  margin-top: 5px;
+}
+
+.mb-30 {
+  margin-bottom: 30px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mb-15 {
+  margin-bottom: 15px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+
+.mb-40 {
+  margin-bottom: 40px;
+}
+
+.mb-50 {
+  margin-top: 50px;
+}
+
+
+.ml-30 {
+  margin-left: 30px;
+}
+
+.mr-30 {
+  margin-right: 30px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mb-25 {
+  margin-bottom: 25px;
+}
+
+.ml-15 {
+  margin-left: 15px;
+}
+
+
+.pt-30 {
+  padding-top: 30px;
+}
+.p-30 {
+  padding: 30px;
+}
+
+
+.pr-5 {
+  padding-right: 5px;
+}
+
+.pl-5 {
+  padding-left: 5px;
+}
+
+
+.pb-30 {
+  padding-bottom: 30px;
+}
+
+.pr-30 {
+  padding-right: 30px;
+}
+
+.pl-30 {
+  padding-left: 30px;
+}
+
 @import url("./users/header/header.css");
 @import url("./users/body/auth/auth.css");
 @import url("./users//footer//footer.css");
-@import url("./users//body/home/home.css");
+/* @import url("./users//body/home/home.css"); */
 @import url("./users//body/newPosts/newposts.css");

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { SliderData, SliderData2, SliderData3 } from './SliderData'
 import avatar from '../../../asset/images/avatar.jpg'
 import axios from 'axios';
+import "./home.css"
+import { Link } from 'react-router-dom';
 
 function Home() {
   const [current, setCurrent] = useState(0);
@@ -236,18 +238,27 @@ function Home() {
                       return (
 
                     <div className="post__popular d-flex">
+                      
                       <div className="post__popular--content media-body" >
-                        <h6 className="post-title mb-15">{slide.title}</h6>
+                        <h6 className="post-title mb-15">
+                          <Link to={{pathname: '/posts/Bien-Da-nang-co-dep-khong', state: {id: '1'}}}>
+                          {slide.title}
+                          </Link>
+                          </h6>
                         <div className="entry-meta meta-1 font-x-small text-uppercase">
                           <span>05 AUGUST</span>
                           <span className="post-by has-dos">150k views</span>
                         </div>
                       </div>
+                      
+                      
                       <div className="d-flex ml-15 post__popular--image">
                         <a className="color-white">
                           <img className="border-radius-5 " src={slide.image}></img>
                         </a>
                       </div>
+                      
+                      
                     </div>
                       )
                     })}

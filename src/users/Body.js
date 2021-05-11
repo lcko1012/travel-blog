@@ -8,6 +8,8 @@ import Login from './body/auth/Login'
 import Home from './body/home/Home'
 import NotFound from './utils/NotFound/NotFound'
 import NewPosts from './body/newPosts/NewPosts'
+import Post from './body/post/Post'
+
 function Body() {
     const auth = useSelector(state => state.auth)
     const {isLogged, idAdmin} = auth
@@ -19,7 +21,7 @@ function Body() {
                 {/* <Route path="/login" component={Login} /> */}
                 <Route path="/login" component={!isLogged ? Login : Home} exact />
                 <Route path="/posts/new" component={isLogged ? NewPosts : Home} exact />
-
+                <Route path='/posts/:id' component={Post} />
             </Switch>
         </section>
     )

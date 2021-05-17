@@ -159,7 +159,6 @@ p {
 }
 
 .content-area {
-    font-family: "Noto Sans JP", sans-serif;
     font-size: medium;
     text-align: left;
     font-weight: 400;
@@ -189,6 +188,11 @@ p {
 
 .date-write-by {
     font-size: small;
+}
+
+.post-content img{
+    object-fit: contain !important;
+    width: 100%;
 }
 
 /*====================== Comment================ */

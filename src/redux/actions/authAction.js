@@ -8,3 +8,8 @@ export const dispatchLogin = () => {
         type: ACTIONS.LOGIN
     }
 }
+
+//TODO: GET USER INFOR
+// export const fetchUser = async (token) => {
+
+// }

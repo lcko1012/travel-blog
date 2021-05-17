@@ -15,36 +15,51 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 13px;
+    font-size: 15px;
 
 }
 
 .menu__left {
     align-items: center;
-    justify-content: center;
     display: flex;
+    width: fit-content;
 }
 
 .menu__left p{
     color: var(--color-muted);
     /* margin: 16px 0; */
     margin: 0;
+    font-size: 15px;
+}
+
+.menu__left p i{
+    font-size: 20px;
+}
+
+
+/* TODO: SEARCH AREA*/
+.menu__left form {
+    margin-left: 20px;
+    width: auto;
+}
+
+.menu__left form i {
+    font-size: 20px;
 }
 
 .menu__left input {
     margin-left: 10px;
-    padding: 3px 10px;
+    padding: 15px 0px;
     height: 20px;
     outline: none;
+    border: 1px solid white;
     border-radius: 5px;
-    border: 1px solid var(--color-muted);
+    width: 500px;
+    /* border: 1px solid var(--color-muted); */
 }
 
 
- /* //687385 */
 .menu__right {
-    /* padding: 5px; */
-    /* border: 1px solid rgba(170, 156, 156, 0.103); */
     color: var(--color-muted);
     height: min-content;
     display: flex;
@@ -105,7 +120,7 @@ header {
     display: flex;
     padding: 10px 12px;
     border-radius: 10px;
-
+    align-items: center;
 }
 
 .menu__right--avatar:hover .menu__right--dropdown {

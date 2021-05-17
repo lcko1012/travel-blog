@@ -1,11 +1,13 @@
 .main__home{
-    background-color: #f7f8f9;
+    /* background-color: #f7f8f9; */
+    background-color: white;
     height: auto;
     box-sizing: content-box;
-    font-family: "Montserrat";
 }
 
-
+.hieu-ung {
+    box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.2);
+}
 
 .position-relative {
     position: relative;
@@ -44,8 +46,9 @@
     
 }
 
+
 .slider:hover {
-    box-shadow: 0 0 50px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 0px 0px rgba(0, 0, 0, 0.2);
 }
 
 .slider:hover .post-content-overlay {
@@ -156,9 +159,11 @@
 }
 
 .post-title {
-    font-style: normal;
     text-transform: none;
-    /* font-family: 'Noto Sans JP', sans-serif; */
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 600;
+    /* font-family: 'Source Sans Pro', sans-serif; */
 }
 
 a {

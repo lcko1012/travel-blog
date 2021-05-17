@@ -9,6 +9,8 @@ import Home from './body/home/Home'
 import NotFound from './utils/NotFound/NotFound'
 import NewPosts from './body/newPosts/NewPosts'
 import Post from './body/post/Post'
+import ForgotPassword from './body/auth/ForgotPassword'
+import ResetPassword from './body/auth/ResetPassword'
 
 function Body() {
     const auth = useSelector(state => state.auth)
@@ -20,8 +22,11 @@ function Body() {
                 <Route path="/register" component={Register} exact />
                 {/* <Route path="/login" component={Login} /> */}
                 <Route path="/login" component={!isLogged ? Login : Home} exact />
+                <Route path="/forgot_password" component= {isLogged ? Home : ForgotPassword} exact />
+                <Route path="/auth/resetPassword/:token" component= {isLogged ? Home : ResetPassword} exact />
+                
                 <Route path="/posts/new" component={isLogged ? NewPosts : Home} exact />
-                <Route path='/posts/:id' component={Post} />
+                <Route path='/posts/:slug' component={Post} />
             </Switch>
         </section>
     )

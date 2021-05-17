@@ -3,7 +3,10 @@ import { Link, useHistory, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import {dispatchLogin} from '../../../redux/actions/authAction'
 import {useDispatch, useSelector} from 'react-redux'
-
+import {showErrMsg, showSuccessMsg} from '../../utils/notification/Notification'
+import { isEmail, isEmpty, isLength, isMatch } from '../../utils/validation/Validation'
+import Cookies from 'js-cookie'
+import {GoogleLogin} from 'react-google-login'
 
 const initialState = {
     email: '',
@@ -25,52 +28,90 @@ function Login() {
         setUser({...user, [name]: value, err: '', success: ''})
     }
 
-    // useEffect(() => {
-    //     if(auth.isLogged){
-    //         return(<Redirect to="/"/>)
-    //     }
-        
-    // }, [auth.isLogged, dispatch])
-
+    //TODO: LOGIN: Nếu người dùng nhấn đăng nhập thì lưu local là đã đăng nhập
     const handleSubmit = async e => {
         console.log("Call submit function")
         e.preventDefault()
-        try {
-            // const res = await axios.post('/users/signin' , {email, password}, {withCredentials: true})
-            // if(res){
-
-            //     setUser({...user, err:'', success: res.data.msg})
-            //     console.log("token", res.data.token)
-            //     localStorage.setItem('firstLogin', true)
-            //     //Da Dang Nhap
-            //     dispatch(dispatchLogin())
-            //     history.push("/")
-            //     //Luu Token
-            //     // dispatch({type: 'GET_TOKEN', payload: res.data.token})
-            // }
-
-            dispatch(dispatchLogin())
-            localStorage.setItem('firstLogin', true)
-            dispatch({type: 'GET_TOKEN', password: 'kieuoanh'})
-            return(<Redirect to="/"/>)
-        }catch(err){
-            // err.response.data.msg && 
-            // setUser({...user, err: err.response.data.msg, success: ''})
+        if(isEmpty(email) || isEmpty(password)){
+            return setUser({...user, err: 'Hãy điền đầy đủ thông tin', success: ''})
         }
+
+        if(!isEmail(email)){
+            return setUser({...user, err: 'Email không đúng định dạng', success: ''})
+        }
+
+        if(isLength(password)){
+            return setUser({...user, err: "Mật khẩu không đủ 6 ký tự", success: ''})
+        }
+
+        var loginForm = new FormData()
+            loginForm.append('email', email)
+            loginForm.append('password', password)
+
+        try {
+            const res = await axios.post('/auth/login' , loginForm)
+            // const res = await axios.post('localhost:5000/login',{email: "loveya227@gmail.com", password: "12345678"}, {withCredentials: true})
+            if(res){
+                setUser({...user, err:'', success: res.data.msg})
+                console.log("token", res)
+                localStorage.setItem('firstLogin', true)
+                //Da Dang Nhap
+                dispatch(dispatchLogin())
+                Cookies.set('token', res.data.token)
+                Cookies.set('duration', res.data.duration)
+
+                history.push("/")
+            }
+        }catch(err){
+            console.log(err.response.status)
+            err.response.status && 
+            setUser({...user, err: 'Đã có lỗi xảy ra', success: ''})
+            ||
+            err.response.status === 401 &&
+            setUser({...user, err: 'Sai email hoặc password', success: ''})
+            ||
+            err.response.status === 400 && 
+            setUser({...user, err: 'Email hoặc password không hợp lệ', success: ''})
+            
+        }
+    }
+
+    const responseGoogle = async (response) => {
+        console.log(response)
+        try{
+            const google_token = response.tokenId
+            console.log(google_token)
+            var loginForm = new FormData()
+            loginForm.append('google_token', google_token)
+    
+            const res = await axios.post('/auth/google', loginForm)
+            setUser({...user, err: '', success: 'Đăng nhập thành công'})
+            console.log(res)
+            dispatch(dispatchLogin())
+            Cookies.set('token', res.data.token)
+            Cookies.set('duration', res.data.duration)
+            history.push('/')
+        }catch(err){
+            console.log(err)
+        }
+        
     }
 
     return (
         <main className="main__auth">
         <div class="register">
-            <h3>Login</h3>
+            <h3>Đăng nhập</h3>
+            {err && showErrMsg(err)}
+            {success && showSuccessMsg(success)}
+
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Username" name="email" value={email} onChange={handleChangeInput}/>
-                <input type="password" placeholder="Password" name="password" value={password} onChange={handleChangeInput}/>
+                <input type="email" placeholder="Email của bạn" name="email" value={email} onChange={handleChangeInput}/>
+                <input type="password" placeholder="Mật khẩu" name="password" value={password} onChange={handleChangeInput}/>
                 <button type="submit">
-                    LOG IN
+                    ĐĂNG NHẬP
                 </button>
-                <Link>
-                    Forgot password?
+                <Link to="/forgot_password">
+                    Quên mật khẩu?
                 </Link>
                 
             <div class="register__divider">
@@ -78,16 +119,19 @@ function Login() {
             </div>
             </form>
             <div class="register__social">
-                <a href="" class="register__social--facebook">
+                {/* <a href="" class="register__social--facebook">
                     <i class="fab fa-facebook-f"></i>
-                    Facebook</a>
-                <a href="" class="register__social--google">
-                    <i class="fab fa-google"></i>
-                    Google</a>
+                    Facebook</a> */}
+                <GoogleLogin
+                clientId="545452035521-c4eljpuu1281eml2ci6kaud39s5kc9ct.apps.googleusercontent.com"
+                buttonText="Login with Google"
+                onSuccess={responseGoogle}
+                cookiePolicy={'single_host_origin'}
+            />
             </div>
             <Link to="/register">
                 <p className="register__link">
-                    Don't have an account? Register
+                    Không có tài khoản? Đăng ký ở đây
                 </p>
             </Link>
         </div>

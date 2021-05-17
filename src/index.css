@@ -169,13 +169,16 @@ ul{
   margin-left: 15px;
 }
 
-
+.pt-15 {
+  padding-top: 15px;
+}
 .pt-30 {
   padding-top: 30px;
 }
 .p-30 {
   padding: 30px;
 }
+
 
 
 .pr-5 {

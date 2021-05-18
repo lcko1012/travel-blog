@@ -88,6 +88,7 @@ function Login() {
             setUser({...user, err: '', success: 'Đăng nhập thành công'})
             console.log(res)
             dispatch(dispatchLogin())
+            localStorage.setItem('firstLogin', true)
             Cookies.set('token', res.data.token)
             Cookies.set('duration', res.data.duration)
             history.push('/')

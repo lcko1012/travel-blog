@@ -274,6 +274,10 @@ span.has-dos {
     transition: all .25s cubic-bezier(.02, .01, .47, 1);
 }
 
+.disabled {
+    pointer-events:none; 
+    opacity:0.6;         
+}
 
 .page-link:hover {
     box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.2);
@@ -317,7 +321,6 @@ span.has-dos {
     text-align: center;
     display: inline-block;
     margin-right: 15px;
-    margin-bottom: 15px;
 }
 
 .follower-count {

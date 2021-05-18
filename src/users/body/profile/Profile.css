@@ -1,0 +1,18 @@
+.main__home{
+    background-color:#f7f8f9;
+    height: auto;
+    box-sizing: content-box;
+}
+
+.author__infor--count {
+    justify-content: space-between;
+}
+
+.author__infor--count .count__div {
+    text-align: center;
+}
+
+
+
+
+

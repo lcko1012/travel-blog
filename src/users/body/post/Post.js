@@ -22,17 +22,15 @@ function Post() {
     comments: [],
     owner: false
   }
-
   const location = useLocation()
-
-  const [id, setId] = useState(location.state.id)
+  const [id, setId] = useState(null)
   const [post, setPost] = useState(initialState)
   const [posts, setPosts] = useState([])
   const [author, setAuthor] = useState({})
   const [loading, setLoading] = useState(false)
   //Khi comment hay la load lai trang
   const [callback, setCallback] = useState(false)
-
+  console.log(useParams().slug)
 
   //Cu moi lan render lai
   useEffect(() => {
@@ -61,8 +59,11 @@ function Post() {
         console.log(err.response)
       }
     }
-    getPost()
-  }, [])
+    setId(location.state.id)
+    if(id !== null){
+      getPost()
+    }
+  }, [id])
 
   useEffect(() => {
     const getPosts = async () => {
@@ -76,26 +77,34 @@ function Post() {
     getPosts()
   }, [])
 
+  useEffect(() => {
+    return () => {
+      console.log("cleaned up")
+    }
+  }, [])
+
   return (
-    <div>
-      {loading && <main class="bg-grey pt-50 pb-50">
+    <>
+      {loading && <main class="bg-grey pt-50 pb-50" >
         <div class="container">
           <div class="row pd-50">
             <div class="col-lg-8 pd-15">
               <div class="content-area">
-                <h1 style={{ fontWeight: "700" }}>{post.title}</h1>
+                <h1 style={{ fontWeight: "700" }}>{ReactHtmlParser(post.title)}</h1>
                 {/* TODO:WRITE BY AREA */}
                 <div class="write-by">
                   <div class="avatar inline-item"
                     style={{ backgroundImage: `url(${author.avatarLink})` }}
                   ></div>
                   <div>
-                    <div class="name-write-by">By {author.name}</div>
+                    <div class="name-write-by">
+                      <Link to={`/profile/${author.accountId}`}>{author.name}</Link>
+                    </div>
                     <p class="date-write-by">{post.publishedDate}</p>
                   </div>
                 </div>
                 <div class="post-content" >
-                  {ReactHtmlParser(ReactHtmlParser(ReactHtmlParser(ReactHtmlParser(post.content))))}
+                  {ReactHtmlParser(ReactHtmlParser(post.content))}
                 </div>
                 {/* <img class="img-in-post" src="https://images.unsplash.com/photo-1501446529957-6226bd447c46?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1489&q=80" alt="" /> */}
 
@@ -157,8 +166,8 @@ function Post() {
               </div>
 
               {/* //TODO: AUTHOR's INFORMATION */}
-              <div class="author-info mt-30">
-                <div style={{ display: 'flex' }}>
+              <div class="author-info mt-30" >
+                <div style={{ display: 'flex', alignItems: 'center' }}>
                   <div class="avatar inline-item" style={{ backgroundImage: `url(${avatar})` }} ></div>
                   <div class="post-count inline-item">
                     <h4>10</h4>
@@ -178,33 +187,30 @@ function Post() {
               </div>
 
               {/* //TODO: POPULAR POSTS */}
-              <div style={{ marginTop: '50px' }}>
+              {/* <div style={{ marginTop: '50px' }}>
                 <h5>Most popular</h5>
-              </div>
-              <hr class="most-popular-hr" />
-              {
-                posts.map((item, index) => {
-                  return (
-                    <div className="post__popular d-flex" key={index}>
-                      <div className="post__popular--content media-body" >
-                        <Link>
-                        <h6 className="post-title mb-15">{item.title.substring(0, 40)}...</h6>
-                        </Link>
-                        {/* <div className="entry-meta meta-1 font-x-small text-uppercase">
-                          <span>{item.commentCount} comment</span>
-                          <span className="post-by has-dos">{item.bookmarkedCount} Bookmark</span>
-                        </div> */}
-
-                      </div>
-                      <div className="d-flex ml-15 post__popular--image">
-                        <a className="color-white">
-                          <img className="border-radius-5 " src={item.postThumbnail}></img>
-                        </a>
-                      </div>
-                    </div>
-                  )
-                })
-              }
+              </div> */}
+              {/* <hr class="most-popular-hr" /> */}
+              
+                {/* // posts.map((item, index) => { */}
+                {/* //   return (
+                //     <div className="post__popular d-flex" key={index}>
+                //       <div className="post__popular--content media-body" >
+                //         <Link 
+                //         onClick={() => window.location.reload(false)}
+                //         to={{ pathname: `/posts/${item.slug}`, state: { id: item.postId }}}>
+                //           <h6 className="post-title mb-15">{item.title.substring(0, 40)}...</h6>
+                //         </Link>
+                //       </div>
+                //       <div className="d-flex ml-15 post__popular--image">
+                //         <a className="color-white">
+                //           <img className="border-radius-5 " src={item.postThumbnail}></img>
+                //         </a>
+                //       </div>
+                //     </div>
+                //   )
+                // }) */}
+              
 
 
 
@@ -212,7 +218,7 @@ function Post() {
           </div>
         </div>
       </main>}
-    </div>
+    </>
   )
 
 

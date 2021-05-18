@@ -81,7 +81,7 @@ p {
 
 /* author */
 
-.author-info {
+/* .author-info {
     padding: 30px;
     border: 1px;
     border-radius: 10px;
@@ -106,14 +106,13 @@ p {
     width: 20%;
     text-align: center;
     display: inline-block;
-    margin-right: 15px;
-    margin-bottom: 15px;
-}
 
-.follower-count {
+} */
+
+/* .follower-count {
     text-align: center;
     display: block;
-}
+} */
 
 .avatar-comment {
     width: 50px;

@@ -11,6 +11,8 @@ import NewPosts from './body/newPosts/NewPosts'
 import Post from './body/post/Post'
 import ForgotPassword from './body/auth/ForgotPassword'
 import ResetPassword from './body/auth/ResetPassword'
+import Profile from './body/profile/Profile'
+import MyProfile from './body/profile/MyProfile'
 
 function Body() {
     const auth = useSelector(state => state.auth)
@@ -27,6 +29,10 @@ function Body() {
                 
                 <Route path="/posts/new" component={isLogged ? NewPosts : Home} exact />
                 <Route path='/posts/:slug' component={Post} />
+
+                <Route path="/profile/:id" component={Profile} exact />
+                <Route path="/myprofile" component={MyProfile} exact />
+
             </Switch>
         </section>
     )

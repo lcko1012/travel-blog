@@ -34,6 +34,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -123,6 +127,10 @@ ul{
   margin-top: 5px;
 }
 
+.mt-30{
+  margin-top: 30px;
+}
+
 .mb-30 {
   margin-bottom: 30px;
 }
@@ -204,6 +212,6 @@ ul{
 
 @import url("./users/header/header.css");
 @import url("./users/body/auth/auth.css");
-@import url("./users//footer//footer.css");
+@import url("./users/footer//footer.css");
 /* @import url("./users//body/home/home.css"); */
-@import url("./users//body/newPosts/newposts.css");
+/* @import url("./users//body/newPosts/newposts.css"); */

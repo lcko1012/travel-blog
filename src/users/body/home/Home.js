@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { SliderData, SliderData2, SliderData3 } from './SliderData'
 import avatar from '../../../asset/images/avatar.jpg'
 import axios from 'axios';
 import "./home.css"
 import { Link } from 'react-router-dom';
 import ReactHtmlParser from 'react-html-parser'
 import CurrentPost from './components/CurrentPost';
+import Loading from '../../utils/Loading/Loading';
 
 
 function Home() {
@@ -13,6 +13,7 @@ function Home() {
   // Bai viet ở trên cùng
   const [featuredPosts, setFeaturedPosts] = useState([])
   const [recentPosts, setRecentPosts] = useState([])
+  const [loadingPage, setLoadingPage] = useState(false)
   const length = featuredPosts.length
 
   const [currentPage, setCurrentPage] = useState(0)
@@ -28,9 +29,8 @@ function Home() {
         }
       })
       setFeaturedPosts(res.data)
+      setLoadingPage(true)
     }
-
-    
     getData()
     console.log(recentPosts)
   }, [])
@@ -58,7 +58,9 @@ function Home() {
   }
 
   return (
-    <main className="main__home">
+    <>
+    {loadingPage ? 
+      <main className="main__home">
       <div className="container">
         {/* FEATURED POST */}
         <div className="featured__post  pt-15 font-small text-uppercase">
@@ -141,10 +143,9 @@ function Home() {
                 <div className="loop-list">
                   {recentPosts.map((post, index) => {
                     return (
-                      <CurrentPost post={post} key={index}/>
+                      <CurrentPost post={post} key={index} />
                     )
                   })}
-
                 </div>
 
                 {/* ======END LOOP LIST==== */}
@@ -153,34 +154,19 @@ function Home() {
                 <div className="pagination-area mb-30">
                   <nav aria-label="Page navigation example">
                     <ul className="pagination justify-content-start">
-                      <li 
-                      className={`page-item ${currentPage === 0 ? 'disabled' : ""} `} 
-                      onClick={() => currentPage > 0 ? setCurrentPage(currentPage - 1) : null}>
+                      <li
+                        className={`page-item ${currentPage === 0 ? 'disabled' : ""} `}
+                        onClick={() => currentPage > 0 ? setCurrentPage(currentPage - 1) : null}>
                         <a className="page-link">
                           <i className="fal fa-long-arrow-left"></i>
                         </a>
                       </li>
                       <li className="page-item active">
                         <a className="page-link">
-                          {currentPage+1}
-                          </a>
+                          {currentPage + 1}
+                        </a>
                       </li>
-                      {/* <li className="page-item">
-                        <a className="page-link">
-                          02
-                          </a>
-                      </li>
-                      <li className="page-item">
-                        <a className="page-link">
-                          03
-                          </a>
-                      </li>
-                      <li className="page-item">
-                        <a className="page-link">
-                          04
-                          </a>
-                      </li> */}
-                      <li className="page-item" onClick={() => setCurrentPage(currentPage+1)}>
+                      <li className="page-item" onClick={() => setCurrentPage(currentPage + 1)}>
                         <a className="page-link">
                           <i className="fal fa-long-arrow-right"></i>
                         </a>
@@ -197,7 +183,7 @@ function Home() {
             <div className="col-lg-4">
               {/* TODO: AUTHOR INFORMATION */}
               <div class="author-info mt-30 hieu-ung">
-                <div style={{ display: 'flex' , alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
                   <div class="avatar inline-item" style={{ backgroundImage: `url(${avatar})` }} ></div>
                   <div class="post-count inline-item">
                     <h4>10</h4>
@@ -222,7 +208,7 @@ function Home() {
               </div>
               <hr class="most-popular-hr" />
 
-              {SliderData2.map((slide, index) => {
+              {featuredPosts.map((slide, index) => {
                 return (
 
                   <div className="post__popular d-flex hieu-ung" key={index}>
@@ -241,11 +227,9 @@ function Home() {
 
                     <div className="d-flex ml-15 post__popular--image">
                       <a className="color-white">
-                        <img className="border-radius-5 " src={slide.image}></img>
+                        <img className="border-radius-5 " src={slide.postThumbnail}></img>
                       </a>
                     </div>
-
-
                   </div>
                 )
               })}
@@ -255,14 +239,10 @@ function Home() {
         </div>
       </div>
     </main>
-
-    /**
-     * *fdsfsd
-     * !fdsfsdfsd
-     * ?đâsdas
-     * todo dsadasdas
-     * @sddf fdsfdsf
-     */
+    :
+    <Loading />
+    }
+    </>
   )
 }
 

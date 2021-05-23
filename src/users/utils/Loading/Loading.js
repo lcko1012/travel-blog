@@ -5,7 +5,6 @@ const Loading = () => {
         <div style={{ height: '100vh', display: 'flex'}}>
             <div className="spinner-1" style={{margin:'auto'}} ></div>
         </div>
-
     )
 }
 

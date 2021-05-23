@@ -5,6 +5,7 @@ header {
     /* border-bottom: 0.2px solid #687385; */
     color: var(--color-muted);
     height: min-content;
+    box-shadow: 0 2px 3px -2px gray;
 }
 
 
@@ -16,7 +17,6 @@ header {
     justify-content: space-between;
     align-items: center;
     font-size: 15px;
-
 }
 
 .menu__left {

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 import CurrentPost from '../home/components/CurrentPost'
+import Empty from '../../utils/Empty/Empty'
+import ReactHtmlParser from 'react-html-parser'
 
 
 const MyProfile = () => {
@@ -42,7 +44,8 @@ const MyProfile = () => {
                                 </div>
                                 <h5 className="author-name">{userInfor.name}</h5>
                                 <p style={{ fontSize: "14px" }}>
-                                    {userInfor.about}
+                                    {ReactHtmlParser(userInfor.about)}
+                                    {/* {userInfor.about} */}
                                 </p>
                                 <div className="author__infor--count mt-30 d-flex">
                                     <div className="count__div">
@@ -54,20 +57,22 @@ const MyProfile = () => {
                                         <h4>{userInfor.commentOnOwnPostCount}</h4>
                                     </div>
                                 </div>
-                                <div className="post-info-button" style={{ marginTop: '10px' }}>
-                                    <button className="bookmark-btn">Follow</button>
-                                </div>
+                                {/* <div className="post-info-button" style={{ marginTop: '10px' }}>
+                                    <button className="bookmark-btn">Chỉnh sửa trang cá nhân</button>
+                                </div> */}
 
                             </div>
                         </div>
                     </div>
                     {/* TODO: TAB POSTS */}
                     <div className="mt-30 col-lg-8" >
-                        {posts.map((post, index) => {
+                        {posts.length=== 0 ? <Empty />  :
+                        posts.map((post, index) => {
                             return (
-                                <CurrentPost post={post} />
+                                <CurrentPost post={post} key={index} />
                             )
                         })}
+                        
                     </div>
                 </div>
             </div>

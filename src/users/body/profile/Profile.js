@@ -1,6 +1,8 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import Empty from '../../utils/Empty/Empty'
 import Loading from '../../utils/Loading/Loading'
 import CurrentPost from '../home/components/CurrentPost'
 
@@ -18,6 +20,8 @@ function Profile() {
             const res = await axios.get(`/user/${id}`)
             setUserInfor(res.data)
             setLoading(true)
+            console.log(userInfor)
+            console.log(res)
         }
         const getPosts = async () => {
             const res = await axios.get(`/user/posts/${id}`)
@@ -26,6 +30,25 @@ function Profile() {
         getUserInfor()
         getPosts()
     }, [id])
+
+    const handleClickFollow = () => {
+        const postFollow = async () => {
+            const token = Cookies.get("token")
+            try {
+                const res = await axios.put(`/user/follow/${id}`, null, {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+
+                if (res) {
+                    setUserInfor({...userInfor,followCount: res.data, followed: !userInfor.followed })
+                }
+            } catch (err) {
+                console.log(err)
+            }
+
+        }
+        postFollow()
+    }
 
     return (
         <>
@@ -58,12 +81,23 @@ function Profile() {
                                                 <h4 >{userInfor.bookmarkOnOwnPostCount}</h4>
                                             </div>
                                             <div className="count__div">
-                                                <h5>Số Comment: </h5>
+                                                <h5>Số bình luận: </h5>
                                                 <h4>{userInfor.commentOnOwnPostCount}</h4>
                                             </div>
                                         </div>
                                         <div className="post-info-button" style={{ marginTop: '10px' }}>
-                                            <button className="bookmark-btn">Follow</button>
+                                            {!userInfor.followed ?
+                                                <button className="bookmark-btn" 
+                                                style={{ backgroundColor: '#5869DA', color: 'white' }}
+                                                onClick={handleClickFollow}>Theo dõi</button>
+                                                :
+                                                <button className="bookmark-btn"
+                                                    onClick={handleClickFollow}
+                                                >
+                                                    <i className="fal fa-user-check" style={{marginRight: '5px'}}></i>
+                                                    Đã theo dõi</button>
+                                            }
+
                                         </div>
 
                                     </div>
@@ -71,11 +105,15 @@ function Profile() {
                             </div>
                             {/* TODO: TAB POSTS */}
                             <div className="mt-30 col-lg-8" >
-                                {posts.map((post, index) => {
+                                {posts.length === 0 ? <Empty /> 
+                                :
+                                posts.map((post, index) => {
                                     return (
                                         <CurrentPost post={post} />
                                     )
-                                })}
+                                })
+                                }
+                                
                             </div>
                         </div>
                     </div>

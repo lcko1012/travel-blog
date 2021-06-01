@@ -59,7 +59,7 @@ function Profile() {
                             {/* TODO: TAB INFOR */}
                             <div className="mt-30 col-lg-4" >
                                 <div className="information">
-                                    <div class="author-info">
+                                    <div className="author-info">
                                         <div style={{ display: 'flex', alignItems: 'center' }}>
                                             <div className="avatar" style={{ backgroundImage: `url(${userInfor.avatarLink})` }} ></div>
                                             <div className="post-count">

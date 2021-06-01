@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import ReactHtmlParser from 'react-html-parser'
 import "./currentpost.css"
 
@@ -10,7 +10,7 @@ function CurrentPost({ post }) {
                 <div className="col-md-4">
                     <div className="post-thumb position-relative border-radius-5">
                         <div className="img-hover-slide border-radius-5 position-relative"
-                            style={{ backgroundImage: `url(${post.postThumbnail})` }}
+                            style={{ backgroundImage: `url(${ReactHtmlParser(post.postThumbnail)})` }}
                         >
                             <Link to={{ pathname: `/posts/${post.slug}`, state: { id: post.postId } }}
                                 className="img-link"></Link>
@@ -25,16 +25,22 @@ function CurrentPost({ post }) {
                                 href="">{ReactHtmlParser(post.title)}</Link>
                         </h5>
                         <div className="currentPost__cataArea mb-10">
-                            <div className="currentPost__cata">Du lịch</div>
-                            <di className="currentPost__cata">Ăn chơi</di>
-                            <div className="currentPost__cata">Sài gòn</div>
+                            {post.categories.map((item) => {
+                                return(
+                                    <Link to={{ pathname: `/category/${item.categoryId}`}}>
+                                        <div className="currentPost__cata" key={item.categoryId}>{item.categoryName}</div>
+                                    </Link>
+                                )
+                            })}
+                            {/* <div className="currentPost__cata">Du lịch</div>
+                            <div className="currentPost__cata">Ăn chơi</div>
+                            <div className="currentPost__cata">Sài gòn</div> */}
                         </div>
                         <div className="entry-meta meta-1 float-left font-x-small text-uppercase">
                             <span className="post-on">{post.bookmarkedCount} bookmark</span>
                             <span className="time-reading has-dos">
                                 {post.commentCount} bình luận
                               </span>
-                            
                         </div>
                     </div>
                 </div>

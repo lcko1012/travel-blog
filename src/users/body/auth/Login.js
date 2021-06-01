@@ -100,7 +100,7 @@ function Login() {
 
     return (
         <main className="main__auth">
-        <div class="register">
+        <div className="register">
             <h3>Đăng nhập</h3>
             {err && showErrMsg(err)}
             {success && showSuccessMsg(success)}
@@ -115,20 +115,20 @@ function Login() {
                     Quên mật khẩu?
                 </Link>
                 
-            <div class="register__divider">
+            <div className="register__divider">
                 <span>OR</span>
             </div>
             </form>
-            <div class="register__social">
+            <div className="register__social">
                 {/* <a href="" class="register__social--facebook">
                     <i class="fab fa-facebook-f"></i>
                     Facebook</a> */}
                 <GoogleLogin
                 clientId="545452035521-c4eljpuu1281eml2ci6kaud39s5kc9ct.apps.googleusercontent.com"
-                buttonText="Login with Google"
+                buttonText="Đăng nhập bằng Google"
                 onSuccess={responseGoogle}
                 cookiePolicy={'single_host_origin'}
-            />
+                />
             </div>
             <Link to="/register">
                 <p className="register__link">

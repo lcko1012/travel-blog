@@ -14,7 +14,7 @@ function Home() {
   const [featuredPosts, setFeaturedPosts] = useState([])
   const [recentPosts, setRecentPosts] = useState([])
   const [loadingPage, setLoadingPage] = useState(false)
-  const length = featuredPosts.length
+  const length = 5
 
   const [currentPage, setCurrentPage] = useState(0)
 
@@ -25,14 +25,15 @@ function Home() {
     const getData = async () => {
       const res = await axios.get('/post', {
         params: {
-          prop: "bookmark"
+          prop: "bookmark",
+          size: 10
         }
       })
       setFeaturedPosts(res.data)
       setLoadingPage(true)
     }
     getData()
-    console.log(recentPosts)
+    
   }, [])
 
   useEffect(() => {
@@ -45,7 +46,6 @@ function Home() {
       setRecentPosts(res.data)
     }
     getRecentPost()
-    console.log(currentPage)
   }, [currentPage])
 
   // Di chuyen slide
@@ -63,7 +63,7 @@ function Home() {
       <main className="main__home">
       <div className="container">
         {/* FEATURED POST */}
-        <div className="featured__post  pt-15 font-small text-uppercase">
+        <div className="featured__post pt-15 font-small text-uppercase pb-15">
           <h5 style={{ fontSize: '14px' }}>Các bài đăng nổi bật</h5>
         </div>
         <div className="row-1">
@@ -71,59 +71,64 @@ function Home() {
             {/* TODO: NỔI BẬT POSTS */}
             {
               featuredPosts.map((post, index) => {
-                return (
-                  <>
-                    {index === currentSlide && (
-                      <div className="slider thumb-overlay hieu-ung" key={index}>
-                        <div className="arrow-cover">
-                          <i class="fal fa-long-arrow-left" onClick={prevSlide}></i>
-                          <i class="fal fa-long-arrow-right" onClick={nextSlide}></i>
-                        </div>
-
-                        <img src={post.postThumbnail} alt='travel image' className='image' />
-                        <div className="post-content-overlay text-white ml-30 mr-30 pb-30">
-                          <h3 className="post-title mb-20" style={{ fontSize: 20 }}>
-                            <Link to={{ pathname: `/posts/${post.slug}`, state: { id: post.postId } }}
-                              className="text-white">
-                              {ReactHtmlParser(post.title)}
-                            </Link>
-                          </h3>
-                          <div className="entry-meta meta-1 font-small text-white mt-10 " style={{ textAlign: 'left' }}>
-                            <span>{post.bookmarkedCount} lượt bookmark</span>
-                            <span className="has-dos">{post.commentCount} bình luận</span>
+                if(index < 6){
+                  return (
+                    <>
+                      {index === currentSlide && (
+                        <div className="slider thumb-overlay hieu-ung" key={index}>
+                          <div className="arrow-cover">
+                            <i className="fal fa-long-arrow-left" onClick={prevSlide}></i>
+                            <i className="fal fa-long-arrow-right" onClick={nextSlide}></i>
+                          </div>
+  
+                          <img src={post.postThumbnail} alt='travel image' className='image' />
+                          <div className="post-content-overlay text-white ml-30 mr-30 pb-30">
+                            <h3 className="post-title mb-20" style={{ fontSize: 20 }}>
+                              <Link to={{ pathname: `/posts/${post.slug}`, state: { id: post.postId } }}
+                                className="text-white">
+                                {ReactHtmlParser(post.title)}
+                              </Link>
+                            </h3>
+                            <div className="entry-meta meta-1 font-small text-white mt-10 " style={{ textAlign: 'left' }}>
+                              <span>{post.bookmarkedCount} lượt bookmark</span>
+                              <span className="has-dos">{post.commentCount} bình luận</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                  </>
-                )
+                      )}
+                    </>
+                  )
+                }
               })
             }
           </div>
 
           {
             featuredPosts.map((post, index) => {
-              return (
-                <div className="col-lg-4 col-md-6 mb-30" key={index}>
-                  <div className="post-card-1 border-radius-10 hieu-ung">
-                    <div className="thumb-overlay img-hover-slide position-relative" style={{ background: `url(${post.postThumbnail})` }}>
-                    </div>
-                    <div className="post-content p-30">
-                      <div className="d-flex post-card-content">
-
-                        <h5 className="post-title mb-20 ">
-                          <a href="#">{ReactHtmlParser(post.title)}</a>
-                        </h5>
-                        <div className="entry-meta meta-1 float-left font-x-small text-uppercase">
-                          <span>27 August</span>
-                          <span className="time-reading has-dos">12 mins read</span>
-                          <span className="post-by has-dos">12k views</span>
+              if(index > 5) {
+                // console.log(index)
+                return (
+                  <div className="col-lg-4 col-md-6 mb-30" key={index}>
+                    <div className="post-card-1 border-radius-10 hieu-ung">
+                      <div className="thumb-overlay img-hover-slide position-relative" style={{ background: `url(${post.postThumbnail})` }}>
+                      </div>
+                      <div className="post-content p-30">
+                        <div className="d-flex post-card-content">
+  
+                          <h5 className="post-title mb-20 ">
+                            <a href="#">{ReactHtmlParser(post.title)}</a>
+                          </h5>
+                          <div className="entry-meta meta-1 float-left font-x-small text-uppercase">
+                            <span>{post.bookmarkedCount} lượt bookmark</span>
+                            <span className="time-reading has-dos">{post.commentCount} bình luận</span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )
+                )
+              }
+              
             })
           }
         </div>
@@ -181,32 +186,11 @@ function Home() {
               </div>
             </div>
             <div className="col-lg-4">
-              {/* TODO: AUTHOR INFORMATION */}
-              <div class="author-info mt-30 hieu-ung">
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <div class="avatar inline-item" style={{ backgroundImage: `url(${avatar})` }} ></div>
-                  <div class="post-count inline-item">
-                    <h4>10</h4>
-                    <p>Bài viết</p>
-                  </div>
-                  <div class="follower-count inline-item">
-                    <h4>100</h4>
-                    <p>Người theo dõi</p>
-                  </div>
-                </div>
-
-                <h5 class="author-name">Steven</h5>
-                <p style={{ fontSize: "14px" }}>
-                  Hi, I’m Stenven, a Florida native, who left my career in corporate
-                  wealth management six years ago to embark on a summer of soul searching that would change
-                  the course of my life forever.
-                  </p>
-              </div>
               {/* TODO: NHIỀU COMMENT */}
-              <div style={{ marginTop: '50px' }}>
+              <div className="mb-30">
                 <h5>Most popular</h5>
               </div>
-              <hr class="most-popular-hr" />
+              <hr className="most-popular-hr" />
 
               {featuredPosts.map((slide, index) => {
                 return (
@@ -216,12 +200,12 @@ function Home() {
                     <div className="post__popular--content media-body" >
                       <h6 className="post-title mb-15">
                         <Link to={{ pathname: '/posts/Bien-Da-nang-co-dep-khong', state: { id: '1' } }}>
-                          {slide.title}
+                          {ReactHtmlParser(slide.title)}
                         </Link>
                       </h6>
                       <div className="entry-meta meta-1 font-x-small text-uppercase">
-                        <span>05 AUGUST</span>
-                        <span className="post-by has-dos">150k views</span>
+                        <span>{slide.bookmarkedCount} bookmark</span>
+                        <span className="post-by has-dos">{slide.commentCount} Bình luận</span>
                       </div>
                     </div>
 
@@ -233,7 +217,6 @@ function Home() {
                   </div>
                 )
               })}
-
             </div>
           </div>
         </div>

@@ -17,6 +17,24 @@ p {
 }
 
 
+
+.post__cataArea {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.post__cata {
+    font-size: 15px;
+    padding: 1px 7px;
+    margin-right: 7px;
+    border: 1px solid #b3d7ff;
+    /* background: rgb(0 123 255 / 50%); */
+    /* background-color: var(--color-primary); */
+    background-color: #8e97ff ;
+    border-radius: 3px;
+}
+
+
 .img-in-post {
     max-width: 100%;
     max-height: 100%;
@@ -33,39 +51,6 @@ p {
 
 .bg-grey {
     background-color: #f2f5f5;
-}
-
-.pb-50 {
-    padding-bottom: 50px !important;
-}
-
-.pt-50 {
-    padding-top: 50px !important;
-}
-
-.pd-15 {
-    padding: 15px;
-}
-
-.pd-50 {
-    padding-left: 50px;
-    padding-right: 50px;
-}
-
-.ml-15 {
-    margin-right: 15px;
-}
-
-.mr-15 {
-    margin-left: 20px;
-}
-
-.mt-15 {
-    margin-top: 20px;
-}
-
-.align-center {
-    text-align: center;
 }
 
 
@@ -183,10 +168,13 @@ p {
 
 .name-write-by {
     display: block;
+    margin: auto 0;
 }
 
 .date-write-by {
     font-size: small;
+    margin: auto 0;
+
 }
 
 .post-content img{
@@ -326,6 +314,7 @@ p {
     text-align: center;
     margin: 5px auto;
     font-size: 16px;
+    outline: none  !important;
 }
 
 .bookmark-btn:hover {

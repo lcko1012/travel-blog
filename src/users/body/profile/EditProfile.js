@@ -58,7 +58,7 @@ const EditProfile = () => {
             console.log(e.target.files[0])
 
             var formImage = new FormData()
-            formImage.append('image', file)
+            formImage.append('upload', file)
 
             const res = await axios.post('/upload', formImage, {
                 headers: { Authorization: `Bearer ${token}` }
@@ -66,16 +66,11 @@ const EditProfile = () => {
 
             if (res) {
                 console.log(res)
-                setNewAvatar(res.data)
+                setNewAvatar(res.data.url)
             }
-
-
         } catch (error) {
             setNewInfor({ ...newInfor, err: "Đã xảy ra lỗi", success: '' })
         }
-
-
-
     }
 
     const handleSubmitInfor = async (e) => {
@@ -122,7 +117,6 @@ const EditProfile = () => {
                         {newInfor.err && showErrMsg80(newInfor.err)}
                         {newInfor.success && showSuccessMsg80(newInfor.success)}
                         {display ? <PassPage />
-                        
                         :
                             <form style={{ display: 'flex', flexDirection: 'column' }}
                                 onSubmit={handleSubmitInfor}>

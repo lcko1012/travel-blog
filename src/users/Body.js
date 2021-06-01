@@ -13,6 +13,10 @@ import ForgotPassword from './body/auth/ForgotPassword'
 import ResetPassword from './body/auth/ResetPassword'
 import Profile from './body/profile/Profile'
 import MyProfile from './body/profile/MyProfile'
+import EditProfile from './body/profile/EditProfile'
+import Bookmarks from './body/bookmark/Bookmarks'
+import SearchPage from './body/search/SearchPage'
+import Category from './body/category/Category'
 
 function Body() {
     const auth = useSelector(state => state.auth)
@@ -28,10 +32,17 @@ function Body() {
                 <Route path="/auth/resetPassword/:token" component= {isLogged ? Home : ResetPassword} exact />
                 
                 <Route path="/posts/new" component={isLogged ? NewPosts : Home} exact />
-                <Route path='/posts/:slug' component={Post} />
+                <Route path='/posts/:slug' component={Post} exact />
 
+                <Route path='/search' component={SearchPage} exact/>
+                <Route path='/bookmarks' component={isLogged ? Bookmarks : Login} exact />
+                <Route path='/category/:id' component={Category} exact />
+            
                 <Route path="/profile/:id" component={Profile} exact />
                 <Route path="/myprofile" component={MyProfile} exact />
+                <Route path="/myprofile/edit" component={isLogged ? EditProfile : Login} exact />
+                
+
 
             </Switch>
         </section>

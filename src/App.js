@@ -7,8 +7,7 @@ import Body from './users/Body';
 import Footer from './users/footer/Footer';
 import { useDispatch, useSelector } from 'react-redux';
 import { dispatchGetUser, dispatchLogin, fetchUser } from './redux/actions/authAction'
-import Cookies, { get } from 'js-cookie';
-import { useState } from 'react';
+import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode'
 
 function App() {
@@ -39,9 +38,10 @@ function App() {
         const interval = setInterval(() => {
           console.log("get refresh token")
           getToken()
-        }, 180000)
+        }, duration - 360000)
         return () => clearInterval(interval)
       }
+      
     }
   }, [auth.isLogged, dispatch])
 

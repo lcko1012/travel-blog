@@ -58,7 +58,7 @@ function ResetPassword() {
     const {password, matchedPassword, err, success} = data 
     return (
         <main className="main__auth">
-            <div class="register">
+            <div className="register">
                 <h3>Lấy lại mật khẩu</h3>
                 {err && showErrMsg(err)}
                 {success && showSuccessMsg(success)}

@@ -1,6 +1,8 @@
 .main__home{
     /* background-color: #f7f8f9; */
-    background-color: white;
+    /* background-color: #F0F2F5; */
+    background-color: var(--color-background);
+    /* background-color: white; */
     height: auto;
     box-sizing: content-box;
 }
@@ -99,7 +101,7 @@
     transition: all .25s cubic-bezier(.02,.01,.47,1);
     position: relative;
     background: #fff;
-    border-radius: 10px 10px 0 0;
+    border-radius: 10px;
     height: 420px;
 }
 

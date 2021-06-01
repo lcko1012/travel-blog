@@ -3,6 +3,9 @@ import React from 'react'
 import { useState } from 'react'
 import { showErrMsg, showSuccessMsg } from '../../utils/notification/Notification'
 import { isEmail, isEmpty, isLength, isMatch } from '../../utils/validation/Validation'
+import {GoogleLogin} from 'react-google-login'
+import Cookies from 'js-cookie'
+
 
 
 function Register() {
@@ -58,10 +61,28 @@ function Register() {
             setUser({...user, err: err.response.data, success: ''})
         }
     }
+
+    const responseGoogle = async (response) => {
+        console.log(response)
+        try{
+            const google_token = response.tokenId
+            console.log(google_token)
+            var registerForm = new FormData()
+            registerForm.append('google_token', google_token)
+    
+            const res = await axios.post('/auth/google', registerForm)
+            setUser({...user, err: '', success: 'Mật khẩu đã được gửi tới gmail của bạn'})
+            console.log(res)            
+        }catch(err){
+            console.log(err)
+        }
+        
+    }
+
     return (
         <main className="main__auth">
-        <div class="register">
-            <h3>Creat an account</h3>
+        <div className="register">
+            <h3>Đăng ký</h3>
             {err && showErrMsg(err)}
             {success && showSuccessMsg(success)}
             <form onSubmit={handleSubmit}>
@@ -78,20 +99,21 @@ function Register() {
                 value={matchedPassword} onChange={handleChangeInput}/>
 
                 <button type="submit">
-                    SUBMIT & REGISTER 
+                    ĐĂNG KÝ
                 </button>
                 
-            <div class="register__divider">
+            <div className="register__divider">
                 <span>OR</span>
             </div>
             </form>
-            <div class="register__social">
-                <a href="#" class="register__social--facebook">
-                    <i class="fab fa-facebook-f"></i>
-                    Facebook</a>
-                <a href="#" class="register__social--google">
-                    <i class="fab fa-google"></i>
-                    Google</a>
+            <div className="register__social">
+                
+                <GoogleLogin
+                clientId="545452035521-c4eljpuu1281eml2ci6kaud39s5kc9ct.apps.googleusercontent.com"
+                buttonText="Đăng ký bằng Google"
+                onSuccess={responseGoogle}
+                cookiePolicy={'single_host_origin'}
+                />
             </div>
 
         </div>

@@ -44,6 +44,7 @@ code {
 }
 
 :root {
+  --color-background: #fafafa;
   --color-white: #fff;
   --color-primary : #5869DA;
   --color-muted: #687385;
@@ -57,9 +58,9 @@ a:hover{
   text-decoration: none;
 }
 
-ul{
+/* ul{
   list-style: none;
-}
+} */
 
 
 
@@ -123,6 +124,39 @@ ul{
   }
 }
 
+.pb-50 {
+  padding-bottom: 50px !important;
+}
+
+.pt-50 {
+  padding-top: 50px !important;
+}
+
+.pd-15 {
+  padding: 15px;
+}
+
+.pd-50 {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.ml-15 {
+  margin-right: 15px;
+}
+
+.mr-15 {
+  margin-left: 20px;
+}
+
+.mt-15 {
+  margin-top: 20px;
+}
+
+.align-center {
+  text-align: center;
+}
+
 .mt-5 {
   margin-top: 5px;
 }
@@ -147,13 +181,17 @@ ul{
   margin-top: 10px;
 }
 
+.mt-50 {
+  margin-top: 50px;
+}
+
 
 .mb-40 {
   margin-bottom: 40px;
 }
 
 .mb-50 {
-  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 
@@ -171,6 +209,10 @@ ul{
 
 .mb-25 {
   margin-bottom: 25px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
 }
 
 .ml-15 {
@@ -197,6 +239,9 @@ ul{
   padding-left: 5px;
 }
 
+.pb-15 {
+  padding-bottom: 15px;
+}
 
 .pb-30 {
   padding-bottom: 30px;
@@ -214,5 +259,5 @@ ul{
 @import url("./users/body/auth/auth.css");
 @import url("./users/footer//footer.css");
 /* @import url("./users//body/home/home.css"); */
-/* @import url("./users//body/newPosts/newposts.css"); */
+@import url("./users//body/newPosts/newposts.css");
 @import url("./users/utils/Loading/Loading.css");

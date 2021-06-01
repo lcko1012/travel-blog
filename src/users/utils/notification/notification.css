@@ -1,10 +1,10 @@
 .errMsg { 
-    background: rgba(253, 27, 27, 0.815);
-    color: white;
+    background: #F1D7D7;
+    color: #A95252;
     text-align: center;
     padding: 10px 0;
     letter-spacing: 1.3px;
-    border-radius: 15px; 
+    border-radius: 16px; 
     border: 1px solid rgb(225, 225, 225);
     margin-bottom: 10px;
 }
@@ -15,7 +15,7 @@
     text-align: center;
     padding: 10px 0;
     letter-spacing: 1.3px;
-    border-radius: 15px; 
+    border-radius: 16px; 
     border: 1px solid rgb(225, 225, 225);
     margin-bottom: 10px;
 }

@@ -57,11 +57,11 @@ const Comments = ({id, setPost, post}) => {
         getComments()
       }, [id])
     return (
-        <div class="comment-area">
+        <div className="comment-area">
             <div>
                 <h5>Comment</h5>
             </div>
-            <hr class="comment-hr" />
+            <hr className="comment-hr" />
             {commentsArr.map((comment) => {
                 return (
                     <Comment key={comment.commentId} comment={comment} />

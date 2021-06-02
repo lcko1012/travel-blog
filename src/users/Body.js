@@ -17,6 +17,7 @@ import EditProfile from './body/profile/EditProfile'
 import Bookmarks from './body/bookmark/Bookmarks'
 import SearchPage from './body/search/SearchPage'
 import Category from './body/category/Category'
+import EditPost from './body/newPosts/EditPost'
 
 function Body() {
     const auth = useSelector(state => state.auth)
@@ -33,6 +34,8 @@ function Body() {
                 
                 <Route path="/posts/new" component={isLogged ? NewPosts : Home} exact />
                 <Route path='/posts/:slug' component={Post} exact />
+                <Route path='/posts/:slug/edit' component={isLogged ? NewPosts : Home} exact />
+
 
                 <Route path='/search' component={SearchPage} exact/>
                 <Route path='/bookmarks' component={isLogged ? Bookmarks : Login} exact />

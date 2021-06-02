@@ -22,7 +22,6 @@ function Header() {
         e.preventDefault();
         console.log("sumit")
         window.location.href = `/search?keyword=${keyword}`
-        
     }
     
 

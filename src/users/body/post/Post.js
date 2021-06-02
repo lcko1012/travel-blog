@@ -11,12 +11,14 @@ import Comments from './comments/Comments'
 
 
 function Post() {
+  const params = useParams()
+
   const initialState = {
     postId: 0,
     title: '',
     publishedDate: '',
     postThumbnail: '',
-    slug: '',
+    slug: params.slug,
     content: '',
     bookmarked: false,
     bookmarkedCount: 0,
@@ -24,31 +26,39 @@ function Post() {
     categories: [],
     owner: false
   }
-  const params = useParams()
+  //lay bai bang slug
   const location = useLocation()
-  const [id, setId] = useState(null)
+  // const [id, setId] = useState(null)
   const [post, setPost] = useState(initialState)
-  const [posts, setPosts] = useState([])
   const [author, setAuthor] = useState({})
   const [loading, setLoading] = useState(false)
   const [callback, setCallback] = useState(false)
   const [loadCmt, setLoadCmt] = useState(false)
+  const [isDel, setIsDel] = useState(false)
 
 
   //Cu moi lan render lai
   useEffect(() => {
     const getPost = async () => {
       try {
+        console.log(post.slug)
         const token = Cookies.get('token')
         var res = null
         if (token) {
           console.log(token)
-          res = await axios.get(`/post/${id}`, {
+          res = await axios.get(`/post`, {
+            params: {
+              slug: post.slug
+            },
             headers: { Authorization: `Bearer ${token}` }
           })
           console.log(res)
         } else {
-          res = await axios.get(`/post/${id}`)
+          res = await axios.get(`/post`, {
+            params: {
+              slug: post.slug
+            },
+          })
         }
         var responseContent = res.data
         console.log(responseContent)
@@ -72,26 +82,12 @@ function Post() {
         console.log(err)
       }
     }
-    setId(location.state.id)
-    if (id !== null) {
+    if (post.slug) {
       getPost()
       console.log("getpost")
     }
-  }, [id])
+  }, [post.slug])
 
-
-
-  useEffect(() => {
-    const getPosts = async () => {
-      try {
-        const res = await axios.get(`/post?size=6`)
-        setPosts(res.data)
-      } catch (err) {
-        console.log(err.response)
-      }
-    }
-    getPosts()
-  }, [])
   useEffect(() => {
     return () => {
       console.log("cleaned up")
@@ -105,7 +101,7 @@ function Post() {
     console.log("Bookmark")
     const token = Cookies.get("token")
     var bookmarkForm = new FormData()
-    bookmarkForm.append("postId", id)
+    bookmarkForm.append("postId", post.postId)
     const postBookmark = async () => {
       try {
         const res = await axios.post('/bookmark', bookmarkForm, {
@@ -127,11 +123,11 @@ function Post() {
     const token = Cookies.get("token")
     console.log(token)
     var bookmarkForm = new FormData()
-    bookmarkForm.append("postId", id)
+    bookmarkForm.append("postId", post.postId)
 
     const deleteBookmark = async () => {
       try {
-        const res = await axios.delete(`/bookmark/${id}`, {
+        const res = await axios.delete(`/bookmark/${post.postId}`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         if (res) {
@@ -145,12 +141,27 @@ function Post() {
     deleteBookmark()
   }
 
+  const handleClickDel = () => {
+    setIsDel(true)
+    console.log(isDel)
+  }
+
+  const showDelAlert = () => {
+    return(
+      <div className="post__delAlert">
+        Xóa nha
+      </div>
+    )
+  }
+
   return (
     <>
       <main className="main__home" >
         <div className="container">
+         
           {loading ?
             <div className="row">
+               {isDel ? showDelAlert() : null}
               <div className="col-lg-8 mt-50">
                 <div className="content-area">
                   <h1 style={{ fontWeight: "700" }}>{ReactHtmlParser(post.title)}</h1>
@@ -169,16 +180,34 @@ function Post() {
 
                   {/* TODO:WRITE BY AREA */}
                   <div className="write-by">
-                    <div className="avatar inline-item"
-                      style={{ backgroundImage: `url(${author.avatarLink})` }}
-                    ></div>
-                    <div style={{ margin: 'auto 0' }}>
-                      <div className="name-write-by">
-                        <Link to={`/profile/${author.accountId}`}>{author.name}</Link>
+                    <div className="d-flex">
+                      <div className="avatar-write-by inline-item"
+                        style={{ backgroundImage: `url(${author.avatarLink})` }}
+                      ></div>
+                      <div style={{ margin: 'auto 0' }}>
+                        <div className="name-write-by">
+                          <Link to={`/profile/${author.accountId}`}>{author.name}</Link>
+                        </div>
+                        <p className="date-write-by">{post.publishedDate}</p>
                       </div>
-                      <p className="date-write-by">{post.publishedDate}</p>
                     </div>
+                    {/* TODO: SUA BAI VIET */}
+                    {post.owner ? 
+                    <div >
+                      <Link to={`/posts/${post.slug}/edit`}>
+                      <button className="post__editBtn">
+                        <i className="fal fa-pen" style={{marginRight: '5px'}}></i>
+                      Sửa bài viết</button>
+                      </Link>
+
+                      <button  className="post__delBtn" onClick={handleClickDel}>
+                        <i className="fal fa-trash-alt" style={{color: '#A95252'}}></i>
+                      </button>
+                    </div> : null}
+                    
                   </div>
+
+
                   <div className="post-content" >
                     {ReactHtmlParser(ReactHtmlParser(post.content))}
                   </div>
@@ -186,7 +215,7 @@ function Post() {
 
                 {/* TODO: COMMENT AREA */}
                 {/* ========================COMMENT================ */}
-                <Comments setPost={setPost} id={id} post={post}  />
+                <Comments setPost={setPost} id={post.postId} post={post}  />
 
               </div>
               {/* ===============================END COMMENT=========================== */}

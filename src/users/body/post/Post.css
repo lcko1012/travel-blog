@@ -47,14 +47,43 @@ p {
 }
 
 .post__delAlert {
-    position: absolute;
-    margin: 0;
+    position: fixed;
     top: 50%;
     left: 50%;
-    z-index: 99;
-    height: 200px;
-    width: 400px;
-    align-items: center;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background-color: white;
+    height: 150px;
+    width: 300px;
+    box-shadow: 0px 0px 5px rgba(241, 4, 4, 0.822);
+    border-radius: 16px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    
+}
+
+.post__delAlert--button {
+    padding: 5px 14px;
+    border-radius: 16px;
+    outline: none !important;
+    transition: 0.3s;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.post__delAlert--cancel {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
+    color: white;
+    margin-right: 5px;
+}
+.post__delAlert--delete {
+    border-color: #A95252;
+    background-color:#A95252;
+    color: white;
 }
 
 

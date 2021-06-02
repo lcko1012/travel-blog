@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, Link, useLocation } from 'react-router-dom'
+import { useParams, Link, useLocation, useHistory } from 'react-router-dom'
 import "./Post.css"
 import axios from 'axios'
 
@@ -12,7 +12,7 @@ import Comments from './comments/Comments'
 
 function Post() {
   const params = useParams()
-
+  const history = useHistory()
   const initialState = {
     postId: 0,
     title: '',
@@ -141,15 +141,47 @@ function Post() {
     deleteBookmark()
   }
 
-  const handleClickDel = () => {
-    setIsDel(true)
-    console.log(isDel)
+  const handleClickDel = (value) => {
+    setIsDel(value)
+  }
+
+  const handleDelPost = () => {
+    const delPost = async () => {
+      try {
+        const token = Cookies.get("token")
+        const res = await axios.delete(`/post/${post.postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        if(res){
+          history.push("/")
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    delPost()
   }
 
   const showDelAlert = () => {
     return(
       <div className="post__delAlert">
-        Xóa nha
+        <h5>Lưu ý</h5>
+        <p>Bài viết chỉ bị chuyển thành bản nháp, nếu bạn muốn xóa bài viết hãy xóa bản nháp này</p>
+        <div>
+           <button className="post__delAlert--button post__delAlert--cancel"
+           onClick={() => handleClickDel(false)}
+           >
+             Hủy
+           </button>
+           <button className="post__delAlert--button post__delAlert--delete"
+           onClick={handleDelPost}
+           >
+             Xóa bài
+           </button>
+        </div>
+      
       </div>
     )
   }
@@ -200,7 +232,7 @@ function Post() {
                       Sửa bài viết</button>
                       </Link>
 
-                      <button  className="post__delBtn" onClick={handleClickDel}>
+                      <button  className="post__delBtn" onClick={() => handleClickDel(true)}>
                         <i className="fal fa-trash-alt" style={{color: '#A95252'}}></i>
                       </button>
                     </div> : null}

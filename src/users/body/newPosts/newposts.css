@@ -30,8 +30,21 @@
     transition: 0.3s;
 }
 
-.newpost button:hover {
-    transform: translate(0px, -3px);
+.newpost__submitBtn:hover {
+    /* transform: translate(0px, -3px); */
+    background-color: white;
+    color: var(--color-primary);
+}
+
+
+.newpost__draftBtn {
+    background-color: white;
+    color: var(--color-primary)
+}
+
+.newpost__draftBtn:hover {
+    background-color: var(--color-primary);
+    color: white;
 }
 
 

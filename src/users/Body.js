@@ -35,6 +35,7 @@ function Body() {
                 <Route path="/posts/new" component={isLogged ? NewPosts : Home} exact />
                 <Route path='/posts/:slug' component={Post} exact />
                 <Route path='/posts/:slug/edit' component={isLogged ? NewPosts : Home} exact />
+                
 
 
                 <Route path='/search' component={SearchPage} exact/>
@@ -42,7 +43,7 @@ function Body() {
                 <Route path='/category/:id' component={Category} exact />
             
                 <Route path="/profile/:id" component={Profile} exact />
-                <Route path="/myprofile" component={MyProfile} exact />
+                <Route path="/myprofile" component={isLogged ? MyProfile : Home} exact />
                 <Route path="/myprofile/edit" component={isLogged ? EditProfile : Login} exact />
                 
 

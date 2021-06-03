@@ -220,13 +220,64 @@ console.log(data)
         })
         if(res) {
           // window.location.href = `/posts/${params.slug}`
-          history.push('/')
+          // history.push('/')
+          console.log(res)
         }
       } catch (error) {
         console.log(error)
+        setData({ ...data, err: "Không thể chỉnh sửa bài viết", success: '' })
       }
     }
     editPost()
+  }
+
+  const handleSubmitDraft = (e) => {
+    e.preventDefault()
+    if (!data.title) {
+      return setData({ ...data, err: 'Hãy nhập tiêu đề bài viết', success: '' })
+    }
+    if (!data.postThumbnail) {
+      return setData({ ...data, err: 'Hãy thêm ảnh bìa bài viết', success: '' })
+    }
+
+    if (data.categories.length === 0) {
+      return setData({ ...data, err: 'Hãy chọn thể loại bài viết', success: '' })
+    }
+
+    if (!data.content.getCurrentContent().getPlainText().trim()) {
+      return setData({ ...data, err: 'Hãy nhập nội dung bài viết', success: '' })
+    }
+    
+      var formDraft = new FormData()
+      formDraft.append("title", data.title)
+      formDraft.append("content", stateToHTML(data.content.getCurrentContent()))
+      formDraft.append("postThumbnail", data.postThumbnail)
+      formDraft.append("categories", data.categories)
+      const token = Cookies.get('token')
+
+    const postDraft = async () => {
+      try {
+        const res = await axios.post('/draft', formDraft, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        if (res) {
+          console.log(res)
+          // window.location.href = `/posts/${res.data.slug}`
+          history.push('/myprofile')
+          
+        }
+      } catch (error) {
+        console.log(error)
+        setData({ ...data, err: "Không thể lưu bản nháp", success: '' })
+        
+      }
+      
+    }
+
+    postDraft()
+
   }
 
   return (
@@ -292,15 +343,21 @@ console.log(data)
 
             </select>
             {data.err && showErrMsg(data.err)}
+            <div className="d-flex justify-content-end mb-50">
+            <form className="mr-10" onSubmit={handleSubmitDraft}>
+            <button className="newpost__submitBtn newpost__draftBtn mb-15" type="submit">Lưu nháp</button>
+            </form>
             {params.slug ?
-              <form onSubmit={handleEditPost} style={{ textAlign: 'right' }}>
+              <form onSubmit={handleEditPost}>
                 <button className="newpost__submitBtn mb-15" type="submit">Sửa bài</button>
               </form>
               :
-              <form onSubmit={handleSubmitPost} style={{ textAlign: 'right' }}>
+              <form onSubmit={handleSubmitPost} >
                 <button className="newpost__submitBtn mb-15" type="submit">Đăng bài</button>
               </form>
             }
+            </div>
+            
 
 
             {/* {stateToHTML(data.content.getCurrentContent())} */}

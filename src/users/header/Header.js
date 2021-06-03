@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import avatar from '../../asset/images/avatar.jpg'
 import Cookies from 'js-cookie'
@@ -9,6 +9,7 @@ function Header() {
     const dispatch = useDispatch()
     const auth = useSelector(state => state.auth)
     const userInfor = auth.user
+    const history = useHistory()
 
     const [keyword, setKeyword] = useState('')
 
@@ -23,23 +24,23 @@ function Header() {
         console.log("sumit")
         window.location.href = `/search?keyword=${keyword}`
     }
-    
+
 
     const handleLogout = () => {
         try {
             localStorage.removeItem('firstLogin')
             Cookies.remove('token')
             Cookies.remove('duration')
-            window.location.href = "/"
+            history.push("/")
         } catch (err) {
-            window.location.href = "/"
+            history.push("/")
         }
     }
     const loginMenu = () => {
         return (
             <div className="menu__right">
                 <ul>
-                    <li>
+                    <li className="menu__right--post">
                         <Link to="/posts/new">
                             <i className="far fa-edit"></i>
                                 Viết Bài
@@ -93,10 +94,10 @@ function Header() {
                         </Link>
                         <form onSubmit={handleFindSubmit}>
                             <i className="fal fa-search"></i>
-                            <input 
-                            onChange={handleChangeKeyword}
-                            type="text" 
-                            placeholder="Tìm kiếm theo tiêu đề bài viết hoặc nội dung" />
+                            <input
+                                onChange={handleChangeKeyword}
+                                type="text"
+                                placeholder="Tìm kiếm theo tiêu đề bài viết hoặc nội dung" />
                         </form>
 
                     </div>

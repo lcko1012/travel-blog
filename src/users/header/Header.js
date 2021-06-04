@@ -5,6 +5,8 @@ import avatar from '../../asset/images/avatar.jpg'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import { dispatchLogout } from '../../redux/actions/authAction'
+import ReactHtmlParser from 'react-html-parser'
+
 
 
 function Header() {
@@ -62,7 +64,7 @@ function Header() {
                 </ul>
 
                 <div className="menu__right--avatar">
-                    <img src={userInfor.avatarLink} />
+                    <img src={ReactHtmlParser(userInfor.avatarLink)} />
                     <i className="fas fa-caret-down"></i>
                     <div className="menu__right--dropdown" id="dropDown" >
                         <Link to="/myprofile">

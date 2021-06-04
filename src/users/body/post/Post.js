@@ -8,8 +8,6 @@ import Loading from '../../utils/Loading/Loading'
 import Cookies from 'js-cookie'
 import Comments from './comments/Comments'
 
-
-
 function Post() {
   const params = useParams()
   const history = useHistory()

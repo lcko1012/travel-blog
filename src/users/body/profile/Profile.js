@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom'
 import Empty from '../../utils/Empty/Empty'
 import Loading from '../../utils/Loading/Loading'
 import CurrentPost from '../home/components/CurrentPost'
+import ReactHtmlParser from 'react-html-parser'
+
 
 import "./Profile.css"
 
@@ -61,7 +63,7 @@ function Profile() {
                                 <div className="information">
                                     <div className="author-info">
                                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                                            <div className="avatar" style={{ backgroundImage: `url(${userInfor.avatarLink})` }} ></div>
+                                            <div className="avatar" style={{ backgroundImage: `url(${ReactHtmlParser(userInfor.avatarLink)})` }} ></div>
                                             <div className="post-count">
                                                 <h4>{userInfor.postCount}</h4>
                                                 <p>Bài viết</p>

@@ -92,11 +92,16 @@ const Comment = ({ comment, commentsArr,setCommentsArr }) => {
         }
     }
     
+    //Bấm hủy sửa xóa đi ô sửa và sửa lại input change
+    const handleClickCancelEdit = () => {
+        setShowEditCmt(false)
+        setCommentInputChange(comment.content)
+    }
 
     return (
         <div className="comment-item" key={comment.commentId}>
             <div className="avatar-comment inline-item"
-                style={{ backgroundImage: `url(${comment.commenter.avatarLink})` }}></div>
+                style={{ backgroundImage: `url(${ReactHtmlParser(comment.commenter.avatarLink)})` }}></div>
             <div className="inline-item" style={{ width: "90%" }}>
                 <div className='d-flex' style={{ alignItems: 'center' }}>
                     <Link to={userInfor.accountId === comment.commenter.accountId ? `/myprofile` : `/profile/${comment.commenter.accountId}`}>
@@ -128,7 +133,8 @@ const Comment = ({ comment, commentsArr,setCommentsArr }) => {
                 <form  className="d-flex comment-form--edit" onSubmit={handleSubmitChangeCmt}>
                     {/* defaultValue={ReactHtmlParser(comment.content)} */}
                     <input value={commentInputChange} onChange={handleChangeComment}/>
-                    <p  onClick={() => setShowEditCmt(false)}>Hủy</p>
+                    <p  onClick={handleClickCancelEdit}>Hủy</p>
+
                 </form> 
                 : 
                 <div className="comment-content">

@@ -21,6 +21,7 @@ const MyProfile = () => {
   const [currentPagePosts, setCurrentPagePosts] = useState(0)
 
   const [isEmpty, setIsEmpty] = useState(false)
+  const [isEmptyPosts, setIsEmptyPosts] = useState(false)
   //Co chac muon xoa bai viet khong
 
 
@@ -35,7 +36,9 @@ const MyProfile = () => {
         })
         if(res){
           setPosts([...posts, ...res.data])
-          
+          if (res.data.length === 0 || res.data.length < 10) {
+            setIsEmptyPosts(true)
+          }
         }
       } catch (error) {
         console.log(error)
@@ -66,7 +69,7 @@ const MyProfile = () => {
       if (res) {
         console.log(res)
         setDrafts([...drafts, ...res.data])
-        if (res.data.length === 0) {
+        if (res.data.length === 0 || res.data.length < 10) {
           setIsEmpty(true)
         }
       }
@@ -110,7 +113,7 @@ const MyProfile = () => {
             <div className="information">
               <div className="author-info">
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <div className="avatar" style={{ backgroundImage: `url(${userInfor.avatarLink})` }} ></div>
+                  <div className="avatar" style={{ backgroundImage: `url(${ReactHtmlParser(userInfor.avatarLink)})` }} ></div>
                   <div className="post-count">
                     <h4>{userInfor.postCount}</h4>
                     <p>Bài viết</p>
@@ -163,7 +166,7 @@ const MyProfile = () => {
                   <div className="pagination-area mb-30">
                     <nav aria-label="Page navigation example">
                       <ul className="pagination justify-content-start">
-                        <li className={`page-item" ${isEmpty ? 'disabled' : null}`}
+                        <li className={`page-item" ${isEmptyPosts ? 'disabled' : null}`}
                           onClick={() => setCurrentPagePosts(currentPagePosts + 1)}>
                           <a className="page-link">
                             <i className="fal fa-long-arrow-right"></i>

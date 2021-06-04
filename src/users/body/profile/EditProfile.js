@@ -99,6 +99,7 @@ const EditProfile = () => {
 
     const handleClickDisplay = (value) => {
         setDisplay(value)
+        setNewInfor({...newInfor, err: '', success:''})
     }
 
 

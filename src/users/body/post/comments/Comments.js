@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux'
 import Comment from './components/Comment'
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import ReactHtmlParser from 'react-html-parser'
+
 
 
 const Comments = ({ id, setPost, post }) => {
@@ -90,7 +92,7 @@ const Comments = ({ id, setPost, post }) => {
       <hr className="comment-hr" />
       <form className="d-flex" onSubmit={handleSubmitCmt}>
         <div className="avatar-comment"
-          style={{ backgroundImage: `url(${userInfor.avatarLink})` }}>
+          style={{ backgroundImage: `url(${ReactHtmlParser(userInfor.avatarLink)})` }}>
         </div>
         <input className="comment-input" type="text" placeholder="Write comment"
           name="commentInput"

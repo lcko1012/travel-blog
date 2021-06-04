@@ -154,8 +154,62 @@
     padding: 16px;
     transition: 0.3s;
     box-shadow: 3px 3px 03px 0px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .myprofile__draft:hover {
     transform: translate(0px, -3px);
 }
+
+.myprofile__draft button{
+    padding: 2px 8px;
+    
+    background-color: var(--color-background);
+    outline: none;
+    border-radius:  10px;
+}
+
+.myprofile__draft button i {
+    margin-right: 5px;
+}
+
+
+.myprofile__draft .child-1 {
+    margin-right: 10px;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+}
+
+.myprofile__draft .child-2 {
+    border: 1px solid var(--color-deep-red);
+    color: var(--color-deep-red);
+} 
+
+.myprofile__choice {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+
+}
+
+.myprofile__choice button {
+    padding: 4px 3px;
+    outline: none;
+    border: 1px solid var(--color-muted);
+    background-color: var(--color-background);
+    color: var(--color-muted);
+}
+.myprofile__choice .child-2 {
+    flex-basis: 50%;
+    border-radius: 0px 10px 10px 0px;
+}
+
+.myprofile__choice .child-1 {
+    flex-basis: 50%;
+
+    border-right: 0px;
+    border-radius: 10px 0px 0px 10px;
+}
+

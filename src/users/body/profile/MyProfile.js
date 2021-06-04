@@ -5,6 +5,7 @@ import CurrentPost from '../home/components/CurrentPost'
 import Empty from '../../utils/Empty/Empty'
 import ReactHtmlParser from 'react-html-parser'
 import Cookies from 'js-cookie'
+import { Link } from 'react-router-dom'
 
 
 const MyProfile = () => {
@@ -16,26 +17,41 @@ const MyProfile = () => {
   //false load bai viet, true load ban nhap
   const [isLoadPost, setIsLoadPost] = useState(false)
   const [callback, setCallback] = useState(false)
-  const [currentPage, setCurrentPage] = useState(0)
+  const [currentPageDrafts, setCurrentPage] = useState(0)
+  const [currentPagePosts, setCurrentPagePosts] = useState(0)
+
   const [isEmpty, setIsEmpty] = useState(false)
+  //Co chac muon xoa bai viet khong
 
 
-
+  //get posts
   useEffect(() => {
     const getPosts = async () => {
-      const res = await axios.get(`/user/posts/${userInfor.accountId}`)
-      setPosts(res.data)
+      try {
+        const res = await axios.get(`/user/posts/${userInfor.accountId}`, {
+          params: {
+            page: currentPagePosts
+          }
+        })
+        if(res){
+          setPosts([...posts, ...res.data])
+          
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
     if (userInfor.accountId) {
       getPosts()
     }
     console.log(posts)
-  }, [userInfor.accountId])
+  }, [userInfor.accountId, currentPagePosts])
 
+  //GET DRAFTS
   useEffect(() => {
-    
+
     getDrafts()
-  }, [userInfor.accountId, callback, currentPage])
+  }, [userInfor.accountId, callback, currentPageDrafts])
 
   const getDrafts = async () => {
     console.log("load")
@@ -43,7 +59,7 @@ const MyProfile = () => {
       const token = Cookies.get("token")
       const res = await axios.get('/user/drafts', {
         params: {
-          page: currentPage
+          page: currentPageDrafts
         },
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -63,10 +79,12 @@ const MyProfile = () => {
     setIsLoadPost(value)
   }
 
+
+
   const handleDelDraft = async (postId) => {
     const token = Cookies.get("token")
     try {
-      const res = await axios.delete(`draft/${postId}`, {
+      const res = await axios.delete(`/post/${postId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -76,8 +94,6 @@ const MyProfile = () => {
         console.log(res)
         setDrafts([])
         setCallback(!callback)
-        setCurrentPage()
-        
       }
 
     } catch (error) {
@@ -120,9 +136,9 @@ const MyProfile = () => {
                   </div>
                 </div>
 
-                <div>
-                  <button onClick={() => handleClickLoad(false)}>Xem các bài viết</button>
-                  <button onClick={() => handleClickLoad(true)} >Xem các bài nháp</button>
+                <div className="myprofile__choice">
+                  <button className="child-1" onClick={() => handleClickLoad(false)}>Xem các bài viết</button>
+                  <button className="child-2" onClick={() => handleClickLoad(true)} >Xem các bài nháp</button>
                 </div>
                 {/* <div className="post-info-button" style={{ marginTop: '10px' }}>
                                     <button className="bookmark-btn">Chỉnh sửa trang cá nhân</button>
@@ -133,50 +149,69 @@ const MyProfile = () => {
           </div>
           {/* TODO: TAB POSTS */}
           <div className="mt-30 col-lg-8" >
+            {/* LOAD NHAP HAY BAI VIET */}
             {!isLoadPost ?
               posts.length === 0 ? <Empty /> :
-                posts.map((post, index) => {
-                  return (
-                    <CurrentPost post={post} key={index} />
-                  )
-                })
-              :
-              drafts.length === 0 ? <Empty /> :
-              <>
-              {
-                drafts.map((draft, index) => {
-                  console.log(drafts.length)
-                  return (
-
-                    <div key={index} className="myprofile__draft ">
-                      <h5>{ReactHtmlParser(draft.title)}</h5>
-                      <div>
-                        {/* <Link to={`/posts/${draft.slug}/edit`}> */}
-                        <button>Tiếp tục viết</button>
-                        {/* </Link> */}
-                        <button onClick={() => handleDelDraft(draft.postId)}>Xóa</button>
-                      </div>
-                      
-                    </div>
-                  )
-                })
-              }
-              <div className="pagination-area mb-30">
+                <>
+                  {
+                    posts.map((post, index) => {
+                      return (
+                        <CurrentPost post={post} key={index} />
+                      )
+                    })
+                  }
+                  <div className="pagination-area mb-30">
                     <nav aria-label="Page navigation example">
                       <ul className="pagination justify-content-start">
                         <li className={`page-item" ${isEmpty ? 'disabled' : null}`}
-                          onClick={() => setCurrentPage(currentPage + 1)}>
+                          onClick={() => setCurrentPagePosts(currentPagePosts + 1)}>
                           <a className="page-link">
                             <i className="fal fa-long-arrow-right"></i>
                           </a>
                         </li>
                       </ul>
                     </nav>
-              </div>
-              </>
+                  </div>
+                </>
+              :
+              // TODO: PHAN BAI NHAP
+              drafts.length === 0 ? <Empty /> :
+                <>
+                  {
+                    drafts.map((draft, index) => {
+                      console.log(drafts.length)
+                      return (
+                        <div key={index} className="myprofile__draft ">
+                          <h5>{ReactHtmlParser(draft.title)}</h5>
+                          <div style={{textAlign: 'end'}}>
+                            <Link to={`/posts/${draft.slug}/edit`}>
+                            <button className="child-1">
+                              <i className="fal fa-pencil"></i>
+                              Tiếp tục viết</button>
+                            </Link>
+                            <button className="child-2" onClick={() => handleDelDraft(draft.postId)}>
+                            <i className="fal fa-trash-alt"></i>
+                              Xóa</button>
+                          </div>
+
+                        </div>
+                      )
+                    })
+                  }
+                  <div className="pagination-area mb-30">
+                    <nav aria-label="Page navigation example">
+                      <ul className="pagination justify-content-start">
+                        <li className={`page-item" ${isEmpty ? 'disabled' : null}`}
+                          onClick={() => setCurrentPage(currentPageDrafts + 1)}>
+                          <a className="page-link">
+                            <i className="fal fa-long-arrow-right"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                </>
             }
-
-
           </div>
         </div>
       </div>

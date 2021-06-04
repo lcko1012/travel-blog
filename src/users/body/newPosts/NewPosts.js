@@ -47,10 +47,7 @@ function NewPosts() {
         try {
           const token = Cookies.get('token')
 
-          const res = await axios.get(`/post`, {
-            params: {
-              slug: params.slug
-            },
+          const res = await axios.get(`/post/${params.slug}/edit`, {
             headers: { Authorization: `Bearer ${token}` }
           })
 
@@ -190,15 +187,17 @@ console.log(data)
     const token = Cookies.get('token')
 
     const postPost = async () => {
-      const res = await axios.post('/post', formPost, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      try {
+        const res = await axios.post('/post', formPost, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        if (res) {
+          history.push(`/posts/${res.data.slug}`)
         }
-      })
-      if (res) {
-        console.log(res.data)
-        // window.location.href = `/posts/${res.data.slug}`
-        history.push(`/posts/${res.data.slug}`)
+      } catch (error) {
+        setData({ ...data, err: "Không thể đăng bài viết", success: '' })
         
       }
     }
@@ -220,8 +219,7 @@ console.log(data)
         })
         if(res) {
           // window.location.href = `/posts/${params.slug}`
-          // history.push('/')
-          console.log(res)
+          history.push(`/posts/${res.data.slug}`)
         }
       } catch (error) {
         console.log(error)
@@ -263,8 +261,6 @@ console.log(data)
           }
         })
         if (res) {
-          console.log(res)
-          // window.location.href = `/posts/${res.data.slug}`
           history.push('/myprofile')
           
         }
@@ -278,6 +274,27 @@ console.log(data)
 
     postDraft()
 
+  }
+  //Chuyen bai viet thanh ban nhap hoac sua ban nhap
+  const handleEditDraft = async (e) => {
+    e.preventDefault()
+    const token = Cookies.get("token")
+      var formDraft = new FormData()
+      formDraft.append("title", data.title)
+      formDraft.append("content", stateToHTML(data.content.getCurrentContent()))
+      formDraft.append("postThumbnail", data.postThumbnail)
+      formDraft.append("categories", data.categories)
+      try {
+        const res = await axios.put(`/draft/${post.postId}`, formDraft, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        if(res) {
+          history.push('/myprofile')
+        }
+      } catch (error) {
+        console.log(error)
+        setData({ ...data, err: "Không thể lưu bản nháp", success: '' })
+      }
   }
 
   return (
@@ -344,17 +361,24 @@ console.log(data)
             </select>
             {data.err && showErrMsg(data.err)}
             <div className="d-flex justify-content-end mb-50">
-            <form className="mr-10" onSubmit={handleSubmitDraft}>
+            
+            {params.slug ?
+            <><form className="mr-10" onSubmit={handleEditDraft}>
             <button className="newpost__submitBtn newpost__draftBtn mb-15" type="submit">Lưu nháp</button>
             </form>
-            {params.slug ?
               <form onSubmit={handleEditPost}>
-                <button className="newpost__submitBtn mb-15" type="submit">Sửa bài</button>
+                <button className="newpost__submitBtn mb-15" type="submit">Đăng bài</button>
               </form>
+              </>
               :
+              <>
+<form className="mr-10" onSubmit={handleSubmitDraft}>
+            <button className="newpost__submitBtn newpost__draftBtn mb-15" type="submit">Lưu nháp</button>
+            </form>
               <form onSubmit={handleSubmitPost} >
                 <button className="newpost__submitBtn mb-15" type="submit">Đăng bài</button>
               </form>
+              </>
             }
             </div>
             

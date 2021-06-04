@@ -57,6 +57,7 @@ code {
   --box-shadow-normal: 0 10px 10px rgba(0,0,0,0.08);
   --box-shadow-hover: 0 4px 60px 0 rgba(0,0,0,0.2);
   --button-shadow-color-normal: hsla(0,0%,42.4%,0.2);
+  --color-deep-red: #A95252;
 }
 
 

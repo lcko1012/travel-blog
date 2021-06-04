@@ -9,6 +9,13 @@ export const dispatchLogin = () => {
     }
 }
 
+//TODO: LOGOUT
+export const dispatchLogout = () => {
+    return {
+        type: ACTIONS.LOGOUT
+    }
+}
+
 //TODO: GET USER INFOR
 export const fetchUser = async (token) => {
     const res = await axios.get('/whoami', {

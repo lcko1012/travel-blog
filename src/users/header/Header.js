@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import avatar from '../../asset/images/avatar.jpg'
 import Cookies from 'js-cookie'
 import axios from 'axios'
+import { dispatchLogout } from '../../redux/actions/authAction'
+
 
 function Header() {
     const dispatch = useDispatch()
@@ -31,6 +33,7 @@ function Header() {
             localStorage.removeItem('firstLogin')
             Cookies.remove('token')
             Cookies.remove('duration')
+            dispatch(dispatchLogout())
             history.push("/")
         } catch (err) {
             history.push("/")

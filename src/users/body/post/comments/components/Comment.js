@@ -15,6 +15,7 @@ const Comment = ({ comment, commentsArr,setCommentsArr }) => {
 
     useEffect(() =>{
         setCommentInputChange(comment.content)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleChangeComment = (e) => {

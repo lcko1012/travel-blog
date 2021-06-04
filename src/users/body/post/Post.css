@@ -356,6 +356,43 @@ p {
     padding: 10px;
 }
 
+.post__cmt--morecmt {
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 30px;
+    background-color: whitesmoke;
+    padding: 10px 0;
+    transition: 0.5s;
+    color: var(--color-muted);
+
+}
+
+.post__cmt--morecmt:hover {
+    background-color: rgba(199, 199, 199, 0.199);
+}
+
+
+
+.post__cmt--morecmt i {
+    font-size: 12px;
+    margin-left: 5px;
+    animation: arrow 1s linear infinite;
+}
+
+@keyframes arrow {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+/* 
+@keyframes arrow {
+    from{transform: translateY(-5px)}
+    to{transform:translateY(0px)}
+} */
+
 
 /* ================MOST POPULAR================== */
 

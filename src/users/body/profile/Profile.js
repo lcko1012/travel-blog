@@ -109,7 +109,7 @@ function Profile() {
                                 :
                                 posts.map((post, index) => {
                                     return (
-                                        <CurrentPost post={post} />
+                                        <CurrentPost post={post} key={index}/>
                                     )
                                 })
                                 }

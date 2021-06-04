@@ -8,7 +8,8 @@
 }
 
 .hieu-ung {
-    box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 3px 3px 03px 0px rgba(0, 0, 0, 0.2);
+
 }
 
 .position-relative {
@@ -49,9 +50,9 @@
 }
 
 
-.slider:hover {
+/* .slider:hover {
     box-shadow: 0 0 0px 0px rgba(0, 0, 0, 0.2);
-}
+} */
 
 .slider:hover .post-content-overlay {
     transform: translate(0, -15px);
@@ -107,7 +108,7 @@
 
 .post-card-1:hover{
     transform: translate(0, -5px);
-    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2); */
 }
 
 
@@ -437,5 +438,4 @@ span.has-dos {
 
 .post__popular:hover {
     transform: translate(0, -5px);
-    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
 }

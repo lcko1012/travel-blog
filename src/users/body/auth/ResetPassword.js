@@ -40,17 +40,20 @@ function ResetPassword() {
             }
         }catch(err){
             console.log(err)
-            err.response.status &&
-            setData({...data, err: 'Đã xảy ra lỗi', success : ''})   
-            ||
-            err.response.status === 410 &&
-            setData({...data, err: 'Quá thời gian lấy lại mật khẩu', success: ''})
-            ||
-            err.response.status === 400 && 
-            setData({...data, err: 'Mật khẩu không đủ 6 ký tự', success: ''})
-            || 
-            err.response.status === 400 &&
-            setData({...data, err: 'Không hợp lệ', success: ''})
+
+
+            if(err.response.status === 410){
+                setData({...data, err: 'Quá thời gian lấy lại mật khẩu', success: ''})
+            }
+            else if(err.response.status === 403){
+                setData({...data, err: 'Không hợp lệ', success: ''})
+            }
+            else if(err.response.status === 400){
+                setData({...data, err: 'Mật khẩu không đủ 6 kí tự', success: ''})
+            }
+            else {
+                setData({...data, err: 'Đã có lỗi xảy ra', success: ''})
+            }
             
         }
     }

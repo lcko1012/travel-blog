@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { showErrMsg, showSuccessMsg } from '../../utils/notification/Notification'
 import { isEmail, isEmpty, isLength, isMatch } from '../../utils/validation/Validation'
 import {GoogleLogin} from 'react-google-login'
-import Cookies from 'js-cookie'
 
 
 
@@ -57,8 +56,18 @@ function Register() {
                 setUser({...user, err: '', success: 'Kiểm tra email để kích hoạt tài khoản'})
             }
         }catch(err){
-            err.response.data &&
-            setUser({...user, err: err.response.data, success: ''})
+            if(err.response.status === 401){
+                setUser({...user, err: ' Email đã đăng ký nhưng chưa kích hoạt', success: ''})
+            }
+            else if(err.response.status === 409){
+                setUser({...user, err: 'Email đã tồn tại', success: ''})
+            }
+            else if(err.response.status === 400){
+                setUser({...user, err: 'Thông tin không hợp lệ', success: ''})
+            }
+            else {
+                setUser({...user, err: 'Đã có lỗi xảy ra', success: ''})
+            }
         }
     }
 
@@ -74,7 +83,15 @@ function Register() {
             setUser({...user, err: '', success: 'Mật khẩu đã được gửi tới gmail của bạn'})
             console.log(res)            
         }catch(err){
-            console.log(err)
+            if(err.response.status === 401){
+                setUser({...user, err: 'Sai email hoặc password', success: ''})
+            }
+            else if(err.response.status === 400){
+                setUser({...user, err: 'Email hoặc password không hợp lệ', success: ''})
+            }
+            else {
+                setUser({...user, err: 'Đã có lỗi xảy ra', success: ''})
+            }
         }
         
     }

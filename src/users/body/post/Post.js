@@ -32,8 +32,8 @@ function Post() {
   const [post, setPost] = useState(initialState)
   const [author, setAuthor] = useState({})
   const [loading, setLoading] = useState(false)
-  const [callback, setCallback] = useState(false)
-  const [loadCmt, setLoadCmt] = useState(false)
+  // const [callback, setCallback] = useState(false)
+  // const [loadCmt, setLoadCmt] = useState(false)
   const [isDel, setIsDel] = useState(false)
 
 
@@ -100,6 +100,7 @@ function Post() {
     //Muon bookmark
     console.log("Bookmark")
     const token = Cookies.get("token")
+    if(!token) return history.push('/login')
     var bookmarkForm = new FormData()
     bookmarkForm.append("postId", post.postId)
     const postBookmark = async () => {
@@ -201,7 +202,7 @@ function Post() {
                   <div className="post__cataArea">
                     {post.categories.map((item) => {
                       return(
-                        <Link to={{ pathname: `/category/${item.categoryId}`}}>
+                        <Link to={{ pathname: `/category/${item.categoryId}`}} key={item.categoryId}>
                         <div className="post__cata" 
                         key={item.categoryId}>{item.categoryName}</div>
                         </Link>

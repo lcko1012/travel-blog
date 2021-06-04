@@ -13,8 +13,9 @@ const Comments = ({id, setPost, post}) => {
 
     const handleChangeInput = (e) => {
         const { value } = e.target
-        setCommentsArr(value)
+        setCommentInput(value)
       }
+
     
       const handleSubmitCmt = (e) => {
         e.preventDefault()
@@ -24,27 +25,42 @@ const Comments = ({id, setPost, post}) => {
         const postCmt = async () => {
           const res = await axios.post(`/comment/post/${id}`, commentForm, {
             headers: { Authorization: `Bearer ${token}` }
-          }).then(res => {
-            const getComments = async () => {
-              const res = await axios.get(`/comment/post/${id}`)
-              setPost({ ...post, comments: res.data })
-              console.log(post)
-              console.log("get roi")
-            }
-            getComments()
+          })
+
+          if(res) {
+            setCommentsArr([...commentsArr, res.data])
           }
-          ).catch(err => console.log(err))
+          // then(res => {
+          //   const getComments = async () => {
+          //     const res = await axios.get(`/comment/post/${id}`)
+          //     setPost({ ...post, comments: res.data })
+          //     console.log(post)
+          //     console.log("get roi")
+          //   }
+          //   getComments()
+          // }
+          // ).catch(err => console.log(err))
     
         }
-        // postCmt()
+        postCmt()
         // setLoadCmt(!loadCmt)
         // setComment('')
       }
 
     useEffect(() => {
         const getComments = async () => {
+          const token = Cookies.get("token")
+          var res = ''
           try {
-            const res = await axios.get(`/comment/post/${id}`)
+            if(token){
+              res = await axios.get(`/comment/post/${id}`, {
+                headers: {Authorization: `Bearer ${token}`}
+              })
+            }
+            else {
+              res = await axios.get(`/comment/post/${id}`)
+            }
+            
             if (res) {
               console.log(res)
               setCommentsArr(res.data)
@@ -53,9 +69,10 @@ const Comments = ({id, setPost, post}) => {
             console.log(err)
           }
         }
-    
         getComments()
       }, [id])
+
+      
     return (
         <div className="comment-area">
             <div>
@@ -64,7 +81,7 @@ const Comments = ({id, setPost, post}) => {
             <hr className="comment-hr" />
             {commentsArr.map((comment) => {
                 return (
-                    <Comment key={comment.commentId} comment={comment} />
+                    <Comment key={comment.commentId} comment={comment} commentsArr={commentsArr} setCommentsArr={setCommentsArr}/>
                 )
             })}
 

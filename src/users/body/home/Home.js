@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import avatar from '../../../asset/images/avatar.jpg'
 import axios from 'axios';
 import "./home.css"
 import { Link } from 'react-router-dom';
@@ -12,11 +11,14 @@ function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   // Bai viet ở trên cùng
   const [featuredPosts, setFeaturedPosts] = useState([])
+  const [cmtPosts, setCmtPosts] = useState([])
   const [recentPosts, setRecentPosts] = useState([])
   const [loadingPage, setLoadingPage] = useState(false)
   const length = 5
   
   const [currentPage, setCurrentPage] = useState(0)
+  const [isEmpty, setIsEmpty] = useState(false)
+
 
 
   //[] => chi 1 lan khi load trang
@@ -36,6 +38,23 @@ function Home() {
     
   }, [])
 
+
+  //GET COMMENTS POST
+  useEffect(() => {
+    const getCmtPosts = async () => {
+      const res = await axios.get('/post', {
+        params: {
+          prop: "comment",
+          size: 11
+        }
+      })
+      if(res) {
+        setCmtPosts(res.data)
+      }
+    }
+    getCmtPosts()
+  })
+
   useEffect(() => {
     const getRecentPost = async () => {
       const res = await axios.get('/post', {
@@ -43,18 +62,24 @@ function Home() {
           page: currentPage
         }
       })
-      setRecentPosts(res.data)
+        setRecentPosts([...recentPosts, ...res.data])
+      if(res.data.length === 0) {
+        setIsEmpty(true)
+      }
     }
     getRecentPost()
-  }, [currentPage])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, ])
+
+
 
   // Di chuyen slide
   const nextSlide = () => {
-    setCurrentSlide(currentSlide == length - 1 ? 0 : currentSlide + 1)
+    setCurrentSlide(currentSlide === length - 1 ? 0 : currentSlide + 1)
   }
 
   const prevSlide = () => {
-    setCurrentSlide(currentSlide == 0 ? length - 1 : currentSlide - 1)
+    setCurrentSlide(currentSlide === 0 ? length - 1 : currentSlide - 1)
   }
 
   return (
@@ -116,7 +141,9 @@ function Home() {
                         <div className="d-flex post-card-content">
   
                           <h5 className="post-title mb-20 ">
-                            <a href="#">{ReactHtmlParser(post.title)}</a>
+                          <Link to={{ pathname: `/posts/${post.slug}`, state: { id: post.postId } }}>
+                            {ReactHtmlParser(post.title)}
+                          </Link>
                           </h5>
                           <div className="entry-meta meta-1 float-left font-x-small text-uppercase">
                             <span>{post.bookmarkedCount} lượt bookmark</span>
@@ -156,7 +183,7 @@ function Home() {
                 {/* ======END LOOP LIST==== */}
 
                 {/*TODO: PAGINATION*/}
-                <div className="pagination-area mb-30">
+                {/* <div className="pagination-area mb-30">
                   <nav aria-label="Page navigation example">
                     <ul className="pagination justify-content-start">
                       <li
@@ -178,7 +205,20 @@ function Home() {
                       </li>
                     </ul>
                   </nav>
-                </div>
+                </div> */}
+
+                        <div className="pagination-area mb-30">
+                            <nav aria-label="Page navigation example">
+                                <ul className="pagination justify-content-start">
+                                    <li className={`page-item" ${isEmpty ? 'disabled' : null}`}
+                                        onClick={() => setCurrentPage(currentPage + 1)}>
+                                        <a className="page-link">
+                                            <i className="fal fa-long-arrow-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
 
                 {/* ======END PAGINATION==== */}
 
@@ -187,31 +227,31 @@ function Home() {
             </div>
             <div className="col-lg-4">
               {/* TODO: NHIỀU COMMENT */}
-              <div className="mb-30">
-                <h5>Most popular</h5>
+              <div className="mb-15">
+                <h5 style={{borderBottom: '2px solid black', display:'inline-block'}}>Nhiều bình luận nhất</h5>
               </div>
-              <hr className="most-popular-hr" />
+              {/* <hr className="most-popular-hr" /> */}
 
-              {featuredPosts.map((slide, index) => {
+              {cmtPosts.map((item, index) => {
                 return (
 
                   <div className="post__popular d-flex hieu-ung" key={index}>
 
                     <div className="post__popular--content media-body" >
                       <h6 className="post-title mb-15">
-                        <Link to={{ pathname: '/posts/Bien-Da-nang-co-dep-khong', state: { id: '1' } }}>
-                          {ReactHtmlParser(slide.title)}
+                        <Link to={{ pathname: `/posts/${item.slug}`, state: { id: item.postId } }}>
+                          {ReactHtmlParser(item.title)}
                         </Link>
                       </h6>
                       <div className="entry-meta meta-1 font-x-small text-uppercase">
-                        <span>{slide.bookmarkedCount} bookmark</span>
-                        <span className="post-by has-dos">{slide.commentCount} Bình luận</span>
+                        <span>{item.bookmarkedCount} bookmark</span>
+                        <span className="post-by has-dos">{item.commentCount} Bình luận</span>
                       </div>
                     </div>
 
                     <div className="d-flex ml-15 post__popular--image">
                       <a className="color-white">
-                        <img className="border-radius-5 " src={slide.postThumbnail}></img>
+                        <img className="border-radius-5 " src={item.postThumbnail}></img>
                       </a>
                     </div>
                   </div>

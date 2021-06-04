@@ -12,7 +12,7 @@ const Category = () => {
     const [postsResult, setPostsResult] = useState([])
     //Kiem tra trang tiep theo co rong k?
     const [isEmpty, setIsEmpty] = useState(false)
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         console.log("1")
@@ -27,6 +27,7 @@ const Category = () => {
                 if (res) {
                     setPostsResult([...postsResult, ...res.data])
                     console.log(res.data.length)
+                    setIsLoading(true)
                     if (res.data.length === 0) {
                         setIsEmpty(true)
                     }
@@ -37,6 +38,7 @@ const Category = () => {
         } catch (error) {
             console.log(error)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage])
 
 
@@ -83,9 +85,9 @@ const Category = () => {
                                 <ul className="pagination justify-content-start">
                                     <li className={`page-item" ${isEmpty ? 'disabled' : null}`}
                                         onClick={() => setCurrentPage(currentPage + 1)}>
-                                        <a className="page-link">
+                                        <div className="page-link">
                                             <i className="fal fa-long-arrow-right"></i>
-                                        </a>
+                                        </div>
                                     </li>
                                 </ul>
                             </nav>

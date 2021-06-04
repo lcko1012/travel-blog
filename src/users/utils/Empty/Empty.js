@@ -1,10 +1,10 @@
 import React from 'react'
+import emptyImg from './Empty.png'
 
 const Empty = () => {
     return (
-        <div style={{display: 'flex'}} className="mb-30">
-            <img
-            src="https://cdn.dribbble.com/users/1058271/screenshots/3308780/sadbox_2x.png" />
+        <div  className="background__404" >
+           <div className="background__404--image" style={{backgroundImage: `url(${emptyImg})`}}></div>
         </div>
     )
 }

@@ -37,7 +37,7 @@ const Bookmarks = () => {
         }
 
         getListBookmarks()
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage])
     console.log(listBookmarks)
     return (
@@ -60,9 +60,9 @@ const Bookmarks = () => {
                                 <ul className="pagination justify-content-start">
                                     <li className={`page-item" ${isEmpty ? 'disabled' : null}`}
                                         onClick={() => setCurrentPage(currentPage + 1)}>
-                                        <a className="page-link">
+                                        <div className="page-link">
                                             <i className="fal fa-long-arrow-right"></i>
-                                        </a>
+                                        </div>
                                     </li>
                                 </ul>
                             </nav>

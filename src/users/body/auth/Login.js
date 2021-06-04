@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useHistory, Redirect } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import {dispatchLogin} from '../../../redux/actions/authAction'
-import {useDispatch, useSelector} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import {showErrMsg, showSuccessMsg} from '../../utils/notification/Notification'
-import { isEmail, isEmpty, isLength, isMatch } from '../../utils/validation/Validation'
+import { isEmail, isEmpty, isLength } from '../../utils/validation/Validation'
 import Cookies from 'js-cookie'
 import {GoogleLogin} from 'react-google-login'
 
@@ -17,7 +17,7 @@ const initialState = {
 
 
 function Login() {
-    const auth = useSelector(state => state.auth)
+    // const auth = useSelector(state => state.auth)
     const [user, setUser] = useState(initialState)
     const dispatch = useDispatch()
     const history = useHistory()
@@ -64,14 +64,16 @@ function Login() {
             }
         }catch(err){
             console.log(err.response.status)
-            err.response.status && 
-            setUser({...user, err: 'Đã có lỗi xảy ra', success: ''})
-            ||
-            err.response.status === 401 &&
-            setUser({...user, err: 'Sai email hoặc password', success: ''})
-            ||
-            err.response.status === 400 && 
-            setUser({...user, err: 'Email hoặc password không hợp lệ', success: ''})
+
+            if(err.response.status === 401){
+                setUser({...user, err: 'Sai email hoặc password', success: ''})
+            }
+            else if(err.response.status === 400){
+                setUser({...user, err: 'Email hoặc password không hợp lệ', success: ''})
+            }
+            else {
+                setUser({...user, err: 'Đã có lỗi xảy ra', success: ''})
+            }
             
         }
     }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link,  } from 'react-router-dom'
 import ReactHtmlParser from 'react-html-parser'
 import "./currentpost.css"
 

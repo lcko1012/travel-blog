@@ -1,5 +1,7 @@
 import React from 'react'
-import {applyMiddleware, createStore, compose} from 'redux'
+//applyMiddleware,
+//compose
+import { createStore, } from 'redux'
 import rootReducer from './reducers/'
 import {Provider} from 'react-redux'
 

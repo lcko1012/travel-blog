@@ -1,3 +1,5 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600&display=swap'); */
+
 * {
   margin: 0;
   padding: 0;
@@ -30,8 +32,12 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+    
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* font-family: 'Nunito', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; */
 }
 
 html {
@@ -223,6 +229,10 @@ a:hover{
 
 .ml-15 {
   margin-left: 15px;
+}
+
+.ml-10 {
+  margin-left: 10px;
 }
 
 .pt-15 {

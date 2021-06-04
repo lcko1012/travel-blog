@@ -4,7 +4,7 @@ import { EditorState, ContentState, convertFromHTML } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { stateToHTML } from "draft-js-export-html";
-import { stateFromHTML } from 'draft-js-import-html';
+// import { stateFromHTML } from 'draft-js-import-html';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { showErrMsg } from '../../utils/notification/Notification';

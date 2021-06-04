@@ -34,11 +34,16 @@ function ForgotPassword() {
             }
         } catch (err) {
             console.log(err)
-            err.response.status === 400 &&
-                setData({ ...data, err: 'Email không đúng định dạng', success: '' })
-                ||
-                err.response.status === 404 &&
+            if (err.response.status === 404) {
                 setData({ ...data, err: 'Email không hợp lệ', success: '' })
+            }
+
+            else if (err.response.status === 400) {
+                setData({ ...data, err: 'Email không đúng định dạng', success: '' })
+            }
+            else {
+                setData({ ...data, err: 'Đã có lỗi xảy ra', success: '' })
+            }
         }
     }
 

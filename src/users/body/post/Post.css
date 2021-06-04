@@ -266,6 +266,8 @@ p {
 
 .comment-name {
     font-weight: 500;
+    margin: 0;
+    color: var(--color-primary);
 }
 
 .comment-hr {
@@ -275,11 +277,72 @@ p {
 
 .comment-content {
     width: 100%;
+    font-size: 16px;
 }
 
 .comment-like {
-    top: 0px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
 }
+
+.comment-likebtn {
+    cursor: pointer;
+    
+}
+.comment-likebtn:hover {
+    color: var(--color-primary);
+}
+
+.comment-like i {
+    font-size: 12px;
+}
+
+.comment-choose {
+    position: absolute;
+    background-color: white;
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.2);
+}
+
+.comment-choose--option {
+    color: var(--color-muted);
+    align-items: center;
+    padding: 5px;
+    border-radius: 16px;
+
+}
+
+.comment-choose--option:hover {
+    background-color: rgba(199, 199, 199, 0.199);
+}
+
+.comment-form--edit{
+    align-items: center;
+    padding: 5px 0px;
+    
+}
+.comment-form--edit input{
+    border-radius: 5px;
+    padding-left: 5px;
+    outline: none;
+    border: 1px solid var(--color-muted);
+}
+.comment-form--edit p {
+    margin-left: 5px;
+    cursor: pointer;
+    text-decoration: underline;
+    color: var(--color-muted);
+}
+
+
+.comment-form--edit p:hover {
+    color: var(--color-primary);
+}
+
+
+
 
 .comment-input {
     box-sizing: border-box;

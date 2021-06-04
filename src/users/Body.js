@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import {useSelector} from 'react-redux'
 
 
@@ -17,7 +17,7 @@ import EditProfile from './body/profile/EditProfile'
 import Bookmarks from './body/bookmark/Bookmarks'
 import SearchPage from './body/search/SearchPage'
 import Category from './body/category/Category'
-import EditPost from './body/newPosts/EditPost'
+// import EditPost from './body/newPosts/EditPost'
 
 function Body() {
     const auth = useSelector(state => state.auth)
@@ -45,6 +45,7 @@ function Body() {
                 <Route path="/profile/:id" component={Profile} exact />
                 <Route path="/myprofile" component={isLogged ? MyProfile : Home} exact />
                 <Route path="/myprofile/edit" component={isLogged ? EditProfile : Login} exact />
+                <Route  component={NotFound} exact />
                 
 
 

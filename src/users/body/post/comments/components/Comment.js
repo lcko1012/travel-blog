@@ -72,6 +72,24 @@ const Comment = ({ comment, commentsArr,setCommentsArr }) => {
             console.log(error)
         }
     }
+
+    const handleDeleteCmt = async () => {
+        const token = Cookies.get('token')
+        try {
+            const res = await axios.delete(`/comment/${comment.commentId}`, {
+                headers: {Authorization: `Bearer ${token}`}
+            })
+            if(res) {
+                console.log(res)
+                setCommentsArr(
+                    commentsArr.filter(item => 
+                      item.commentId !== comment.commentId)
+                )
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
     
 
     return (
@@ -88,7 +106,7 @@ const Comment = ({ comment, commentsArr,setCommentsArr }) => {
                         <i className="fal fa-chevron-down  ml-10" style={{ fontSize: '12px' , cursor: 'pointer'}} onClick={()=>setShowChoose(!showChoose)}>
                             
                             <div className="comment-choose" style={showChoose ? {display: 'block'} : {display: 'none'}}>
-                                <div className="d-flex comment-choose--option">
+                                <div className="d-flex comment-choose--option" onClick={handleDeleteCmt}>
                                     <i className="fal fa-eraser mr-10 "></i>
                                     <p>Xóa bình luận</p>
                                 </div>

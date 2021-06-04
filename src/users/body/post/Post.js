@@ -86,6 +86,7 @@ function Post() {
       getPost()
       console.log("getpost")
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post.slug])
 
   useEffect(() => {
@@ -169,7 +170,7 @@ function Post() {
     return(
       <div className="post__delAlert">
         <h5>Lưu ý</h5>
-        <p>Bài viết chỉ bị chuyển thành bản nháp, nếu bạn muốn xóa bài viết hãy xóa bản nháp này</p>
+        <p>Thao tác này sẽ xóa hết dữ liệu bài viết của bạn</p>
         <div>
            <button className="post__delAlert--button post__delAlert--cancel"
            onClick={() => handleClickDel(false)}

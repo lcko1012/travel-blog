@@ -6,7 +6,7 @@ import Header from './users/header/Header'
 import Body from './users/Body';
 import Footer from './users/footer/Footer';
 import { useDispatch, useSelector } from 'react-redux';
-import { dispatchGetUser, dispatchLogin, fetchUser } from './redux/actions/authAction'
+import { dispatchGetUser, dispatchLogin, dispatchLogout, fetchUser } from './redux/actions/authAction'
 import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode'
 
@@ -71,6 +71,7 @@ function App() {
         Cookies.remove("token")
         Cookies.remove("duration")
         localStorage.removeItem("firstLogin")
+        dispatch(dispatchLogout())
       }
     }
 

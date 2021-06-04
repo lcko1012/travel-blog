@@ -29,6 +29,7 @@ const Comments = ({ id, setPost, post }) => {
       })
 
       if (res) {
+        
         setCommentsArr([res.data, ...commentsArr])
         setCommentInput('')
       }
@@ -67,7 +68,9 @@ const Comments = ({ id, setPost, post }) => {
         }
 
         if (res) {
-          console.log(res)
+          if(res.data.length === 0 || res.data.length < 10) {
+            setIsEmpty(true)
+          }
           setCommentsArr([...commentsArr, ...res.data])
         }
       } catch (err) {
@@ -101,7 +104,7 @@ const Comments = ({ id, setPost, post }) => {
         )
       })}
 
-      <div className="post__cmt--morecmt" onClick={() => setCurrentPage(currentPage + 1)}>
+      <div className="post__cmt--morecmt" style={isEmpty ? {display: 'none'} : null} onClick={() => setCurrentPage(currentPage + 1)}>
         Xem thêm
         <i className="fal fa-chevron-down" />
       </div>

@@ -63,7 +63,7 @@ function Home() {
         }
       })
         setRecentPosts([...recentPosts, ...res.data])
-      if(res.data.length === 0) {
+      if(res.data.length === 0 || res.data.length < 10) {
         setIsEmpty(true)
       }
     }

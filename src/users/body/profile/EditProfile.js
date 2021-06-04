@@ -33,6 +33,7 @@ const EditProfile = () => {
             instagramLink: userInfor.instagramLink ? userInfor.instagramLink : '',
             fbLink: userInfor.fbLink ? userInfor.fbLink : ''
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userInfor])
 
     const handleChangeInput = (e) => {

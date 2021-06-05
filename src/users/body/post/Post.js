@@ -39,27 +39,23 @@ function Post() {
   useEffect(() => {
     const getPost = async () => {
       try {
-        console.log(post.slug)
         const token = Cookies.get('token')
         var res = null
         if (token) {
-          console.log(token)
           res = await axios.get(`/post`, {
             params: {
-              slug: post.slug
+              slug: params.slug
             },
             headers: { Authorization: `Bearer ${token}` }
           })
-          console.log(res)
         } else {
           res = await axios.get(`/post`, {
             params: {
-              slug: post.slug
+              slug: params.slug
             },
           })
         }
         var responseContent = res.data
-        console.log(responseContent)
         setPost({
           ...post,
           postId: responseContent.postId,
@@ -80,12 +76,11 @@ function Post() {
         console.log(err)
       }
     }
-    if (post.slug) {
+    if (params.slug) {
       getPost()
-      console.log("getpost")
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [post.slug])
+  }, [params.slug])
 
   useEffect(() => {
     return () => {

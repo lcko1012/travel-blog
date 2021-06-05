@@ -179,3 +179,25 @@ header {
 .menu__left i{
     margin-right: 5px;
 }
+
+.menu__notify--dropdown {
+    position: absolute;
+    background-color: #fff;
+    right: 1px;
+    min-width: 350px;
+    box-shadow: 0px 8px 16px 0px rgb(0 0 0 / 20%);
+    z-index: 98;
+    /* color: rgba(0,0,0,0.75); */
+    color: var(--color-muted);
+    border-radius: 12px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.menu__notify--dropdown .fa-circle {
+    margin: auto 0;
+    margin-left: 15px;
+    font-size: 10px;
+    color: var(--color-primary);
+}

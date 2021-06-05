@@ -30,16 +30,19 @@ const EditProfile = () => {
             name: userInfor.name,
             avatarLink: userInfor.avatarLink,
             about: userInfor.about ? userInfor.about : '',
-            instagramLink: userInfor.instagramLink ? userInfor.instagramLink : '',
+            instagramLink: userInfor.instagramLink ? userInfor.instagramLink: '',
             fbLink: userInfor.fbLink ? userInfor.fbLink : ''
         })
+       
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userInfor])
+    console.log(ReactHtmlParser( newInfor.avatarLink))
+    console.log(newInfor.fbLink)
 
     const handleChangeInput = (e) => {
         const { name, value } = e.target
         setNewInfor({ ...newInfor, [name]: value })
-        console.log(newAvatar)
     }
 
     const handleChangeAvatar = async (e) => {
@@ -126,7 +129,7 @@ const EditProfile = () => {
                                 <div className="editProfile__field" >
                                     <p>Ảnh đại diện</p>
                                     <div className="editProfile__avatar">
-                                        <img src={newAvatar ? newAvatar : userInfor.avatarLink} />
+                                        <img src={newAvatar ? newAvatar : ReactHtmlParser(userInfor.avatarLink)} />
                                         <span>
                                             <i className="fas fa-camera"></i>
                                             <input type="file" name="file" id="file_up" onChange={(e) => handleChangeAvatar(e)} />
@@ -150,7 +153,7 @@ const EditProfile = () => {
                                     <div>
                                         <i className="fab fa-facebook-f "></i>
                                         <input type="text"
-                                            value={newInfor.fbLink}
+                                            value={ReactHtmlParser(newInfor.fbLink)}
                                             name="fbLink"
                                             onChange={handleChangeInput}
                                         ></input>
@@ -162,7 +165,7 @@ const EditProfile = () => {
                                     <div>
                                         <i className="fab fa-instagram"></i>
                                         <input type="text"
-                                            value={newInfor.instagramLink}
+                                            value={ReactHtmlParser(newInfor.instagramLink)}
                                             name="instagramLink"
                                             onChange={handleChangeInput}
                                         ></input>

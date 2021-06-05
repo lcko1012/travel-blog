@@ -181,6 +181,7 @@ p {
     margin-right: 15px;
     background-size: cover;
     float: left;
+    background-position: center;
 }
 
 .inline-item {
@@ -238,6 +239,7 @@ p {
     margin-right: 15px;
     background-size: cover;
     float: left;
+    background-position: center;
 }
 
 .name-write-by {

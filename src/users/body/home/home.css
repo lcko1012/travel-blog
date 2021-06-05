@@ -316,6 +316,7 @@ span.has-dos {
     margin-right: 30px;
     background-size: cover;
     float: left;
+    background-position: center;
 }
 
 .post-count {

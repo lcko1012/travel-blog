@@ -214,7 +214,7 @@ function Post() {
                   <div className="write-by">
                     <div className="d-flex">
                       <div className="avatar-write-by inline-item"
-                        style={{ backgroundImage: `url(${author.avatarLink})` }}
+                        style={{ backgroundImage: `url(${ReactHtmlParser(author.avatarLink)})` }}
                       ></div>
                       <div style={{ margin: 'auto 0' }}>
                         <div className="name-write-by">

@@ -6,6 +6,7 @@ import Cookies from 'js-cookie'
 import axios from 'axios'
 import { dispatchLogout } from '../../redux/actions/authAction'
 import ReactHtmlParser from 'react-html-parser'
+import Notify from './Notify'
 
 
 
@@ -16,6 +17,7 @@ function Header() {
     const history = useHistory()
 
     const [keyword, setKeyword] = useState('')
+
 
     const handleChangeKeyword = (e) => {
         const { value } = e.target
@@ -41,6 +43,9 @@ function Header() {
             history.push("/")
         }
     }
+
+    //TODO: SHOW BẢNG THÔNG BÁO
+
     const loginMenu = () => {
         return (
             <div className="menu__right">
@@ -58,9 +63,10 @@ function Header() {
                                 BookMark
                         </Link>
                     </li>
-                    <li className="menu__right--notify">
+                    {/* <li className="menu__right--notify">
                         <i className="far fa-bell"></i>
-                    </li>
+                    </li> */}
+                    <Notify/>
                 </ul>
 
                 <div className="menu__right--avatar">

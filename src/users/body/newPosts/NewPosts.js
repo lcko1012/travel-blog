@@ -91,10 +91,13 @@ console.log(data)
 
   const handleChangeCate = e => {
     // var id = e.target.selectedIndex
-    var id = e.target.value
-    var cate = []
-    cate.push(parseInt(id))
-    setData({ ...data, categories: cate })
+    if(e.target.value !== 'nothing'){
+      var id = e.target.value
+      var cate = []
+      cate.push(parseInt(id))
+      setData({ ...data, categories: cate })
+    }
+    
   }
 
   const handleChangeAvatar = async (e) => {
@@ -171,7 +174,7 @@ console.log(data)
       return setData({ ...data, err: 'Hãy thêm ảnh bìa bài viết', success: '' })
     }
 
-    if (data.categories.length === 0) {
+    if (data.categories.length === 0 || data.categories.toString() === NaN ) {
       return setData({ ...data, err: 'Hãy chọn thể loại bài viết', success: '' })
     }
 
@@ -203,9 +206,24 @@ console.log(data)
     }
     postPost()
   }
+  console.log(data.categories)
 
   const handleEditPost = (e) => {
     e.preventDefault()
+    if (!data.title) {
+      return setData({ ...data, err: 'Hãy nhập tiêu đề bài viết', success: '' })
+    }
+    if (!data.postThumbnail) {
+      return setData({ ...data, err: 'Hãy thêm ảnh bìa bài viết', success: '' })
+    }
+
+    if (data.categories.length === 0) {
+      return setData({ ...data, err: 'Hãy chọn thể loại bài viết', success: '' })
+    }
+
+    if (!data.content.getCurrentContent().getPlainText().trim()) {
+      return setData({ ...data, err: 'Hãy nhập nội dung bài viết', success: '' })
+    }
     const editPost = async () => {
       const token = Cookies.get("token")
       var formPost = new FormData()
@@ -254,6 +272,7 @@ console.log(data)
       const token = Cookies.get('token')
 
     const postDraft = async () => {
+
       try {
         const res = await axios.post('/draft', formDraft, {
           headers: {
@@ -340,18 +359,19 @@ console.log(data)
               }}
 
             />
-            <p>Bài viết của bạn thuộc thể loại: (Chỉ được chon 5 thể loại) </p>
-            <div className="mt-15">
+            <p className="mt-10">Bài viết của bạn thuộc thể loại: </p>
+            {/* <div className="mt-15">
               {selectedCate.map((item, index) => {
                 return (
                   <div style={{ display: 'inline-block' }} className="currentPost__cata" key={index}>{item}</div>
                 )
               })}
-            </div>
+            </div> */}
 
-            <select className="mt-15 mb-15" onChange={handleChangeCate} id="categories" value={data.categories[0]}>
+            <select className="mt-10 mb-15 newpost__option" onChange={handleChangeCate} id="categories" value={data.categories[0]} defaultValue="Chọn thể loại">
+              <option value="nothing">Chọn thể loại</option>
               {
-                category.map((item, index) => {
+                category.map((item) => {
                   return (
                     <option key={item.categoryId} id={item.categoryId} value={item.categoryId}>{item.categoryName}</option>
                   )

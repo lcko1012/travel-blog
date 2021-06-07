@@ -7,6 +7,8 @@ import axios from 'axios'
 import { dispatchLogout } from '../../redux/actions/authAction'
 import ReactHtmlParser from 'react-html-parser'
 import Notify from './Notify'
+import CookiesService from '../../services/CookiesService'
+
 
 
 
@@ -15,6 +17,7 @@ function Header() {
     const auth = useSelector(state => state.auth)
     const userInfor = auth.user
     const history = useHistory()
+    const cookiesService = CookiesService.getService()
 
     const [keyword, setKeyword] = useState('')
 
@@ -34,9 +37,7 @@ function Header() {
 
     const handleLogout = () => {
         try {
-            localStorage.removeItem('firstLogin')
-            Cookies.remove('token')
-            Cookies.remove('duration')
+            cookiesService.clearToken()
             dispatch(dispatchLogout())
             history.push("/")
         } catch (err) {

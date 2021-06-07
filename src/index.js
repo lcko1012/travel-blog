@@ -4,6 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import DataProvider from './redux/store'
+import  './services/AxiosInterceptors'
+
+
 
 ReactDOM.render(
   <React.StrictMode>

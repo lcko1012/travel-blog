@@ -7,6 +7,9 @@ import {showErrMsg, showSuccessMsg} from '../../utils/notification/Notification'
 import { isEmail, isEmpty, isLength } from '../../utils/validation/Validation'
 import Cookies from 'js-cookie'
 import {GoogleLogin} from 'react-google-login'
+import CookiesService from '../../../services/CookiesService'
+
+
 
 const initialState = {
     email: '',
@@ -22,6 +25,7 @@ function Login() {
     const dispatch = useDispatch()
     const history = useHistory()
     const {email, password, err, success} = user
+    const cookiesService = CookiesService.getService()
 
     const handleChangeInput = e => {
         const {name, value} = e.target
@@ -49,21 +53,17 @@ function Login() {
             loginForm.append('password', password)
 
         try {
+
             const res = await axios.post('/auth/login' , loginForm)
-            // const res = await axios.post('localhost:5000/login',{email: "loveya227@gmail.com", password: "12345678"}, {withCredentials: true})
             if(res){
                 setUser({...user, err:'', success: res.data.msg})
-                console.log("token", res)
-                localStorage.setItem('firstLogin', true)
+                
                 //Da Dang Nhap
                 dispatch(dispatchLogin())
-                Cookies.set('token', res.data.token)
-                Cookies.set('duration', res.data.duration)
-
+                cookiesService.setToken(res.data.token)
                 history.push("/")
             }
         }catch(err){
-            console.log(err.response.status)
 
             if(err.response.status === 401){
                 setUser({...user, err: 'Sai email hoặc password', success: ''})
@@ -87,13 +87,14 @@ function Login() {
             loginForm.append('google_token', google_token)
     
             const res = await axios.post('/auth/google', loginForm)
-            setUser({...user, err: '', success: 'Đăng nhập thành công'})
-            console.log(res)
-            dispatch(dispatchLogin())
-            localStorage.setItem('firstLogin', true)
-            Cookies.set('token', res.data.token)
-            Cookies.set('duration', res.data.duration)
-            history.push('/')
+            if(res){
+                setUser({...user, err: '', success: 'Đăng nhập thành công'})
+                dispatch(dispatchLogin())
+                cookiesService.setToken(res.data.token)
+                
+                history.push('/')
+            }
+            
         }catch(err){
             console.log(err)
         }

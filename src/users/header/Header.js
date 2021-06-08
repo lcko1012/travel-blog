@@ -25,13 +25,17 @@ function Header() {
     const handleChangeKeyword = (e) => {
         const { value } = e.target
         setKeyword(value)
-        console.log(keyword)
     }
 
     const handleFindSubmit = (e) => {
         e.preventDefault();
-        console.log("sumit")
-        window.location.href = `/search?keyword=${keyword}`
+        // var _keyword = keyword
+        // console.log(_keyword)
+        history.push(`/search?keyword=${keyword}`)
+        console.log("submit")
+
+        setKeyword("")
+
     }
 
 
@@ -108,6 +112,7 @@ function Header() {
                             <i className="fal fa-search"></i>
                             <input
                                 onChange={handleChangeKeyword}
+                                value={keyword}
                                 type="text"
                                 placeholder="Tìm kiếm theo tiêu đề bài viết hoặc nội dung" />
                         </form>

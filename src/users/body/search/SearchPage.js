@@ -19,8 +19,31 @@ const SearchPage = () => {
 
 
     useEffect(() => {
+        const findPost = async () => {
+            setCurrentPage(0)
+            try {
+                const res = await axios.get(`/post`, {
+                    params: {
+                        keyword: keyword
+                    }
+                })
+                if(res) {
+                    setPostsResult(res.data)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        if(keyword){
+            findPost()
+        }
+    }, [keyword])
+
+
+    useEffect(() => {
+
         try {
-            const findPost = async () => {
+            const nextPost = async () => {
                 const res = await axios.get(`/post`, {
                     params: {
                         keyword: keyword,
@@ -37,7 +60,7 @@ const SearchPage = () => {
                     setIsLoading(false)
                 }
             }
-            findPost()
+            nextPost()
         } catch (error) {
             console.log(error)
         }
@@ -49,7 +72,7 @@ const SearchPage = () => {
                 {!isLoading ?
                     <>
                         <div className="font-small text-uppercase pb-15">
-                            <h5 style={{ fontSize: '14px' }}>Kết quả tìm kiếm:</h5>
+                            <h5 style={{ fontSize: '14px' }}>Kết quả tìm kiếm của: {keyword}</h5>
                         </div>
                         {postsResult.length === 0 ? <Empty /> :
                             postsResult.map((post, index) => {

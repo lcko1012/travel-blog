@@ -8,9 +8,7 @@ import { dispatchLogout } from '../../redux/actions/authAction'
 import ReactHtmlParser from 'react-html-parser'
 import Notify from './Notify'
 import CookiesService from '../../services/CookiesService'
-
-
-
+import useSocketDataObject from '../../real-time/useSocketDataObject'
 
 function Header() {
     const dispatch = useDispatch()
@@ -18,7 +16,7 @@ function Header() {
     const userInfor = auth.user
     const history = useHistory()
     const cookiesService = CookiesService.getService()
-
+    const {Unsubscribe_notify} = useSocketDataObject()
     const [keyword, setKeyword] = useState('')
 
 
@@ -43,6 +41,7 @@ function Header() {
         try {
             cookiesService.clearToken()
             dispatch(dispatchLogout())
+            Unsubscribe_notify()
             history.push("/")
         } catch (err) {
             history.push("/")

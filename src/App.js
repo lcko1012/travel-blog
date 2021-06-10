@@ -5,32 +5,48 @@ import Header from './users/header/Header'
 import Body from './users/Body';
 import Footer from './users/footer/Footer';
 import { useDispatch, useSelector } from 'react-redux';
-import { dispatchGetUser, dispatchLogin, dispatchLogout, fetchUser } from './redux/actions/authAction'
-// import useSocketDataObject from './real-time/useSocketDataObject'
+import { dispatchGetUser, dispatchLogin, fetchUser } from './redux/actions/authAction'
+import useSocketDataObject from './real-time/useSocketDataObject'
 import CookiesService from './services/CookiesService'
 
 function App() {
 
   const dispatch = useDispatch()
   const auth = useSelector(state => state.auth)
-  // const { connect } = useSocketDataObject()
+  const realtime = useSelector(state => state.realtime)
+  // /
+  const { ConnectSocket, Subscribe_notify} = useSocketDataObject()
+  const {user} = auth
   const cookiesService = CookiesService.getService()
 
   useEffect(() => {
     const token = cookiesService.getToken()
-
     if (token) {
-      console.log("check first login")
       dispatch(dispatchLogin())
       fetchUser(token).then(res => {
         dispatch(dispatchGetUser(res))
       })
     }
-
+    
   }, [auth.isLogged, dispatch])
+
+  useEffect(() => {
+    ConnectSocket()
+  }, [])
+
+  useEffect(() => {
+    const token = cookiesService.getToken()
+    if(token && realtime.ws !== null && realtime.isSuccess === true) {
+      // myVar = setTimeout(() => Subscribe_notify(user.email), 10000)
+      Subscribe_notify(user.email)
+    }
+  }, [realtime.isSuccess])
+
+
 
 
   return (
+    <>   
     <Router>
       <div className="App">
         <Header />
@@ -38,7 +54,7 @@ function App() {
         <Footer />
       </div>
     </Router>
-
+</>
   );
 }
 

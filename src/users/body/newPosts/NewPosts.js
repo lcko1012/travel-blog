@@ -42,14 +42,10 @@ function NewPosts() {
 
   useEffect(() => {
     if (params.slug) {
-      console.log(params.slug)
       const getPost = async () => {
         try {
-          const token = Cookies.get('token')
 
-          const res = await axios.get(`/post/${params.slug}/edit`, {
-            headers: { Authorization: `Bearer ${token}` }
-          })
+          const res = await axios.get(`/post/${params.slug}/edit`)
 
           if (res) {
             var _thumbnail = ReactHtmlParser(res.data.postThumbnail)[0]
@@ -78,7 +74,6 @@ function NewPosts() {
   }, [params.slug])
 
 
-console.log(data)
 
   const handleChange = (e) => {
     const target = e.target
@@ -103,7 +98,6 @@ console.log(data)
   const handleChangeAvatar = async (e) => {
     e.preventDefault()
     try {
-      const token = Cookies.get('token')
       const file = e.target.files[0]
       if (!file) {
         return
@@ -118,12 +112,9 @@ console.log(data)
       var formImage = new FormData()
       formImage.append('upload', file)
 
-      const res = await axios.post('/upload', formImage, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      const res = await axios.post('/upload', formImage)
 
       if (res) {
-        console.log(res)
         setData({ ...data, postThumbnail: res.data.url })
       }
     } catch (error) {
@@ -149,7 +140,6 @@ console.log(data)
         xhr.send(data);
         xhr.addEventListener('load', () => {
           const response = JSON.parse(xhr.responseText);
-          console.log(response.url)
           resolve({
             data: {
               link: response.url
@@ -174,7 +164,7 @@ console.log(data)
       return setData({ ...data, err: 'Hãy thêm ảnh bìa bài viết', success: '' })
     }
 
-    if (data.categories.length === 0 || data.categories.toString() === NaN ) {
+    if (data.categories.length === 0) {
       return setData({ ...data, err: 'Hãy chọn thể loại bài viết', success: '' })
     }
 
@@ -187,15 +177,10 @@ console.log(data)
     formPost.append("content", stateToHTML(data.content.getCurrentContent()))
     formPost.append("postThumbnail", data.postThumbnail)
     formPost.append("categories", data.categories)
-    const token = Cookies.get('token')
 
     const postPost = async () => {
       try {
-        const res = await axios.post('/post', formPost, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
+        const res = await axios.post('/post', formPost)
         if (res) {
           history.push(`/posts/${res.data.slug}`)
         }
@@ -206,7 +191,6 @@ console.log(data)
     }
     postPost()
   }
-  console.log(data.categories)
 
   const handleEditPost = (e) => {
     e.preventDefault()
@@ -225,16 +209,13 @@ console.log(data)
       return setData({ ...data, err: 'Hãy nhập nội dung bài viết', success: '' })
     }
     const editPost = async () => {
-      const token = Cookies.get("token")
       var formPost = new FormData()
       formPost.append("title", data.title)
       formPost.append("content", stateToHTML(data.content.getCurrentContent()))
       formPost.append("postThumbnail", data.postThumbnail)
       formPost.append("categories", data.categories)
       try {
-        const res = await axios.put(`/post/${post.postId}`, formPost, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        const res = await axios.put(`/post/${post.postId}`, formPost)
         if(res) {
           // window.location.href = `/posts/${params.slug}`
           history.push(`/posts/${res.data.slug}`)
@@ -269,16 +250,11 @@ console.log(data)
       formDraft.append("content", stateToHTML(data.content.getCurrentContent()))
       formDraft.append("postThumbnail", data.postThumbnail)
       formDraft.append("categories", data.categories)
-      const token = Cookies.get('token')
 
     const postDraft = async () => {
 
       try {
-        const res = await axios.post('/draft', formDraft, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
+        const res = await axios.post('/draft', formDraft)
         if (res) {
           history.push('/myprofile')
           
@@ -297,16 +273,13 @@ console.log(data)
   //Chuyen bai viet thanh ban nhap hoac sua ban nhap
   const handleEditDraft = async (e) => {
     e.preventDefault()
-    const token = Cookies.get("token")
       var formDraft = new FormData()
       formDraft.append("title", data.title)
       formDraft.append("content", stateToHTML(data.content.getCurrentContent()))
       formDraft.append("postThumbnail", data.postThumbnail)
       formDraft.append("categories", data.categories)
       try {
-        const res = await axios.put(`/draft/${post.postId}`, formDraft, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        const res = await axios.put(`/draft/${post.postId}`, formDraft)
         if(res) {
           history.push('/myprofile')
         }

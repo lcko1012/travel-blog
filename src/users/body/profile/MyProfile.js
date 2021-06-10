@@ -41,13 +41,12 @@ const MyProfile = () => {
           }
         }
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     }
     if (userInfor.accountId) {
       getPosts()
     }
-    console.log(posts)
   }, [userInfor.accountId, currentPagePosts])
 
   //GET DRAFTS
@@ -57,24 +56,21 @@ const MyProfile = () => {
   }, [userInfor.accountId, callback, currentPageDrafts])
 
   const getDrafts = async () => {
-    console.log("load")
     try {
       const token = Cookies.get("token")
       const res = await axios.get('/user/drafts', {
         params: {
           page: currentPageDrafts
-        },
-        headers: { Authorization: `Bearer ${token}` }
+        }
       })
       if (res) {
-        console.log(res)
         setDrafts([...drafts, ...res.data])
         if (res.data.length === 0 || res.data.length < 10) {
           setIsEmpty(true)
         }
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -87,11 +83,7 @@ const MyProfile = () => {
   const handleDelDraft = async (postId) => {
     const token = Cookies.get("token")
     try {
-      const res = await axios.delete(`/post/${postId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+      const res = await axios.delete(`/post/${postId}`)
 
       if (res) {
         console.log(res)

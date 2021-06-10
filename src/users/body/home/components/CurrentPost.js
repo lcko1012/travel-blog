@@ -3,11 +3,11 @@ import { Link,  } from 'react-router-dom'
 import ReactHtmlParser from 'react-html-parser'
 import "./currentpost.css"
 
-function CurrentPost({ post }) {
+function CurrentPost({ post}) {
     return (
-        <div className="transition-normal hover-up-2">
+        <div className="transition-normal hover-up-2" key={post.postId}>
             <div className="row-1 mb-40 list-style-1">
-                <div className="col-md-4">
+            <div className="col-md-4">
                     <div className="post-thumb position-relative border-radius-5">
                         <div className="img-hover-slide border-radius-5 position-relative"
                             style={{ backgroundImage: `url(${ReactHtmlParser(post.postThumbnail)})` }}
@@ -26,15 +26,13 @@ function CurrentPost({ post }) {
                         </h5>
                         <div className="currentPost__cataArea mb-10">
                             {post.categories.map((item) => {
+                                
                                 return(
-                                    <Link to={{ pathname: `/category/${item.categoryId}`}}>
+                                    <Link to={{ pathname: `/category/${item.categoryId}`}} key={item.categoryId}>
                                         <div className="currentPost__cata" key={item.categoryId}>{item.categoryName}</div>
                                     </Link>
                                 )
                             })}
-                            {/* <div className="currentPost__cata">Du lịch</div>
-                            <div className="currentPost__cata">Ăn chơi</div>
-                            <div className="currentPost__cata">Sài gòn</div> */}
                         </div>
                         <div className="entry-meta meta-1 float-left font-x-small text-uppercase">
                             <span className="post-on">{post.bookmarkedCount} bookmark</span>

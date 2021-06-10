@@ -43,13 +43,11 @@ function Body() {
                 <Route path='/category/:id' component={Category} exact />
             
                 <Route path="/profile/:id" component={Profile} exact />
-                <Route path="/myprofile" component={isLogged ? MyProfile : Home} exact />
+                <Route path="/myprofile" component={isLogged ? MyProfile : Login} exact />
                 <Route path="/myprofile/edit" component={isLogged ? EditProfile : Login} exact />
-                <Route  component={NotFound} exact />
-                
-
-
+                <Route component={NotFound} exact />
             </Switch>
+
         </section>
     )
 }

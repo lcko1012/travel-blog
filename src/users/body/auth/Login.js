@@ -8,6 +8,7 @@ import { isEmail, isEmpty, isLength } from '../../utils/validation/Validation'
 import Cookies from 'js-cookie'
 import {GoogleLogin} from 'react-google-login'
 import CookiesService from '../../../services/CookiesService'
+import useSocketDataObject from '../../../real-time/useSocketDataObject'
 
 
 
@@ -26,6 +27,7 @@ function Login() {
     const history = useHistory()
     const {email, password, err, success} = user
     const cookiesService = CookiesService.getService()
+    const {Subscribe_notify} = useSocketDataObject()
 
     const handleChangeInput = e => {
         const {name, value} = e.target
@@ -61,6 +63,7 @@ function Login() {
                 //Da Dang Nhap
                 dispatch(dispatchLogin())
                 cookiesService.setToken(res.data.token)
+                Subscribe_notify(email)
                 history.push("/")
             }
         }catch(err){
@@ -82,7 +85,6 @@ function Login() {
         console.log(response)
         try{
             const google_token = response.tokenId
-            console.log(google_token)
             var loginForm = new FormData()
             loginForm.append('google_token', google_token)
     
@@ -90,8 +92,9 @@ function Login() {
             if(res){
                 setUser({...user, err: '', success: 'Đăng nhập thành công'})
                 dispatch(dispatchLogin())
+                console.log(response.profileObj.email)
                 cookiesService.setToken(res.data.token)
-                
+                Subscribe_notify(response.profileObj.email)
                 history.push('/')
             }
             

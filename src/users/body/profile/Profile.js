@@ -37,9 +37,7 @@ function Profile() {
         const postFollow = async () => {
             const token = Cookies.get("token")
             try {
-                const res = await axios.put(`/user/follow/${id}`, null, {
-                    headers: { Authorization: `Bearer ${token}` }
-                })
+                const res = await axios.put(`/user/follow/${id}`, null)
 
                 if (res) {
                     setUserInfor({...userInfor,followCount: res.data, followed: !userInfor.followed })

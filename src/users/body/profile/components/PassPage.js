@@ -29,9 +29,7 @@ const PassPage = () => {
             passForm.append('matchedPassword', data.matchedPassword)
             
 
-            const res = await axios.put('/user/update/password', passForm , {
-                headers: {Authorization: `Bearer ${token}`}
-            })
+            const res = await axios.put('/user/update/password', passForm)
 
             if(res) {
                 console.log(res)

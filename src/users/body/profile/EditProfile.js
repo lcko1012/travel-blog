@@ -37,8 +37,7 @@ const EditProfile = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userInfor])
-    console.log(ReactHtmlParser( newInfor.avatarLink))
-    console.log(newInfor.fbLink)
+
 
     const handleChangeInput = (e) => {
         const { name, value } = e.target
@@ -56,20 +55,16 @@ const EditProfile = () => {
             }
 
             if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
-                // return setData({ ...data, err: "File format is incorrect", success: '' })
-                console.log("sai dinh dang")
+                return setNewInfor({ ...newInfor, err: "Sai định dạng ảnh", success: '' })
             }
-            console.log(e.target.files[0])
+          
 
             var formImage = new FormData()
             formImage.append('upload', file)
 
-            const res = await axios.post('/upload', formImage, {
-                headers: { Authorization: `Bearer ${token}` }
-            })
+            const res = await axios.post('/upload', formImage)
 
             if (res) {
-                console.log(res)
                 setNewAvatar(res.data.url)
             }
         } catch (error) {
@@ -79,23 +74,18 @@ const EditProfile = () => {
 
     const handleSubmitInfor = async (e) => {
         e.preventDefault()
-        console.log("submit")
         try {
-            const token = Cookies.get('token')
             var formInfor = new FormData()
             formInfor.append('name', newInfor.name)
             formInfor.append('avatarLink', newAvatar ? newAvatar : newInfor.avatarLink)
             formInfor.append('fbLink', newInfor.fbLink)
             formInfor.append('instagramLink', newInfor.instagramLink)
             formInfor.append('about', newInfor.about)
-            const res = await axios.put('/user/update/info', formInfor, {
-                headers: { Authorization: `Bearer ${token}` }
-            })
+            const res = await axios.put('/user/update/info', formInfor)
             if (res) {
                 setNewInfor({ ...newInfor, success: 'Cập nhật thành công', err: '' })
             }
         } catch (error) {
-            console.log(error)
             setNewInfor({ ...newInfor, err: "Không thể cập nhật thông tin, xin hãy thử lại sau", success: '' })
         }
     }

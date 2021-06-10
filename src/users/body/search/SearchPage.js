@@ -75,11 +75,11 @@ const SearchPage = () => {
                             <h5 style={{ fontSize: '14px' }}>Kết quả tìm kiếm của: {keyword}</h5>
                         </div>
                         {postsResult.length === 0 ? <Empty /> :
-                            postsResult.map((post, index) => {
-                                return (
-                                    <CurrentPost post={post} key={index} />
-                                )
-                            })}
+                            postsResult.map((post, index) => 
+                                
+                                    <CurrentPost post={post} key={post.postId} />
+                                
+                            )}
                         <div className="pagination-area mb-30">
                             <nav aria-label="Page navigation example">
                                 <ul className="pagination justify-content-start">

@@ -6,9 +6,7 @@ const cookiesService = CookiesService.getService()
 
 axios.interceptors.request.use(
     config => {
-      console.log(config)
       const token = cookiesService.getToken()
-      console.log(token)
       if(token) {
         config.headers['Authorization'] = 'Bearer ' + token
       }
@@ -26,7 +24,6 @@ axios.interceptors.request.use(
       const originalRequest = error.config
       if(error.response.status === 403 && !originalRequest._retry) {
         originalRequest._retry = true
-        console.log(cookiesService.getToken())
         return axios.post('/auth/refreshToken', null,{
           headers: {Authorization: 'Bearer ' + cookiesService.getToken()}
         }).then(res => {

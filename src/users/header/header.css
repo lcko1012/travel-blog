@@ -201,3 +201,17 @@ header {
     font-size: 10px;
     color: var(--color-primary);
 }
+
+.menu__notify--unseen {
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    right: 8px;
+    background-color: var(--color-primary);
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+}

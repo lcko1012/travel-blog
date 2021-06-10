@@ -8,9 +8,11 @@ import Loading from '../../utils/Loading/Loading'
 import Cookies from 'js-cookie'
 import Comments from './comments/Comments'
 
+
 function Post() {
   const params = useParams()
   const history = useHistory()
+  
   const initialState = {
     postId: 0,
     title: '',
@@ -26,12 +28,9 @@ function Post() {
   }
   //lay bai bang slug
   const location = useLocation()
-  // const [id, setId] = useState(null)
   const [post, setPost] = useState(initialState)
   const [author, setAuthor] = useState({})
   const [loading, setLoading] = useState(false)
-  // const [callback, setCallback] = useState(false)
-  // const [loadCmt, setLoadCmt] = useState(false)
   const [isDel, setIsDel] = useState(false)
 
 
@@ -39,22 +38,12 @@ function Post() {
   useEffect(() => {
     const getPost = async () => {
       try {
-        const token = Cookies.get('token')
-        var res = null
-        if (token) {
-          res = await axios.get(`/post`, {
+         const res = await axios.get(`/post`, {
             params: {
               slug: params.slug
-            },
-            headers: { Authorization: `Bearer ${token}` }
+            }
           })
-        } else {
-          res = await axios.get(`/post`, {
-            params: {
-              slug: params.slug
-            },
-          })
-        }
+        
         var responseContent = res.data
         setPost({
           ...post,
@@ -82,26 +71,16 @@ function Post() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.slug])
 
-  useEffect(() => {
-    return () => {
-      console.log("cleaned up")
-    }
-  }, [])
-
-
 
   const handleBookmark = () => {
     //Muon bookmark
-    console.log("Bookmark")
     const token = Cookies.get("token")
     if(!token) return history.push('/login')
     var bookmarkForm = new FormData()
     bookmarkForm.append("postId", post.postId)
     const postBookmark = async () => {
       try {
-        const res = await axios.post('/bookmark', bookmarkForm, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        const res = await axios.post('/bookmark', bookmarkForm)
         if (res) {
           console.log(res)
           setPost({ ...post, bookmarked: true, bookmarkedCount: res.data })
@@ -114,17 +93,12 @@ function Post() {
   }
 
   const handleUnBookmark = () => {
-    console.log("bo book mark")
-    const token = Cookies.get("token")
-    console.log(token)
     var bookmarkForm = new FormData()
     bookmarkForm.append("postId", post.postId)
 
     const deleteBookmark = async () => {
       try {
-        const res = await axios.delete(`/bookmark/${post.postId}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        const res = await axios.delete(`/bookmark/${post.postId}`)
         if (res) {
           console.log(res)
           setPost({ ...post, bookmarked: false, bookmarkedCount: res.data })
@@ -143,12 +117,7 @@ function Post() {
   const handleDelPost = () => {
     const delPost = async () => {
       try {
-        const token = Cookies.get("token")
-        const res = await axios.delete(`/post/${post.postId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+        const res = await axios.delete(`/post/${post.postId}`)
         if(res){
           history.push("/")
         }
@@ -185,7 +154,6 @@ function Post() {
     <>
       <main className="main__home" >
         <div className="container">
-         
           {loading ?
             <div className="row">
                {isDel ? showDelAlert() : null}

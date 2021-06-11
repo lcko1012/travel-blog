@@ -62,9 +62,9 @@
 div.DraftEditor-root {
     background-color: white;
     height: 90vh;
-    /* overflow-y: auto; */
+    overflow-y: auto;
   }
-  div.DraftEditor-editorContainer,
+div.DraftEditor-editorContainer,
   div.public-DraftEditor-content {
     height: 100%;
   }

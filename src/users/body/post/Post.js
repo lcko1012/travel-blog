@@ -7,6 +7,7 @@ import ReactHtmlParser from 'react-html-parser'
 import Loading from '../../utils/Loading/Loading'
 import Cookies from 'js-cookie'
 import Comments from './comments/Comments'
+import CommentPost from '../home/components/CommentPost'
 
 
 function Post() {
@@ -27,12 +28,11 @@ function Post() {
     owner: false
   }
   //lay bai bang slug
-  const location = useLocation()
   const [post, setPost] = useState(initialState)
   const [author, setAuthor] = useState({})
   const [loading, setLoading] = useState(false)
   const [isDel, setIsDel] = useState(false)
-
+  const [userPosts, setUserPosts] = useState([])
 
   //Cu moi lan render lai
   useEffect(() => {
@@ -44,32 +44,53 @@ function Post() {
             }
           })
         
-        var responseContent = res.data
+        var resContent = res.data
         setPost({
           ...post,
-          postId: responseContent.postId,
-          title: responseContent.title,
-          publishedDate: responseContent.publishedDate,
-          postThumbnail: responseContent.postThumbnail,
-          slug: responseContent.slug,
-          content: responseContent.content,
-          bookmarked: responseContent.bookmarked,
-          bookmarkedCount: responseContent.bookmarkedCount,
-          commentCount: responseContent.commentCount,
-          categories: responseContent.categories,
-          owner: responseContent.owner
+          postId: resContent.postId,
+          title: resContent.title,
+          publishedDate: resContent.publishedDate,
+          postThumbnail: resContent.postThumbnail,
+          slug: resContent.slug,
+          content: resContent.content,
+          bookmarked: resContent.bookmarked,
+          bookmarkedCount: resContent.bookmarkedCount,
+          commentCount: resContent.commentCount,
+          categories: resContent.categories,
+          owner: resContent.owner
         })
-        setAuthor(responseContent.author)
+        setAuthor(resContent.author)
         setLoading(true)
       } catch (err) {
         console.log(err)
       }
     }
+
+
     if (params.slug) {
       getPost()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.slug])
+
+
+  useEffect(() => {
+    const getAuthPosts =  async () => {
+      try{
+        const res = await axios.get(`/user/posts/${author.accountId}`, {
+          params: {
+            size: 5
+          }
+        })
+        setUserPosts(res.data)
+      }catch(err){
+        console.log(err)
+      }
+    }
+    if(author.accountId){
+      getAuthPosts()
+    }
+  }, [author])
 
 
   const handleBookmark = () => {
@@ -159,7 +180,7 @@ function Post() {
                {isDel ? showDelAlert() : null}
               <div className="col-lg-8 mt-50">
                 <div className="content-area">
-                  <h1 style={{ fontWeight: "700" }}>{ReactHtmlParser(post.title)}</h1>
+                  <h1 className="post__title">{ReactHtmlParser(post.title)}</h1>
                   {/* Catalogy area */}
                   <div className="post__cataArea">
                     {post.categories.map((item) => {
@@ -174,7 +195,7 @@ function Post() {
                   </div>
 
                   {/* TODO:WRITE BY AREA */}
-                  <div className="write-by">
+                  <div className="write-by mb-30">
                     <div className="d-flex">
                       <div className="avatar-write-by inline-item"
                         style={{ backgroundImage: `url(${ReactHtmlParser(author.avatarLink)})` }}
@@ -216,17 +237,17 @@ function Post() {
               {/* ===============================END COMMENT=========================== */}
 
               {/* TODO: POST's INFORMATION */}
-              <div className="col-lg-4 mt-50">
+              <div className="col-lg-4 mt-50" style={{paddingLeft: '30px'}}>
                 <div className="post-info">
                   <div className="post-info-count">
-                    <div className="bookmark-count">
+                    <div className="bookmark-count child-1">
                       <h5>{post.bookmarkedCount}</h5>
-                      <h5>Bookmark</h5>
+                      <p>Bookmark</p>
                     </div>
 
                     <div className="bookmark-count">
                       <h5>{post.commentCount}</h5>
-                      <h5>Bình Luận</h5>
+                      <p>Bình Luận</p>
                     </div>
                   </div>
                   <div className="post-info-button">
@@ -247,25 +268,39 @@ function Post() {
                 </div>
 
                 {/* //TODO: AUTHOR's INFORMATION */}
-                {/* <div class="author-info mt-30" >
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <div class="avatar inline-item" style={{ backgroundImage: `url(${avatar})` }} ></div>
-                    <div class="post-count inline-item">
-                      <h4>10</h4>
-                      <p>Bài viết</p>
+                {/* <div class="author-info" >
+                  <div style={{ display: 'flex' , alignItems: 'center' }}>
+                    <div class="avatar inline-item" style={{ backgroundImage: `url(${ReactHtmlParser(author.avatarLink)})` }}  ></div>
+                    <div>
+                     <h5 class="author-name">{author.name}</h5>
+
+                      <div class="post-count inline-item">
+                        <p>{author.postCount} 
+                          <span>Bài viết</span>
+                        </p>
+                      </div>
+                      <div class="follower-count inline-item">
+                        
+                        <p>{author.followCount} <span> Người theo dõi</span></p>
+                      </div>
+
                     </div>
-                    <div class="follower-count inline-item">
-                      <h4>100</h4>
-                      <p>Người theo dõi</p>
-                    </div>
+                    
                   </div>
-                  <h5 class="author-name">Steven</h5>
-                  <p style={{ fontSize: "14px" }}>
-                    Hi, I’m Stenven, a Florida native, who left my career in corporate
-                    wealth management six years ago to embark on a summer of soul searching that would change
-                    the course of my life forever.
-                  </p>
                 </div> */}
+
+                {/* TODO: Same author */}
+                
+                  {userPosts.length > 0 ? 
+                  <div>
+                    <h5 className="mb-20">Các bài viết cùng tác giả</h5>
+                    {userPosts.map(item => {
+                      return item.postId !== post.postId ? <CommentPost item={item} key={item.postId}/> : null
+                    })}
+                  </div>
+                  : null  
+                  }
+                
               </div>
             </div>
             : <Loading />}

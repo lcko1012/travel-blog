@@ -457,11 +457,23 @@ p {
 }
 
 .post-info {
-    background-color: white;
     margin-bottom: 50px;
     border-radius: 10px;
-    height: 200px;
+    height: 150px;
+    color: var(--color-muted);
 }
+
+.post-info .child-1 {
+    border-right: 1px solid var(--color-muted);
+}
+
+
+
+.post__title {
+    font-weight: 500;
+    color: var(--color-primary);
+}
+
 
 .post-info-count {
     font-size: 17px;
@@ -504,6 +516,12 @@ p {
     margin-top: 30px;
     margin-left: 30px;
     vertical-align: top;
+}
+
+.comment-area-title {
+    border-bottom: 2px solid var(--color-muted);
+    display: inline-block;
+    margin-bottom: 20px;
 }
 
 .right-align {

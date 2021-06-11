@@ -4,6 +4,7 @@ import "./home.css"
 import { Link } from 'react-router-dom';
 import ReactHtmlParser from 'react-html-parser'
 import CurrentPost from './components/CurrentPost';
+import CommentPost from './components/CommentPost'
 import Loading from '../../utils/Loading/Loading';
 
 
@@ -166,7 +167,7 @@ function Home() {
                 <div className="col-lg-8">
                   <div className="post-module-2">
                     <div className="mb-30 position-relative">
-                      <h5 className="mb-30">Bài đăng mới</h5>
+                      <h5 className="mb-30 text-uppercase" style={{fontSize: '14px'}}>Bài đăng mới</h5>
                     </div>
                     {/* ==== LOOP LIST ===== */}
                     <div className="loop-list">
@@ -202,33 +203,13 @@ function Home() {
                 <div className="col-lg-4">
                   {/* TODO: NHIỀU COMMENT */}
                   <div className="mb-15">
-                    <h5 style={{ borderBottom: '2px solid black', display: 'inline-block' }}>Nhiều bình luận nhất</h5>
+                    <h5 className="text-uppercase" style={{fontSize: '14px'}}>Nhiều bình luận nhất</h5>
                   </div>
                   {/* <hr className="most-popular-hr" /> */}
 
                   {cmtPosts.map((item) => {
                     return (
-                      <div key={item.postId}>
-                        <div className="post__popular d-flex hieu-ung" >
-                          <div className="post__popular--content media-body" >
-                            <h6 className="post-title mb-15">
-                              <Link to={{ pathname: `/posts/${item.slug}`, state: { id: item.postId } }}>
-                                {ReactHtmlParser(item.title)}
-                              </Link>
-                            </h6>
-                            <div className="entry-meta meta-1 font-x-small text-uppercase">
-                              <span>{item.bookmarkedCount} bookmark</span>
-                              <span className="post-by has-dos">{item.commentCount} Bình luận</span>
-                            </div>
-                          </div>
-
-                          <div className="d-flex ml-15 post__popular--image">
-                            <a className="color-white">
-                              <img className="border-radius-5 " src={ReactHtmlParser(item.postThumbnail)}></img>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
+                        <CommentPost item={item} key={item.postId}/>
                     )
                   })}
                 </div>

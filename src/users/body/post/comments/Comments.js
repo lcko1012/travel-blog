@@ -73,10 +73,9 @@ const Comments = ({ id }) => {
 
   return (
     <div className="comment-area">
-      <div>
-        <h5>Comment</h5>
+      <div className="comment-area-title" >
+        <h5>Bình luận:</h5>
       </div>
-      <hr className="comment-hr" />
       <form className="d-flex" onSubmit={handleSubmitCmt}>
         <div className="avatar-comment"
           style={{ backgroundImage: `url(${ReactHtmlParser(userInfor.avatarLink)})` }}>

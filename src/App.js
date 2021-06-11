@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react'
 import './App.css';
 import { BrowserRouter as Router } from 'react-router-dom'
-import Header from './users/header/Header'
-import Body from './users/Body';
-import Footer from './users/footer/Footer';
 import { useDispatch, useSelector } from 'react-redux';
 import { dispatchGetUser, dispatchLogin, fetchUser } from './redux/actions/authAction'
 import useSocketDataObject from './real-time/useSocketDataObject'
 import CookiesService from './services/CookiesService'
 import { ToastContainer } from 'react-toastify';
-
+import Routes from './routes';
 
 function App() {
 
@@ -51,8 +48,6 @@ function App() {
     <>
       <Router>
         <div className="App">
-          <Header />
-          <Body />
           <ToastContainer
             position="bottom-left"
             autoClose={3000}
@@ -64,7 +59,8 @@ function App() {
             draggable
             pauseOnHover
           />
-          <Footer />
+
+          <Routes />
         </div>
       </Router>
     </>

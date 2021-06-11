@@ -1,28 +1,25 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-
-
-import Register from './body/auth/Register'
-import Login from './body/auth/Login'
-import Home from './body/home/Home'
-import NotFound from './utils/NotFound/NotFound'
-import NewPosts from './body/newPosts/NewPosts'
-import Post from './body/post/Post'
-import ForgotPassword from './body/auth/ForgotPassword'
-import ResetPassword from './body/auth/ResetPassword'
-import Profile from './body/profile/Profile'
-import MyProfile from './body/profile/MyProfile'
-import EditProfile from './body/profile/EditProfile'
-import Bookmarks from './body/bookmark/Bookmarks'
-import SearchPage from './body/search/SearchPage'
-import Category from './body/category/Category'
+import { Route, Switch } from 'react-router-dom'
 import AdminHome from '../admin/body/AdminHome/AdminHome'
-import UserLayout from '../layouts/UserLayout'
 import AdminLayout from '../layouts/AdminLayout'
-// import EditPost from './body/newPosts/EditPost'
+import UserLayout from '../layouts/UserLayout'
+import ForgotPassword from '../users/body/auth/ForgotPassword'
+import Login from '../users/body/auth/Login'
+import Register from '../users/body/auth/Register'
+import ResetPassword from '../users/body/auth/ResetPassword'
+import Bookmarks from '../users/body/bookmark/Bookmarks'
+import Category from '../users/body/category/Category'
+import Home from '../users/body/home/Home'
+import NewPosts from '../users/body/newPosts/NewPosts'
+import Post from '../users/body/post/Post'
+import EditProfile from '../users/body/profile/EditProfile'
+import MyProfile from '../users/body/profile/MyProfile'
+import Profile from '../users/body/profile/Profile'
+import SearchPage from '../users/body/search/SearchPage'
+import NotFound from '../users/utils/NotFound/NotFound'
 
-function Body() {
+export default () => {
     const auth = useSelector(state => state.auth)
     const { isLogged, idAdmin } = auth
     return (
@@ -30,9 +27,9 @@ function Body() {
             <Switch>
                 <Route path="/admin/:path?" exact>
                     <AdminLayout>
-                    <Switch>
-                        <Route path="/admin" exact component={AdminHome} />
-                    </Switch>
+                        <Switch>
+                            <Route path="/admin" exact component={AdminHome} />
+                        </Switch>
                     </AdminLayout>
                 </Route>
 
@@ -66,5 +63,3 @@ function Body() {
         </section>
     )
 }
-
-export default Body

@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { dispatchGetUser, dispatchLogin, fetchUser } from './redux/actions/authAction'
 import useSocketDataObject from './real-time/useSocketDataObject'
 import CookiesService from './services/CookiesService'
+import { ToastContainer } from 'react-toastify';
+
 
 function App() {
 
@@ -15,8 +17,8 @@ function App() {
   const auth = useSelector(state => state.auth)
   const realtime = useSelector(state => state.realtime)
   // /
-  const { ConnectSocket, Subscribe_notify} = useSocketDataObject()
-  const {user} = auth
+  const { ConnectSocket, Subscribe_notify } = useSocketDataObject()
+  const { user } = auth
   const cookiesService = CookiesService.getService()
 
   useEffect(() => {
@@ -27,7 +29,7 @@ function App() {
         dispatch(dispatchGetUser(res))
       })
     }
-    
+
   }, [auth.isLogged, dispatch])
 
   useEffect(() => {
@@ -36,7 +38,7 @@ function App() {
 
   useEffect(() => {
     const token = cookiesService.getToken()
-    if(token && realtime.ws !== null && realtime.isSuccess === true) {
+    if (token && realtime.ws !== null && realtime.isSuccess === true) {
       // myVar = setTimeout(() => Subscribe_notify(user.email), 10000)
       Subscribe_notify(user.email)
     }
@@ -46,15 +48,26 @@ function App() {
 
 
   return (
-    <>   
-    <Router>
-      <div className="App">
-        <Header />
-        <Body />
-        <Footer />
-      </div>
-    </Router>
-</>
+    <>
+      <Router>
+        <div className="App">
+          <Header />
+          <Body />
+          <ToastContainer
+            position="bottom-left"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
+          <Footer />
+        </div>
+      </Router>
+    </>
   );
 }
 

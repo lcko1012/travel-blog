@@ -8,12 +8,14 @@ import Loading from '../../utils/Loading/Loading'
 import Cookies from 'js-cookie'
 import Comments from './comments/Comments'
 import CommentPost from '../home/components/CommentPost'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function Post() {
   const params = useParams()
   const history = useHistory()
-  
+
   const initialState = {
     postId: 0,
     title: '',
@@ -32,18 +34,20 @@ function Post() {
   const [author, setAuthor] = useState({})
   const [loading, setLoading] = useState(false)
   const [isDel, setIsDel] = useState(false)
+  const [isReport, setIsReport] = useState(false)
   const [userPosts, setUserPosts] = useState([])
+  const [reportTxt, setReportTxt] = useState('')
 
   //Cu moi lan render lai
   useEffect(() => {
     const getPost = async () => {
       try {
-         const res = await axios.get(`/post`, {
-            params: {
-              slug: params.slug
-            }
-          })
-        
+        const res = await axios.get(`/post`, {
+          params: {
+            slug: params.slug
+          }
+        })
+
         var resContent = res.data
         setPost({
           ...post,
@@ -75,28 +79,29 @@ function Post() {
 
 
   useEffect(() => {
-    const getAuthPosts =  async () => {
-      try{
+    const getAuthPosts = async () => {
+      try {
         const res = await axios.get(`/user/posts/${author.accountId}`, {
           params: {
             size: 5
           }
         })
         setUserPosts(res.data)
-      }catch(err){
+      } catch (err) {
         console.log(err)
       }
     }
-    if(author.accountId){
+    if (author.accountId) {
       getAuthPosts()
     }
   }, [author])
 
 
+
   const handleBookmark = () => {
     //Muon bookmark
     const token = Cookies.get("token")
-    if(!token) return history.push('/login')
+    if (!token) return history.push('/login')
     var bookmarkForm = new FormData()
     bookmarkForm.append("postId", post.postId)
     const postBookmark = async () => {
@@ -135,41 +140,108 @@ function Post() {
     setIsDel(value)
   }
 
-  const handleDelPost = () => {
-    const delPost = async () => {
-      try {
-        const res = await axios.delete(`/post/${post.postId}`)
-        if(res){
-          history.push("/")
-        }
-      } catch (error) {
-        console.log(error)
+
+  const handleDelPost = async () => {
+    try {
+      const res = await axios.delete(`/post/${post.postId}`)
+      if (res) {
+        history.push("/")
       }
+    } catch (error) {
+      console.log(error)
     }
-    delPost()
+  }
+
+  const handleShowReport = () => {
+    const token = Cookies.get("token")
+    if (!token) return history.push('/login')
+    setIsReport(true)
+  }
+
+  const handleReportPost = async () => {
+    try {
+      const res = await axios.post('/report', null, {
+        params: {
+          postId: post.postId,
+          content: reportTxt
+        }
+      })
+      if (res) {
+        setIsReport(false)
+        toast.success('Báo cáo thành công', {
+          position: "bottom-left",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
+      }
+    } catch (error) {
+      toast.error('Không thể báo cáo', {
+        position: "bottom-left",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  }
+  const handleChangeInput = (e) => {
+    const { value } = e.target
+    setReportTxt(value)
+
   }
 
   const showDelAlert = () => {
-    return(
-      <div className="post__delAlert">
+    return (
+      <div className="post__alert post__alert--delete ">
         <h5>Lưu ý</h5>
         <p>Thao tác này sẽ xóa hết dữ liệu bài viết của bạn</p>
         <div>
-           <button className="post__delAlert--button post__delAlert--cancel"
-           onClick={() => handleClickDel(false)}
-           >
-             Hủy
-           </button>
-           <button className="post__delAlert--button post__delAlert--delete"
-           onClick={handleDelPost}
-           >
-             Xóa bài
-           </button>
+          <button className="post__delAlert--button post__delAlert--cancel"
+            onClick={() => handleClickDel(false)}
+          >
+            Hủy
+          </button>
+          <button className="post__delAlert--button post__delAlert--delete"
+            onClick={handleDelPost}
+          >
+            Xóa bài
+          </button>
         </div>
-      
       </div>
     )
   }
+
+  const showReportForm = () => {
+    return (
+      <div className="post__alert post__alert--report">
+        <h5>Báo cáo bài viết</h5>
+
+        <textarea
+          onChange={handleChangeInput}
+          name="reportTxt" className="post__reportContent" placeholder="Nội dung báo cáo" />
+        <div>
+          <button className="post__delAlert--button post__delAlert--cancel"
+            onClick={() => setIsReport(false)}
+          >
+            Hủy
+          </button>
+          <button className="post__delAlert--button post__reportForm--report"
+            onClick={handleReportPost}
+          >
+            Báo cáo
+          </button>
+        </div>
+      </div>
+    )
+  }
+
 
   return (
     <>
@@ -177,20 +249,21 @@ function Post() {
         <div className="container">
           {loading ?
             <div className="row">
-               {isDel ? showDelAlert() : null}
+              {isDel ? showDelAlert() : null}
+              {isReport ? showReportForm() : null}
               <div className="col-lg-8 mt-50">
                 <div className="content-area">
                   <h1 className="post__title">{ReactHtmlParser(post.title)}</h1>
                   {/* Catalogy area */}
                   <div className="post__cataArea">
                     {post.categories.map((item) => {
-                      return(
-                        <Link to={{ pathname: `/category/${item.categoryId}`}} key={item.categoryId}>
-                        <div className="post__cata" 
-                        key={item.categoryId}>{item.categoryName}</div>
+                      return (
+                        <Link to={{ pathname: `/category/${item.categoryId}` }} key={item.categoryId}>
+                          <div className="post__cata"
+                            key={item.categoryId}>{item.categoryName}</div>
                         </Link>
                       )
-                     
+
                     })}
                   </div>
 
@@ -208,19 +281,23 @@ function Post() {
                       </div>
                     </div>
                     {/* TODO: SUA BAI VIET */}
-                    {post.owner ? 
-                    <div >
-                      <Link to={`/posts/${post.slug}/edit`}>
-                      <button className="post__editBtn">
-                        <i className="fal fa-pen" style={{marginRight: '5px'}}></i>
-                      Sửa bài viết</button>
-                      </Link>
+                    {post.owner ?
+                      <div >
+                        <Link to={`/posts/${post.slug}/edit`}>
+                          <button className="post__editBtn">
+                            <i className="fal fa-pen" style={{ marginRight: '5px' }}></i>
+                            Sửa bài viết</button>
+                        </Link>
 
-                      <button  className="post__delBtn" onClick={() => handleClickDel(true)}>
-                        <i className="fal fa-trash-alt" style={{color: '#A95252'}}></i>
+                        <button className="post__delBtn" onClick={() => handleClickDel(true)}>
+                          <i className="fal fa-trash-alt" style={{ color: '#A95252' }}></i>
+                        </button>
+                      </div> :
+                      <button className="post__delBtn post__reportBtn" style={{ color: 'red' }} onClick={handleShowReport}>
+                        <i className="fal fa-exclamation-triangle"></i>
                       </button>
-                    </div> : null}
-                    
+                    }
+
                   </div>
 
 
@@ -231,13 +308,13 @@ function Post() {
 
                 {/* TODO: COMMENT AREA */}
                 {/* ========================COMMENT================ */}
-                <Comments setPost={setPost} id={post.postId} post={post}  />
+                <Comments setPost={setPost} id={post.postId} post={post} />
 
               </div>
               {/* ===============================END COMMENT=========================== */}
 
               {/* TODO: POST's INFORMATION */}
-              <div className="col-lg-4 mt-50" style={{paddingLeft: '30px'}}>
+              <div className="col-lg-4 mt-50" style={{ paddingLeft: '30px' }}>
                 <div className="post-info">
                   <div className="post-info-count">
                     <div className="bookmark-count child-1">
@@ -267,40 +344,19 @@ function Post() {
                   </div>
                 </div>
 
-                {/* //TODO: AUTHOR's INFORMATION */}
-                {/* <div class="author-info" >
-                  <div style={{ display: 'flex' , alignItems: 'center' }}>
-                    <div class="avatar inline-item" style={{ backgroundImage: `url(${ReactHtmlParser(author.avatarLink)})` }}  ></div>
-                    <div>
-                     <h5 class="author-name">{author.name}</h5>
-
-                      <div class="post-count inline-item">
-                        <p>{author.postCount} 
-                          <span>Bài viết</span>
-                        </p>
-                      </div>
-                      <div class="follower-count inline-item">
-                        
-                        <p>{author.followCount} <span> Người theo dõi</span></p>
-                      </div>
-
-                    </div>
-                    
-                  </div>
-                </div> */}
 
                 {/* TODO: Same author */}
-                
-                  {userPosts.length > 0 ? 
+
+                {userPosts.length > 0 ?
                   <div>
                     <h5 className="mb-20">Các bài viết cùng tác giả</h5>
                     {userPosts.map(item => {
-                      return item.postId !== post.postId ? <CommentPost item={item} key={item.postId}/> : null
+                      return item.postId !== post.postId ? <CommentPost item={item} key={item.postId} /> : null
                     })}
                   </div>
-                  : null  
-                  }
-                
+                  : null
+                }
+
               </div>
             </div>
             : <Loading />}

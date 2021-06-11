@@ -37,6 +37,16 @@ p {
     transition: 0.3s;
 }
 
+.post__reportBtn {
+    color: #e8b90d !important; 
+    border: 1px solid #e8b90d !important;
+}
+
+.post__reportBtn:hover {
+    box-shadow: 0px 0px 5px #e8b90d !important;
+    transform: scale(1.01);
+}
+
 .post__editBtn:hover {
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
     transform: scale(1.01);
@@ -46,7 +56,8 @@ p {
     transform: scale(1.01);
 }
 
-.post__delAlert {
+
+.post__alert {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -54,17 +65,20 @@ p {
     transform: translate(-50%, -50%);
     z-index: 10;
     background-color: white;
-    height: 150px;
+    height: auto;
+    padding: 10px 0;
     width: 300px;
     border-radius: 16px;
     box-shadow: 0px 0px 5px rgba(39, 39, 39, 0.822);
-
-    border-top: 30px solid rgba(241, 4, 4, 0.822);
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     
+}
+
+.post__alert--delete {
+    border-top: 30px solid var(--color-deep-red);
 }
 
 .post__delAlert--button {
@@ -88,6 +102,24 @@ p {
     color: white;
 }
 
+.post__reportForm--report {
+    color: white;
+    border-color: #e8b90d;
+    background-color: #e8b90d;
+}
+
+.post__reportContent {
+    padding: 10px 10px;
+    outline: none;
+    height: 100px;
+    margin: 10px 10px;
+    border: 1px solid;
+
+}
+
+.post__alert--report {
+    border-top: 30px solid #e8b90d;
+}
 
 
 .post__cataArea {

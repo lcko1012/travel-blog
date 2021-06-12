@@ -7,31 +7,21 @@ import { Link } from 'react-router-dom'
 import {dispatchCountNoti, fetchUnseenNoti, dispatchDecreaseCount, dispatchRemoveCountNoti} from '../../redux/actions/notifyAction'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
-
+import InfiniteScroll from 'react-infinite-scroll-component'
+import Loading from '../utils/Loading/Loading'
 
 const Notify = forwardRef(({openNotify, setOpenNotify}, ref) => {
     const [notifications, setNotifications] = useState([])
     const dispatch = useDispatch()
     const notify = useSelector(state => state.notify)
     const {count} = notify
+    const [pageNoti, setPageNoti] = useState(0)
     
     //TODO: Show amount of notifications when load page
     useEffect(() => {
-        // const getAmountNoti = async () => {
-        //     try {
-        //         const res = await axios.get('/notifications/unseen')
-        //         if(res) {
-        //             setAmountNoti(res.data.length)
-        //         }
-        //     } catch (error) {
-        //         console.log(error)
-        //     }
-        // }
-        // getAmountNoti()
         fetchUnseenNoti().then(count => {
             dispatch(dispatchCountNoti(count))
         })
-
     }, [])
 
     //Seen notify
@@ -48,19 +38,26 @@ const Notify = forwardRef(({openNotify, setOpenNotify}, ref) => {
     }
 
     const handleShowNotify = () => {
-        const getNotifications = async () => {
-            try {
-                const res = await axios.get('/notifications')
-                if(res) {
-                    dispatch(dispatchRemoveCountNoti())
-                    setNotifications(res.data)
-                }
-            } catch (error) {
-                console.log(error)
-            }
-        }
         getNotifications()
         setOpenNotify(!openNotify)
+    }
+
+    const getNotifications = async () => {
+        setPageNoti(pageNoti+1)
+        try {
+            const res = await axios.get('/notifications', {
+                params: {
+                    page: pageNoti, 
+                    size: 6
+                }
+            })
+            if(res) {
+                dispatch(dispatchRemoveCountNoti())
+                setNotifications([...notifications, ...res.data])
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -74,6 +71,16 @@ const Notify = forwardRef(({openNotify, setOpenNotify}, ref) => {
             {openNotify && (
             <ul className="menu__notify--dropdown" style={{display: 'block !important'}}>
                 <h5 style={{marginLeft: '12px', marginTop: '12px'}}>Thông báo</h5>
+                {/* <div style={{overflow: 'scroll'}}> */}
+            <InfiniteScroll
+            dataLength={notifications.length}
+            next={getNotifications}
+            height={500}
+            hasMore={true}
+            loader={<Loading />}
+            scrollableTarget="menu__notify--dropdown"
+            >
+                <div className="menu__notify--content">
                 {notifications.map((item) => {
                     return(
                         <li key={item.notificationId} onClick={() => handleSeenNotify(item.notificationId)}>
@@ -97,6 +104,9 @@ const Notify = forwardRef(({openNotify, setOpenNotify}, ref) => {
                     )
 
                 })}
+                </div>
+                </InfiniteScroll>
+                {/* </div> */}
             </ul>
         )}
         </li>

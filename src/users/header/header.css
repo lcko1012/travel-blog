@@ -190,9 +190,13 @@ header {
     /* color: rgba(0,0,0,0.75); */
     color: var(--color-muted);
     border-radius: 12px;
-
     display: flex;
+    height: fit-content;
     flex-direction: column;
+}
+
+.menu__notify--content {
+    padding: 0px 10px 0px 10px;
 }
 
 .menu__notify--dropdown .fa-circle {

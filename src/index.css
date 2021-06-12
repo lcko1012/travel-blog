@@ -68,10 +68,24 @@ a:hover{
   text-decoration: none;
 }
 
-/* ul{
-  list-style: none;
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+/* ::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 2px grey;  
+  border-radius: 10px;
 } */
 
+::-webkit-scrollbar-thumb {
+  background: grey; 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: grey; 
+}
 
 
 .App {

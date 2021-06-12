@@ -18,7 +18,7 @@ function Header() {
     const cookiesService = CookiesService.getService()
     const {Unsubscribe_notify} = useSocketDataObject()
     const [keyword, setKeyword] = useState('')
-
+    const {isAdmin} = auth
 
     const handleChangeKeyword = (e) => {
         const { value } = e.target
@@ -77,6 +77,11 @@ function Header() {
                     <img src={ReactHtmlParser(userInfor.avatarLink)} />
                     <i className="fas fa-caret-down"></i>
                     <div className="menu__right--dropdown" id="dropDown" >
+                        {isAdmin ?
+                        <Link to="/admin/dashboard">
+                            <i className="fal fa-users-cog"></i>
+                            <p>Trang admin</p>
+                        </Link> : null}
                         <Link to="/myprofile">
                             <i className="far fa-user"></i>
                             <p>Trang cá nhân</p>

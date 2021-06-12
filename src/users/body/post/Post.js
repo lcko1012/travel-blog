@@ -189,6 +189,7 @@ function Post() {
         draggable: true,
         progress: undefined,
       });
+      console.log(error)
     }
   }
   const handleChangeInput = (e) => {

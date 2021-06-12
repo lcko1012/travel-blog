@@ -40,7 +40,7 @@ function Profile() {
                 const res = await axios.put(`/user/follow/${id}`, null)
 
                 if (res) {
-                    setUserInfor({...userInfor,followCount: res.data, followed: !userInfor.followed })
+                    setUserInfor({ ...userInfor, followCount: res.data, followed: !userInfor.followed })
                 }
             } catch (err) {
                 console.log(err)
@@ -71,11 +71,15 @@ function Profile() {
                                                 <p>Người theo dõi</p>
                                             </div>
                                         </div>
-                                        <h5 className="author-name">{userInfor.name}</h5>
+                                        <h5 className="author-name" style={{ marginTop: '5px' }}>{userInfor.name}</h5>
+                                        <div className="author__social">
+                                            <i className="fab fa-instagram" onClick={() => window.open(ReactHtmlParser(userInfor.instagramLink), '_blank')} ></i>
+                                            <i className="fab fa-facebook-square" onClick={() => window.open(ReactHtmlParser(userInfor.fbLink), '_blank')}></i>
+                                        </div>
                                         <p style={{ fontSize: "14px" }}>
                                             {userInfor.about}
                                         </p>
-                                        <div className="author__infor--count mt-30 d-flex">
+                                        <div className="author__infor--count mt-15 d-flex">
                                             <div className="count__div">
                                                 <h5>Số Bookmark: </h5>
                                                 <h4 >{userInfor.bookmarkOnOwnPostCount}</h4>
@@ -87,14 +91,14 @@ function Profile() {
                                         </div>
                                         <div className="post-info-button" style={{ marginTop: '10px' }}>
                                             {!userInfor.followed ?
-                                                <button className="bookmark-btn" 
-                                                style={{ backgroundColor: '#5869DA', color: 'white' }}
-                                                onClick={handleClickFollow}>Theo dõi</button>
+                                                <button className="bookmark-btn"
+                                                    style={{ backgroundColor: '#5869DA', color: 'white' }}
+                                                    onClick={handleClickFollow}>Theo dõi</button>
                                                 :
                                                 <button className="bookmark-btn"
                                                     onClick={handleClickFollow}
                                                 >
-                                                    <i className="fal fa-user-check" style={{marginRight: '5px'}}></i>
+                                                    <i className="fal fa-user-check" style={{ marginRight: '5px' }}></i>
                                                     Đã theo dõi</button>
                                             }
 
@@ -105,15 +109,15 @@ function Profile() {
                             </div>
                             {/* TODO: TAB POSTS */}
                             <div className="mt-30 col-lg-8" >
-                                {posts.length === 0 ? <Empty /> 
-                                :
-                                posts.map((post, index) => {
-                                    return (
-                                        <CurrentPost post={post} key={index}/>
-                                    )
-                                })
+                                {posts.length === 0 ? <Empty />
+                                    :
+                                    posts.map((post, index) => {
+                                        return (
+                                            <CurrentPost post={post} key={index} />
+                                        )
+                                    })
                                 }
-                                
+
                             </div>
                         </div>
                     </div>

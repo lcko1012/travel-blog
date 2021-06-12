@@ -159,6 +159,17 @@
     justify-content: space-between;
 }
 
+.author__social i {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+.author__social .fa-instagram {
+    color: brown;
+    margin-right: 5px;
+}
+
 .myprofile__draft:hover {
     transform: translate(0px, -3px);
 }

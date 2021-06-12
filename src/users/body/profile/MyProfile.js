@@ -81,7 +81,6 @@ const MyProfile = () => {
 
 
   const handleDelDraft = async (postId) => {
-    const token = Cookies.get("token")
     try {
       const res = await axios.delete(`/post/${postId}`)
 
@@ -115,12 +114,16 @@ const MyProfile = () => {
                     <p>Người theo dõi</p>
                   </div>
                 </div>
-                <h5 className="author-name">{userInfor.name}</h5>
+                <h5 className="author-name" style={{marginTop: '5px'}}>{userInfor.name}</h5>
+                <div className="author__social">
+                  <i className="fab fa-instagram" onClick={() => window.open(ReactHtmlParser(userInfor.instagramLink), '_blank')} ></i>
+                  <i className="fab fa-facebook-square" onClick={() => window.open(ReactHtmlParser(userInfor.fbLink), '_blank')}></i>
+                </div>
                 <p style={{ fontSize: "14px" }}>
                   {ReactHtmlParser(userInfor.about)}
                   {/* {userInfor.about} */}
                 </p>
-                <div className="author__infor--count mt-30 d-flex">
+                <div className="author__infor--count mt-15 d-flex">
                   <div className="count__div">
                     <h5>Số Bookmark: </h5>
                     <h4 >{userInfor.bookmarkOnOwnPostCount}</h4>

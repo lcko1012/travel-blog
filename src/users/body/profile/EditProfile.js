@@ -1,10 +1,11 @@
 import axios from 'axios'
-import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { showErrMsg80, showSuccessMsg80 } from '../../utils/notification/Notification'
 import ReactHtmlParser from 'react-html-parser'
 import PassPage from './components/PassPage'
+import { fetchUser, dispatchGetUser } from '../../../redux/actions/authAction'
+import Cookies from 'js-cookie'
 
 
 const EditProfile = () => {
@@ -17,6 +18,7 @@ const EditProfile = () => {
         err: '',
         success: '',
     }
+    const dispatch = useDispatch()
     const auth = useSelector(state => state.auth)
     const userInfor = auth.user
     const [newInfor, setNewInfor] = useState(initialState)
@@ -47,7 +49,6 @@ const EditProfile = () => {
     const handleChangeAvatar = async (e) => {
         e.preventDefault()
         try {
-            const token = Cookies.get('token')
             const file = e.target.files[0]
 
             if (!file) {
@@ -84,8 +85,13 @@ const EditProfile = () => {
             const res = await axios.put('/user/update/info', formInfor)
             if (res) {
                 setNewInfor({ ...newInfor, success: 'Cập nhật thành công', err: '' })
+                const token = Cookies.get('token')
+                fetchUser(token).then(res => {
+                    dispatch(dispatchGetUser(res))
+                })
             }
         } catch (error) {
+            console.log(error)
             setNewInfor({ ...newInfor, err: "Không thể cập nhật thông tin, xin hãy thử lại sau", success: '' })
         }
     }
@@ -119,7 +125,7 @@ const EditProfile = () => {
                                 <div className="editProfile__field" >
                                     <p>Ảnh đại diện</p>
                                     <div className="editProfile__avatar">
-                                        <img src={newAvatar ? newAvatar : ReactHtmlParser(userInfor.avatarLink)} />
+                                        <img alt="img" src={newAvatar ? newAvatar : ReactHtmlParser(userInfor.avatarLink)} />
                                         <span>
                                             <i className="fas fa-camera"></i>
                                             <input type="file" name="file" id="file_up" onChange={(e) => handleChangeAvatar(e)} />

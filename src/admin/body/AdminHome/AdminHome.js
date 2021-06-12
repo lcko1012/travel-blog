@@ -2,6 +2,7 @@ import './AdminHome.css';
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ReactHtmlParse from "react-html-parser";
+import {Link} from 'react-router-dom'
 
 function AdminHome(props) {
     const initialState = {
@@ -9,7 +10,7 @@ function AdminHome(props) {
         postCount: 0,
         reportedPostCount: 0
     }
-    const { token } = props;
+
     const [info, setInfo] = useState(initialState);
     const [topUsers, setTopUsers] = useState([]);
     const [topPosts, setTopPosts] = useState([]);
@@ -17,9 +18,7 @@ function AdminHome(props) {
     useEffect(() => {
         const getInfo = async () => {
             try {
-                const res = await axios.get("/system/info", {
-                    headers: { Authorization: `Bearer ${token}` }
-                })
+                const res = await axios.get("/system/info")
                 if (res) {
                     setInfo(res.data)
                 }
@@ -30,9 +29,7 @@ function AdminHome(props) {
 
         const getTopUsers = async () => {
             try {
-                const res = await axios.get("/user/follow/top", {
-                    headers: { Authorization: `Bearer ${token}` }
-                })
+                const res = await axios.get("/user/follow/top")
                 if (res) {
                     setTopUsers(res.data)
                 }
@@ -43,9 +40,7 @@ function AdminHome(props) {
 
         const getTopPosts = async () => {
             try {
-                const res = await axios.get("/post?prop=bookmark&size=10", {
-                    headers: { Authorization: `Bearer ${token}` }
-                })
+                const res = await axios.get("/post?prop=bookmark&size=10")
                 if (res) {
                     setTopPosts(res.data)
                 }
@@ -61,10 +56,10 @@ function AdminHome(props) {
 
     const elmPost = topPosts.map((post, index) => {
         return (
-            <tr>
+            <tr key={post.postId}>
                 <th className="text-center" scope="row">{index + 1}</th>
                 <td>{post.title.length > 20 ? ReactHtmlParse(post.title.slice(0, 20)) + "..." : ReactHtmlParse(post.title)}</td>
-                <td>{post.owner ? post.owner : "Chưa có"}</td>
+                <td>{post.author.name}</td>
                 <td className="text-center">{post.bookmarkedCount}</td>
             </tr>
         )
@@ -72,7 +67,7 @@ function AdminHome(props) {
 
     const elmUser = topUsers.map((user, index) => {
         return (
-            <tr>
+            <tr key={user.accountId}>
                 <th scope="row" className="text-center">{index + 1}</th>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
@@ -83,12 +78,12 @@ function AdminHome(props) {
 
     return (
         <>
-            <main className="main__home">
-            <div className="AdminPage">
+            <main className="admin__home">
             <div className="right-panel">
                 <div className="row">
                     <div className="col-lg-4 pd-15">
-                        <div className="new-user">
+                        <Link to="/admin/users">
+                        <div className="admin__home--card admin__home--hieuung hieu-ung">
                             <div className="row">
                                 <div className="col-lg-5">
                                     <div className="icon">
@@ -105,10 +100,12 @@ function AdminHome(props) {
                                 </div>
                             </div>
                         </div>
+                        </Link>
                     </div>
 
                     <div className="col-lg-4 pd-15">
-                        <div className="post">
+                    <Link to="/admin/posts">
+                        <div className="admin__home--card admin__home--hieuung hieu-ung">
                             <div className="row">
                                 <div className="col-lg-5">
                                     <div className="icon">
@@ -125,10 +122,12 @@ function AdminHome(props) {
                                 </div>
                             </div>
                         </div>
+                        </Link>
                     </div>
 
                     <div className="col-lg-4 pd-15">
-                        <div className="reported-post">
+                        <Link to="/admin/reports">
+                        <div className="admin__home--card admin__home--hieuung hieu-ung">
                             <div className="row">
                                 <div className="col-lg-5">
                                     <div className="icon">
@@ -145,15 +144,18 @@ function AdminHome(props) {
                                 </div>
                             </div>
                         </div>
+                        </Link>
                     </div>
                 </div>
 
                 <div className="row">
                     <div className="col-lg-6">
-                        <div className="most-favorite-post">
-                            <h3 className="list-name">Top 10</h3>
-                            <h5 className="web-name">Bài viết được yêu thích nhất</h5>
-                            <hr></hr>
+                        <div className="admin__favoriteposts hieu-ung">
+                           <div className="admin__favoriteposts--title">
+                                <h3 className="list-name">Top 10</h3>
+                                <h5 className="web-name">Bài viết được yêu thích nhất</h5>
+                           </div>
+                            
                             <div className="most-favorite-post-table">
                                 <table className="table table-hover">
                                     <thead>
@@ -172,10 +174,12 @@ function AdminHome(props) {
                         </div>
                     </div>
                     <div className="col-lg-6">
-                        <div className="most-followed-user">
-                            <h3 className="list-name">Top 10</h3>
-                            <h5 className="web-name">Người có nhiều follow nhất</h5>
-                            <hr></hr>
+                        <div className="admin__topusers hieu-ung">
+                            <div className="admin__favoriteposts--title">
+                                <h3 className="list-name">Top 10</h3>
+                                <h5 className="web-name">Người có nhiều follow nhất</h5>
+                            </div>
+                            
                             <div className="most-followed-user-table">
                                 <table className="table table-hover">
                                     <thead>
@@ -194,7 +198,7 @@ function AdminHome(props) {
                         </div>
                     </div>
                 </div>
-            </div>
+            
         </div>
             </main>
         </>

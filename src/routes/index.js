@@ -1,7 +1,13 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
+import AdminCategory from '../admin/body/AdminCategory/AdminCategory'
+import AdminCategoryForm from '../admin/body/AdminCategory/AdminCategoryForm'
 import AdminHome from '../admin/body/AdminHome/AdminHome'
+import AdminPosts from '../admin/body/AdminPosts/AdminPosts'
+import AdminReportDetails from '../admin/body/AdminReports/AdminReportDetail'
+import AdminReports from '../admin/body/AdminReports/AdminReports'
+import AdminUsers from '../admin/body/AdminUsers/AdminUsers'
 import AdminLayout from '../layouts/AdminLayout'
 import UserLayout from '../layouts/UserLayout'
 import ForgotPassword from '../users/body/auth/ForgotPassword'
@@ -18,48 +24,61 @@ import MyProfile from '../users/body/profile/MyProfile'
 import Profile from '../users/body/profile/Profile'
 import SearchPage from '../users/body/search/SearchPage'
 import NotFound from '../users/utils/NotFound/NotFound'
+import NotPermission from '../users/utils/NotFound/NotPermission'
+
+const AppRoute = ({component: Component, layout: Layout, ...rest}) => {
+    return (
+        <Route {...rest} render={
+            props => (
+                <Layout>
+                    <Component {...props} />
+                </Layout>
+            )
+        } />
+    )
+}   
 
 export default () => {
     const auth = useSelector(state => state.auth)
-    const { isLogged, idAdmin } = auth
-    return (
-        <section>
+    const { isLogged, isAdmin } = auth
+    return(
+        
             <Switch>
-                <Route path="/admin/:path?" exact>
-                    <AdminLayout>
-                        <Switch>
-                            <Route path="/admin" exact component={AdminHome} />
-                        </Switch>
-                    </AdminLayout>
-                </Route>
+                <AppRoute exact path="/" layout={UserLayout} component={Home} />
+                <AppRoute path="/" component={Home} exact layout={UserLayout}/>
+                <AppRoute path="/register" component={Register} exact layout={UserLayout}/>
+                {/* <AppRoute path="/login" component={Login} /> */}
+                <AppRoute path="/login" component={!isLogged ? Login : Home} exact layout={UserLayout}/>
+                <AppRoute path="/forgot_password" component={isLogged ? Home : ForgotPassword} exact layout={UserLayout}/>
+                <AppRoute path="/auth/resetPassword/:token" component={isLogged ? Home : ResetPassword} exact layout={UserLayout} />
 
-                <Route>
-                    <UserLayout>
-                        <Route path="/" component={Home} exact />
-                        <Route path="/register" component={Register} exact />
-                        {/* <Route path="/login" component={Login} /> */}
-                        <Route path="/login" component={!isLogged ? Login : Home} exact />
-                        <Route path="/forgot_password" component={isLogged ? Home : ForgotPassword} exact />
-                        <Route path="/auth/resetPassword/:token" component={isLogged ? Home : ResetPassword} exact />
-
-                        <Route path="/posts/new" component={isLogged ? NewPosts : Home} exact />
-                        <Route path='/posts/:slug' component={Post} exact />
-                        <Route path='/posts/:slug/edit' component={isLogged ? NewPosts : Home} exact />
+                <AppRoute path="/posts/new" component={isLogged ? NewPosts : Home} exact layout={UserLayout}/>
+                <AppRoute path='/posts/:slug' component={Post} exact layout={UserLayout}/>
+                <AppRoute path='/posts/:slug/edit' component={isLogged ? NewPosts : Home} exactlayout={UserLayout} />
 
 
-                        <Route path='/search' component={SearchPage} exact />
-                        <Route path='/bookmarks' component={isLogged ? Bookmarks : Login} exact />
-                        <Route path='/category/:id' component={Category} exact />
+                <AppRoute path='/search' component={SearchPage} exact layout={UserLayout}/>
+                <AppRoute path='/bookmarks' component={isLogged ? Bookmarks : Login} exact layout={UserLayout}/>
+                <AppRoute path='/category/:id' component={Category} exact layout={UserLayout}/>
 
-                        <Route path="/profile/:id" component={Profile} exact />
-                        <Route path="/myprofile" component={isLogged ? MyProfile : Login} exact />
-                        <Route path="/myprofile/edit" component={isLogged ? EditProfile : Login} exact />
-                        <Route component={NotFound} exact />
-                    </UserLayout>
-                </Route>
-
+                <AppRoute path="/profile/:id" component={Profile} exact layout={UserLayout}/>
+                <AppRoute path="/myprofile" component={isLogged ? MyProfile : Login} exact layout={UserLayout}/>
+                <AppRoute path="/myprofile/edit" component={isLogged ? EditProfile : Login} exact layout={UserLayout} />
+                
+                <AppRoute path="/admin/dashboard" component={isAdmin ? AdminHome : NotPermission} exact  layout={isAdmin ? AdminLayout : UserLayout}/>
+                <AppRoute path="/admin/posts"  component={isAdmin ? AdminPosts : NotPermission} exact layout={isAdmin ? AdminLayout : UserLayout} />
+                <AppRoute path="/admin/categories"  component={isAdmin ? AdminCategory : NotPermission} exact layout={isAdmin ? AdminLayout : UserLayout} />
+                <AppRoute path="/admin/categoriesAdd"  component={isAdmin ? () => <AdminCategoryForm isAdd={true} /> : NotPermission} exact layout={isAdmin ? AdminLayout : UserLayout} />
+                <AppRoute path="/admin/categoriesUpdate/:id/:name"  component={isAdmin ? AdminCategoryForm : NotPermission} exact layout={isAdmin ? AdminLayout : UserLayout} />
+                
+                
+                <AppRoute path="/admin/users"  component={isAdmin ? AdminUsers : NotPermission} exact layout={isAdmin ? AdminLayout : UserLayout} />
+                <AppRoute path="/admin/reports"  component={isAdmin ? AdminReports : NotPermission} exact layout={isAdmin ? AdminLayout : UserLayout} />
+                
+                <AppRoute path="/admin/reportDetail/:id"  component={isAdmin ? AdminReportDetails : NotPermission} exact layout={isAdmin ? AdminLayout : UserLayout} />
+                
+                <AppRoute component={NotFound} exact layout={UserLayout}/>
             </Switch>
-
-        </section>
+        
     )
 }

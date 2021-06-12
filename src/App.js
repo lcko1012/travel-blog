@@ -7,6 +7,9 @@ import useSocketDataObject from './real-time/useSocketDataObject'
 import CookiesService from './services/CookiesService'
 import { ToastContainer } from 'react-toastify';
 import Routes from './routes';
+import Header from './users/header/Header';
+import Footer from './users/footer/Footer';
+import Body from './users/Body';
 
 function App() {
 
@@ -48,6 +51,7 @@ function App() {
     <>
       <Router>
         <div className="App">
+          {/* <Header /> */}
           <ToastContainer
             position="bottom-left"
             autoClose={3000}
@@ -59,7 +63,8 @@ function App() {
             draggable
             pauseOnHover
           />
-
+          {/* <Body /> */}
+          {/* <Footer /> */}
           <Routes />
         </div>
       </Router>

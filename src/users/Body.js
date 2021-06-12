@@ -20,47 +20,39 @@ import Category from './body/category/Category'
 import AdminHome from '../admin/body/AdminHome/AdminHome'
 import UserLayout from '../layouts/UserLayout'
 import AdminLayout from '../layouts/AdminLayout'
+import NotPermission from './utils/NotFound/NotPermission'
 // import EditPost from './body/newPosts/EditPost'
 
 function Body() {
     const auth = useSelector(state => state.auth)
-    const { isLogged, idAdmin } = auth
+    const { isLogged, isAdmin } = auth
     return (
         <section>
             <Switch>
-                <Route path="/admin/:path?" exact>
-                    <AdminLayout>
-                    <Switch>
-                        <Route path="/admin" exact component={AdminHome} />
-                    </Switch>
-                    </AdminLayout>
-                </Route>
+                <Route path="/" component={Home} exact />
+                <Route path="/register" component={Register} exact />
+                {/* <Route path="/login" component={Login} /> */}
+                <Route path="/login" component={!isLogged ? Login : Home} exact />
+                <Route path="/forgot_password" component={isLogged ? Home : ForgotPassword} exact />
+                <Route path="/auth/resetPassword/:token" component={isLogged ? Home : ResetPassword} exact />
 
-                <Route>
-                    <UserLayout>
-                        <Route path="/" component={Home} exact />
-                        <Route path="/register" component={Register} exact />
-                        {/* <Route path="/login" component={Login} /> */}
-                        <Route path="/login" component={!isLogged ? Login : Home} exact />
-                        <Route path="/forgot_password" component={isLogged ? Home : ForgotPassword} exact />
-                        <Route path="/auth/resetPassword/:token" component={isLogged ? Home : ResetPassword} exact />
-
-                        <Route path="/posts/new" component={isLogged ? NewPosts : Home} exact />
-                        <Route path='/posts/:slug' component={Post} exact />
-                        <Route path='/posts/:slug/edit' component={isLogged ? NewPosts : Home} exact />
+                <Route path="/posts/new" component={isLogged ? NewPosts : Home} exact />
+                <Route path='/posts/:slug' component={Post} exact />
+                <Route path='/posts/:slug/edit' component={isLogged ? NewPosts : Home} exact />
 
 
-                        <Route path='/search' component={SearchPage} exact />
-                        <Route path='/bookmarks' component={isLogged ? Bookmarks : Login} exact />
-                        <Route path='/category/:id' component={Category} exact />
+                <Route path='/search' component={SearchPage} exact />
+                <Route path='/bookmarks' component={isLogged ? Bookmarks : Login} exact />
+                <Route path='/category/:id' component={Category} exact />
 
-                        <Route path="/profile/:id" component={Profile} exact />
-                        <Route path="/myprofile" component={isLogged ? MyProfile : Login} exact />
-                        <Route path="/myprofile/edit" component={isLogged ? EditProfile : Login} exact />
-                        <Route component={NotFound} exact />
-                    </UserLayout>
-                </Route>
+                <Route path="/profile/:id" component={Profile} exact />
+                <Route path="/myprofile" component={isLogged ? MyProfile : Login} exact />
+                <Route path="/myprofile/edit" component={isLogged ? EditProfile : Login} exact />
+                
+                {/* <Route path="/admin" component={isAdmin ? AdminLayout : NotPermission} exact /> */}
 
+                <Route component={NotFound} exact />
+                
             </Switch>
 
         </section>

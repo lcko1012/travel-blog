@@ -13,12 +13,16 @@ function AdminReports() {
         page: 0,
         size: 10
     })
+    const [isDefault, setIsDefault] = useState(false)
 
     useEffect(() => {
         const getReportList = async () => {
             try {
                 const res = await axios.get(`/report?page=${pagination.page}&size=${pagination.size}`)
                 if (res) {
+                    if(res.data.length < 10 || res.data.length === 0) {
+                        setIsDefault(true)
+                    }
                     setReportList(res.data);
                 }
             } catch (error) {
@@ -63,7 +67,7 @@ function AdminReports() {
         return (
             <tr key={report.reportId}>
                 <th scope="row">{index + 1 + (pagination.page * pagination.size)}</th>
-                <td>{report.reportPostId}</td>
+                <td>{report.reportId}</td>
                 <td>{new Date(report.reportDate).toLocaleString()}</td>
                 <td>{report.solved ? solveStatus(true) : "Chưa xử lý"}</td>
                 {/* <td className="text-center">
@@ -116,7 +120,7 @@ function AdminReports() {
                         Prev
                     </button>
                     <button className="btn btn-secondary" disabled={true}>{pagination.page + 1}</button>
-                    <button className="btn btn-secondary ml-10" disabled={reportList.length < pagination.size} onClick={onClickNext}>
+                    <button className="btn btn-secondary ml-10" disabled={isDefault} onClick={onClickNext}>
                         Next
                         <i className="far fa-chevron-double-right ml-5"></i>
                     </button>

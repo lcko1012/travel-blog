@@ -1,17 +1,50 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { showErrMsg, showSuccessMsg } from '../../utils/notification/Notification'
 import { isLength, isMatch } from '../../utils/validation/Validation'
+import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom'
+
 
 function ResetPassword() {
     const {token} = useParams()
+    const [canChange, setCanChange] = useState(false)
+
     const [data, setData] = useState({
         password: '',
         matchedPassword: '',
         err:'',
         success: ''
     })
+    const history = useHistory()
+
+    useEffect(() => {
+        const confirmToken = async () => {
+            try {
+                const res = await axios.get('/auth/changePassword', {
+                    params: {
+                        token: token
+                    }
+                })
+                if(res) {
+                    setCanChange(true)
+                    // console.log(res)
+                }
+            } catch (error) {
+                if(error.response.status === 401){
+                    setData({...data, err: 'Mã không hợp lệ hoặc không tồn tại', success: ''})
+                }
+                else {
+                    setData({...data, err: 'Mã đã hết hạn, hãy thực hiện lại yêu cầu', success: ''})
+                }
+            }
+            
+        }
+        if(token) {
+            confirmToken()
+        }
+    }, [token])
 
     const handleChangeInput = (e) => {
         const { name, value } = e.target
@@ -32,11 +65,20 @@ function ResetPassword() {
         resetForm.append('password', password)
         resetForm.append('matchedPassword', matchedPassword)
         
-
         try{
             const res = await axios.put('/auth/savePassword', resetForm)
             if(res) {
-                setData({...data, success: 'Thay đổi mật khẩu thành công', err: ''})
+                // setData({...data, success: 'Thay đổi mật khẩu thành công', err: ''})
+                toast.success('Đã đổi mật khẩu thành công ✔', {
+                    position: "bottom-left",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  });
+                  history.push("/login")
             }
         }catch(err){
             console.log(err)
@@ -45,8 +87,8 @@ function ResetPassword() {
             if(err.response.status === 410){
                 setData({...data, err: 'Quá thời gian lấy lại mật khẩu', success: ''})
             }
-            else if(err.response.status === 403){
-                setData({...data, err: 'Không hợp lệ', success: ''})
+            else if(err.response.status === 401){
+                setData({...data, err: 'Mã không hợp lệ', success: ''})
             }
             else if(err.response.status === 400){
                 setData({...data, err: 'Mật khẩu không đủ 6 kí tự', success: ''})
@@ -65,6 +107,7 @@ function ResetPassword() {
                 <h3>Lấy lại mật khẩu</h3>
                 {err && showErrMsg(err)}
                 {success && showSuccessMsg(success)}
+                {canChange && 
                 <form onSubmit={handleSubmit}>
                     <input type="password" placeholder="Nhập mật khẩu mới" name="password"
                         value={password} onChange={handleChangeInput} />
@@ -73,7 +116,8 @@ function ResetPassword() {
                     <button type="submit">
                         Xác nhận
                 </button>
-                </form>
+                </form>  }
+                
             </div>
         </main>
     )

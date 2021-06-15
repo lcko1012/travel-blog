@@ -18,7 +18,7 @@ function CurrentPost({ post}) {
                     </div>
                 </div>
 
-                <div className="col-md-8 align-self-center">
+                <div className="col-md-8 align-self-center" style={{margin: '10px 0'}}>
                     <div className="post-content">
                         <h5 className="post-title  mb-10">
                             <Link to={{ pathname: `/posts/${post.slug}`, state: { id: post.postId } }}

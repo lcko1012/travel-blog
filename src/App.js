@@ -7,16 +7,14 @@ import useSocketDataObject from './real-time/useSocketDataObject'
 import CookiesService from './services/CookiesService'
 import { ToastContainer } from 'react-toastify';
 import Routes from './routes';
-import Header from './users/header/Header';
-import Footer from './users/footer/Footer';
-import Body from './users/Body';
+// import Body from './users/Body'
+
 
 function App() {
 
   const dispatch = useDispatch()
   const auth = useSelector(state => state.auth)
   const realtime = useSelector(state => state.realtime)
-  // /
   const { ConnectSocket, Subscribe_notify } = useSocketDataObject()
   const { user } = auth
   const cookiesService = CookiesService.getService()
@@ -29,11 +27,12 @@ function App() {
         dispatch(dispatchGetUser(res))
       })
     }
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth.isLogged, dispatch])
 
   useEffect(() => {
     ConnectSocket()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -42,6 +41,7 @@ function App() {
       // myVar = setTimeout(() => Subscribe_notify(user.email), 10000)
       Subscribe_notify(user.email)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [realtime.isSuccess])
 
 

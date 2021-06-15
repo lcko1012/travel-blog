@@ -8,6 +8,85 @@ header {
     box-shadow: 0 2px 3px -2px gray;
 }
 
+/*Smart phone nhỏ*/
+@media screen and (min-width: 240px){
+    .menu__left input {
+       display: none;
+    }
+    .menu__right span{
+        display: none;
+    }
+    .menu__left span {
+        display: none;
+    }
+    .menu__notify--dropdown {
+        min-width: 260px;
+    }
+}
+/*Iphone(480 x 640)*/
+@media screen and (min-width: 320px){
+    .menu__left input {
+        max-width: 40px; 
+        min-width: 20px;
+        /* width: 30%; */
+        display: inline;
+
+    }
+    .menu__right span{
+        display: none;
+    }
+    .menu__left span {
+        display: none;
+    }
+    .menu__notify--dropdown {
+        min-width: 250px;
+    }
+}
+/*Tablet nhỏ(480 x 640)*/
+@media screen and (min-width: 480px){
+    .menu__left input {
+        max-width: 500px;
+        min-width: 200px;
+        display: inline;
+    }
+    .menu__left span {
+        display: none;
+    }
+    .menu__notify--dropdown {
+        min-width: 350px;
+    } 
+}
+/*Ipad dọc(768 x 1024)*/
+@media screen and (min-width: 768px){
+    .menu__left input {
+        max-width: 500px;
+        display: inline;
+        min-width: 200px;
+    }
+    .menu__notify--dropdown {
+        min-width: 350px;
+    } 
+    .menu__left span {
+        display: inline;
+    }
+}
+/*Ipad ngang(1024 x 768)*/
+@media screen and (min-width: 1024px){
+    .menu__left input {
+        max-width: 1000px;
+        display: inline;
+        min-width: 300px;
+    }
+    .menu__notify--dropdown {
+        min-width: 350px;
+    } 
+    .menu__left span {
+        display: inline;
+    }
+    .menu__right span {
+        display: inline;
+    }
+}
 
 
 .menu {
@@ -24,6 +103,8 @@ header {
     display: flex;
     width: fit-content;
 }
+
+
 
 .menu__left p{
     color: var(--color-muted);
@@ -43,20 +124,22 @@ header {
     width: auto;
 }
 
-.menu__left form i {
+/* .menu__left form i {
     font-size: 20px;
-}
+} */
 
 .menu__left input {
+    font-size: 14px;
     margin-left: 10px;
     padding: 15px 0px;
     height: 20px;
     outline: none;
-    border: 1px solid white;
+    border: 1px solid rgb(255, 255, 255);
     border-radius: 5px;
-    width: 500px;
+    /* width: 100%; */
     /* border: 1px solid var(--color-muted); */
 }
+
 
 
 .menu__right {
@@ -184,7 +267,7 @@ header {
     position: absolute;
     background-color: #fff;
     right: 1px;
-    min-width: 350px;
+    /* min-width: 350px; */
     box-shadow: 0px 8px 16px 0px rgb(0 0 0 / 20%);
     z-index: 98;
     /* color: rgba(0,0,0,0.75); */
@@ -219,3 +302,5 @@ header {
     color: white;
     font-size: 12px;
 }
+
+

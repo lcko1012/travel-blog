@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Comment from './components/Comment'
-import axios from 'axios'
 import Cookies from 'js-cookie'
 import ReactHtmlParser from 'react-html-parser'
 import { useHistory } from 'react-router'

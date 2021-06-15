@@ -4,7 +4,7 @@ import ReactHtmlParse from "react-html-parser";
 import { toast } from 'react-toastify';
 
 
-function AdminUsers(props) {
+function AdminUsers() {
 
     const [userList, setUserList] = useState([]);
     const [pagination, setPagination] = useState({
@@ -29,13 +29,14 @@ function AdminUsers(props) {
                     if(res.data.length < 10 || res.data.length === 0){
                         setIsDefault(true)
                     }
-                    setUserList([...userList, ...res.data]);
+                    setUserList(res.data);
                 }
-            } catch (error) {
+        } catch (error) {
                 console.log(error);
             }
         }
         getUserList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pagination])
 
     const onClickNext = () => {
@@ -62,7 +63,7 @@ function AdminUsers(props) {
                         item.accountId !== userToAdm.accountId
                     )
                     setUserList(newUserList)
-                    toast.success(`${userToAdm.name} đã thành admin`, {
+                    toast.success(`${userToAdm.name} đã thành admin 🎉`, {
                         position: "bottom-left",
                         autoClose: 3000,
                         hideProgressBar: false,
@@ -76,7 +77,7 @@ function AdminUsers(props) {
                 }
             } catch (error) {
                 if (error.response.status === 422) {
-                    toast.error('Tài khoản không tồn tại hoặc chưa kích hoạt', {
+                    toast.error('Tài khoản không tồn tại hoặc chưa kích hoạt 🙁', {
                         position: "bottom-left",
                         autoClose: 3000,
                         hideProgressBar: false,

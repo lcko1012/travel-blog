@@ -53,8 +53,8 @@ export default () => {
                 <AppRoute path="/auth/resetPassword/:token" component={isLogged ? Home : ResetPassword} exact layout={UserLayout} />
 
                 <AppRoute path="/posts/new" component={isLogged ? NewPosts : Home} exact layout={UserLayout}/>
+                <AppRoute path='/posts/:slug/edit' component={isLogged ? NewPosts : Home} exact layout={UserLayout} />
                 <AppRoute path='/posts/:slug' component={Post} exact layout={UserLayout}/>
-                <AppRoute path='/posts/:slug/edit' component={isLogged ? NewPosts : Home} exactlayout={UserLayout} />
 
 
                 <AppRoute path='/search' component={SearchPage} exact layout={UserLayout}/>

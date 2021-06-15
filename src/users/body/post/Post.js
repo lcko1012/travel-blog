@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, Link, useLocation, useHistory } from 'react-router-dom'
+import { useParams, Link, useHistory } from 'react-router-dom'
 import "./Post.css"
 import axios from 'axios'
 
@@ -10,12 +10,14 @@ import Comments from './comments/Comments'
 import CommentPost from '../home/components/CommentPost'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux'
 
 
 function Post() {
   const params = useParams()
   const history = useHistory()
-
+  const auth = useSelector(state => state.auth)
+  const { user } = auth
   const initialState = {
     postId: 0,
     title: '',
@@ -145,10 +147,27 @@ function Post() {
     try {
       const res = await axios.delete(`/post/${post.postId}`)
       if (res) {
+        toast.success('Đã xóa bài viết thành công ✔', {
+          position: "bottom-left",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         history.push("/")
       }
     } catch (error) {
-      console.log(error)
+      toast.error('Đã có lỗi xảy ra khi xóa bài 😢', {
+        position: "bottom-left",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   }
 
@@ -168,7 +187,7 @@ function Post() {
       })
       if (res) {
         setIsReport(false)
-        toast.success('Báo cáo thành công', {
+        toast.success('Báo cáo thành công ✔', {
           position: "bottom-left",
           autoClose: 3000,
           hideProgressBar: false,
@@ -180,7 +199,7 @@ function Post() {
 
       }
     } catch (error) {
-      toast.error('Không thể báo cáo', {
+      toast.error('Không thể báo cáo 🙁', {
         position: "bottom-left",
         autoClose: 3000,
         hideProgressBar: false,
@@ -202,7 +221,7 @@ function Post() {
     return (
       <div className="post__alert post__alert--delete ">
         <h5>Lưu ý</h5>
-        <p>Thao tác này sẽ xóa hết dữ liệu bài viết của bạn</p>
+        <p>Thao tác này sẽ xóa hết dữ liệu bài viết</p>
         <div>
           <button className="post__delAlert--button post__delAlert--cancel"
             onClick={() => handleClickDel(false)}
@@ -276,7 +295,12 @@ function Post() {
                       ></div>
                       <div style={{ margin: 'auto 0' }}>
                         <div className="name-write-by">
-                          <Link to={`/profile/${author.accountId}`}>{author.name}</Link>
+                          {author.accountId === user.accountId ?
+                            <Link to="/myprofile">{author.name}</Link>
+                            :
+                            <Link to={`/profile/${author.accountId}`}>{author.name}</Link>
+                          }
+
                         </div>
                         <p className="date-write-by">{post.publishedDate}</p>
                       </div>
@@ -294,6 +318,11 @@ function Post() {
                           <i className="fal fa-trash-alt" style={{ color: '#A95252' }}></i>
                         </button>
                       </div> :
+                      //neu khong chủ bài viết thì ktra admin hay user thường: admin xóa bài được, user là báo cáo
+                      // <button className="post__delBtn" onClick={() => handleClickDel(true)}>
+                      // <i className="fal fa-trash-alt" style={{ color: '#A95252' }}></i>
+                      // </button>
+                      auth.isAdmin ?  null :
                       <button className="post__delBtn post__reportBtn" style={{ color: 'red' }} onClick={handleShowReport}>
                         <i className="fal fa-exclamation-triangle"></i>
                       </button>
@@ -348,7 +377,7 @@ function Post() {
 
                 {/* TODO: Same author */}
 
-                {userPosts.length > 0 ?
+                {userPosts.length-1 > 0 ?
                   <div>
                     <h5 className="mb-20">Các bài viết cùng tác giả</h5>
                     {userPosts.map(item => {

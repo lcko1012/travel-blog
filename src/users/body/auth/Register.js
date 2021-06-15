@@ -50,13 +50,11 @@ function Register() {
             registerForm.append('matchedPassword', matchedPassword)
 
             const res = await axios.post('/auth/registration', registerForm)
-            // headers: { "Content-Type": "multipart/form-data" },
-            // setUser({...user, err: '', success: res.data})
             if(res.status === 202) {
                 setUser({...user, err: '', success: 'Kiểm tra email để kích hoạt tài khoản'})
             }
         }catch(err){
-            if(err.response.status === 401){
+            if(err.response.status === 423){
                 setUser({...user, err: ' Email đã đăng ký nhưng chưa kích hoạt', success: ''})
             }
             else if(err.response.status === 409){

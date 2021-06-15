@@ -22,6 +22,12 @@ axios.interceptors.request.use(
   },
     error => {
       const originalRequest = error.config
+      console.log(error.response.config.url)
+      if(error.response.config.url === '/auth/login'){
+        console.log("loi")
+        return Promise.reject(error);
+
+      }
       if(error.response.status === 403 && !originalRequest._retry) {
         originalRequest._retry = true
         return axios.post('/auth/refreshToken', null,{

@@ -77,7 +77,7 @@ const Notify = forwardRef(({openNotify, setOpenNotify}, ref) => {
             next={getNotifications}
             height={500}
             hasMore={true}
-            loader={<Loading />}
+            // loader={<Loading />}
             scrollableTarget="menu__notify--dropdown"
             >
                 <div className="menu__notify--content">

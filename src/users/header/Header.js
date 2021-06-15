@@ -54,17 +54,17 @@ function Header() {
         return (
             <div className="menu__right">
                 <ul>
-                    <li className="menu__right--post">
+                    <li>
                         <Link to="/posts/new">
                             <i className="far fa-edit"></i>
-                                Viết Bài
+                            <span> Viết bài</span>
                         </Link>
 
                     </li>
                     <li >
                         <Link to="/bookmarks">
                             <i className="far fa-bookmark"></i>
-                                BookMark
+                            <span>BookMark</span>
                         </Link>
                     </li>
                     {/* <li className="menu__right--notify">
@@ -108,9 +108,9 @@ function Header() {
                     <div className="menu__left">
                         <Link to="/">
                             <p>
-                                <i className="fal fa-map-marker-edit"></i>
-                            Lang Thang
-                        </p>
+                            <i className="fal fa-map-marker-edit"></i>
+                            <span>Lang Thang</span>
+                            </p>
                         </Link>
                         <form onSubmit={handleFindSubmit}>
                             <i className="fal fa-search"></i>

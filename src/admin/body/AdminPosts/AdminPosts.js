@@ -7,7 +7,6 @@ import {Link} from'react-router-dom'
 function AdminPosts() {
 
     const [postList, setPostList] = useState([]);
-
     const [pagination, setPagination] = useState({
         page: 0,
         size: 10
@@ -16,8 +15,13 @@ function AdminPosts() {
     useEffect(() => {
         const getPostList = async () => {
             try {
-                const res = await axios.get(`/post?page=${pagination.page}&size=${pagination.size}`)
+                const res = await axios.get(`/post`,{
+                        params: {
+                            page: pagination.page
+                        }
+                    })
                 if (res) {
+                    console.log(res)
                     setPostList(res.data);
                 }
             } catch (error) {
@@ -66,6 +70,8 @@ function AdminPosts() {
         )
     })
 
+ 
+
     return (
             <div className="right-panel">
                 <div className="post-list">
@@ -74,6 +80,8 @@ function AdminPosts() {
                     <h5 className="web-name">LangThang.com</h5>
                     </div>
                     <div className="post-table">
+                        
+                        
                         <table className="table table-hover">
                             <thead>
                                 <tr>

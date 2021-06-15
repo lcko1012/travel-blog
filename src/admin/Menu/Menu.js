@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import './Menu.css';
 import {
     Route,
     NavLink
 } from "react-router-dom";
-import axios from "axios";
 import ReactHtmlParser from "react-html-parser";
 import { useSelector } from "react-redux";
 
@@ -51,7 +50,6 @@ const menu = [
 ]
 
 const MenuLink = ({icon, label, to, activeOnlyWhenExact }) => {
-    console.log(icon)
     return (
         <Route path={to} exact={activeOnlyWhenExact} children={({ match }) => {
             var active = match ? "nav-item active" : "nav-item";

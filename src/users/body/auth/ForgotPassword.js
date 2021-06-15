@@ -41,6 +41,9 @@ function ForgotPassword() {
             else if (err.response.status === 400) {
                 setData({ ...data, err: 'Email không đúng định dạng', success: '' })
             }
+            else if (err.response.status === 403) {
+                setData({ ...data, err: 'Tài khoản chưa kích hoạt', success: '' })
+            }
             else {
                 setData({ ...data, err: 'Đã có lỗi xảy ra', success: '' })
             }

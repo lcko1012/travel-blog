@@ -57,7 +57,7 @@ function AdminCategory() {
                     cate.categoryId !== delId
                     )
                     setCateList(newArr)
-                    toast.success('Xóa thành công', {
+                    toast.success('Xóa thành công ✔', {
                         position: "bottom-left",
                         autoClose: 3000,
                         hideProgressBar: false,
@@ -71,7 +71,7 @@ function AdminCategory() {
 
                 }
             } catch (error) {
-                toast.error('Không thể xóa được', {
+                toast.error('Đã xảy ra lỗi khi xóa 🙁', {
                     position: "bottom-left",
                     autoClose: 3000,
                     hideProgressBar: false,

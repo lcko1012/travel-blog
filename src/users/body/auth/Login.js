@@ -5,7 +5,6 @@ import {dispatchLogin} from '../../../redux/actions/authAction'
 import {useDispatch} from 'react-redux'
 import {showErrMsg, showSuccessMsg} from '../../utils/notification/Notification'
 import { isEmail, isEmpty, isLength } from '../../utils/validation/Validation'
-import Cookies from 'js-cookie'
 import {GoogleLogin} from 'react-google-login'
 import CookiesService from '../../../services/CookiesService'
 import useSocketDataObject from '../../../real-time/useSocketDataObject'
@@ -73,6 +72,9 @@ function Login() {
             else if(err.response.status === 400){
                 setUser({...user, err: 'Email hoặc password không hợp lệ', success: ''})
             }
+            else if(err.response.status === 423) {
+                setUser({...user, err: 'Email đã đăng ký nhưng chưa kích hoạt', success: ''})
+            }
             else {
                 setUser({...user, err: 'Đã có lỗi xảy ra', success: ''})
             }
@@ -98,7 +100,7 @@ function Login() {
             }
             
         }catch(err){
-            console.log(err)
+            setUser({...user, err: 'Đã có lỗi xảy ra', success: ''})
         }
         
     }

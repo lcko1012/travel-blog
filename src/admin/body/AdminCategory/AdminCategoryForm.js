@@ -1,4 +1,4 @@
-import { Link, Redirect, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from 'react-toastify';
@@ -14,13 +14,12 @@ function AdminCategoryForm(props) {
     }
     const history = useHistory()
     const [category, setCategory] = useState(initialState);
-    const [redirect, setRedirect] = useState(false);
 
     const postNewCate = async (data) => {
         try {
             const res = await axios.post("/category", data)
             if (res) {
-                toast.success('Thêm mới thành công', {
+                toast.success('Thêm mới thành công ✔', {
                     position: "bottom-left",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -33,15 +32,29 @@ function AdminCategoryForm(props) {
 
             }
         } catch (error) {
-            toast.error('Đã xảy ra lỗi khi thêm mới', {
-                position: "bottom-left",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            if(error.response.status === 409){
+                toast.error('Đã tồn tại thể loại này 🙁', {
+                    position: "bottom-left",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+            else {
+                toast.error('Đã xảy ra lỗi khi thêm mới 🙁', {
+                    position: "bottom-left",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+            
         }
 
     }
@@ -50,7 +63,7 @@ function AdminCategoryForm(props) {
         try {
             const res = await axios.put(`/category/${id}`, data)
             if (res) {
-                toast.success('Cập nhật thành công', {
+                toast.success('Cập nhật thành công ✔', {
                     position: "bottom-left",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -63,7 +76,7 @@ function AdminCategoryForm(props) {
                 history.push("/admin/categories")
             }
         } catch (error) {
-            toast.error('Đã xảy ra lỗi khi cập nhật', {
+            toast.error('Đã xảy ra lỗi khi cập nhật 🙁', {
                 position: "bottom-left",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -113,7 +126,6 @@ function AdminCategoryForm(props) {
                 });
             } else {
                 updateCate(data)
-                setRedirect(true)
             }
         }
     }

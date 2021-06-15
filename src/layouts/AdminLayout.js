@@ -1,7 +1,7 @@
 import React from 'react'
-import Footer from '../users/footer/Footer'
+
 import Menu from '../admin/Menu/Menu'
-import Header from '../users/header/Header'
+
 
 const AdminLayout = ({children}) => {
     return (

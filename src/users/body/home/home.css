@@ -129,6 +129,10 @@
     border-radius: 10px 10px 0 0;
 }
 
+/* .post-content {
+    margin: 10px 0;
+} */
+
 .thumb-overlay::before {
     position: absolute;
     content: "";

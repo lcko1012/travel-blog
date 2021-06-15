@@ -130,31 +130,42 @@ function Home() {
               </div>
 
               {featuredPosts.map((post, index) => {
-                  if (index > 5) {
-                    return (
-                      <div className="col-lg-4 col-md-6 mb-30" key={post.postId}>
-                        <div className="post-card-1 border-radius-10 hieu-ung">
-                          <div className="thumb-overlay img-hover-slide position-relative" style={{ background: `url(${ReactHtmlParser(post.postThumbnail)})` }}>
-                          </div>
-                          <div className="post-content p-30">
-                            <div className="d-flex post-card-content">
-                              <h5 className="post-title mb-20 ">
-                                <Link to={{ pathname: `/posts/${post.slug}`, state: { id: post.postId } }}>
-                                  {ReactHtmlParser(post.title)}
-                                </Link>
-                              </h5>
-                              <div className="entry-meta meta-1 float-left font-x-small text-uppercase">
-                                <span>{post.bookmarkedCount} lượt bookmark</span>
-                                <span className="time-reading has-dos">{post.commentCount} bình luận</span>
-                              </div>
+                if (index > 5) {
+                  return (
+                    <div className="col-lg-4 col-md-6 mb-30" key={post.postId}>
+                      <div className="post-card-1 border-radius-10 hieu-ung">
+                        <div className="thumb-overlay img-hover-slide position-relative" style={{ background: `url(${ReactHtmlParser(post.postThumbnail)})` }}>
+                        </div>
+                        <div className="post-content p-30">
+                          <div className="d-flex post-card-content">
+                            <div className="currentPost__cataArea mb-10">
+                              {post.categories.map((item) => {
+
+                                return (
+                                  <Link to={{ pathname: `/category/${item.categoryId}` }} key={item.categoryId}>
+                                    <div className="currentPost__cata" key={item.categoryId}>{item.categoryName}</div>
+                                  </Link>
+                                )
+                              })}
+                            </div>
+                            <h5 className="post-title">
+                              <Link to={{ pathname: `/posts/${post.slug}`, state: { id: post.postId } }}>
+                                {ReactHtmlParser(post.title)}
+                              </Link>
+                            </h5>
+
+                            <div className="entry-meta meta-1 float-left font-x-small text-uppercase">
+                              <span>{post.bookmarkedCount} lượt bookmark</span>
+                              <span className="time-reading has-dos">{post.commentCount} bình luận</span>
                             </div>
                           </div>
                         </div>
                       </div>
-                    )
-                  }
+                    </div>
+                  )
+                }
 
-                })
+              })
               }
             </div>
 
@@ -167,7 +178,7 @@ function Home() {
                 <div className="col-lg-8">
                   <div className="post-module-2">
                     <div className="mb-30 position-relative">
-                      <h5 className="mb-30 text-uppercase" style={{fontSize: '14px'}}>Bài đăng mới</h5>
+                      <h5 className="mb-30 text-uppercase" style={{ fontSize: '14px' }}>Bài đăng mới</h5>
                     </div>
                     {/* ==== LOOP LIST ===== */}
                     <div className="loop-list">
@@ -203,13 +214,13 @@ function Home() {
                 <div className="col-lg-4">
                   {/* TODO: NHIỀU COMMENT */}
                   <div className="mb-15">
-                    <h5 className="text-uppercase" style={{fontSize: '14px'}}>Nhiều bình luận nhất</h5>
+                    <h5 className="text-uppercase" style={{ fontSize: '14px' }}>Nhiều bình luận nhất</h5>
                   </div>
                   {/* <hr className="most-popular-hr" /> */}
 
                   {cmtPosts.map((item) => {
                     return (
-                        <CommentPost item={item} key={item.postId}/>
+                      <CommentPost item={item} key={item.postId} />
                     )
                   })}
                 </div>

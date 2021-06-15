@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 import { showErrMsg } from '../../utils/notification/Notification';
 import { useHistory, useParams } from 'react-router';
 import ReactHtmlParser from 'react-html-parser'
-
+import { toast } from 'react-toastify';
 
 
 function NewPosts() {
@@ -28,7 +28,7 @@ function NewPosts() {
 
   const [post, setPost] = useState({})
   const [category, setCategory] = useState([])
-  const [selectedCate, setSelectedCate] = useState([])
+  // const [selectedCate, setSelectedCate] = useState([])
 
   useEffect(() => {
     const getCate = async () => {
@@ -38,6 +38,8 @@ function NewPosts() {
       }
     }
     getCate()
+// eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [])
 
   useEffect(() => {
@@ -182,11 +184,19 @@ function NewPosts() {
       try {
         const res = await axios.post('/post', formPost)
         if (res) {
+          toast.success('Đăng bài thành công 🎉', {
+            position: "bottom-left",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
           history.push(`/posts/${res.data.slug}`)
         }
       } catch (error) {
         setData({ ...data, err: "Không thể đăng bài viết", success: '' })
-        
       }
     }
     postPost()
@@ -218,6 +228,15 @@ function NewPosts() {
         const res = await axios.put(`/post/${post.postId}`, formPost)
         if(res) {
           // window.location.href = `/posts/${params.slug}`
+          toast.success('Sửa bài viết thành công 🎉', {
+            position: "bottom-left",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
           history.push(`/posts/${res.data.slug}`)
         }
       } catch (error) {
@@ -256,6 +275,15 @@ function NewPosts() {
       try {
         const res = await axios.post('/draft', formDraft)
         if (res) {
+          toast.success('Đã lưu lại bản nháp ✔', {
+            position: "bottom-left",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
           history.push('/myprofile')
           
         }
@@ -281,6 +309,15 @@ function NewPosts() {
       try {
         const res = await axios.put(`/draft/${post.postId}`, formDraft)
         if(res) {
+          toast.success('Đã lưu thành bản nháp', {
+            position: "bottom-left",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
           history.push('/myprofile')
         }
       } catch (error) {

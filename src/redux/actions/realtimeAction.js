@@ -21,7 +21,6 @@ export const dispatchRemoveNoti = () => {
 }
 
 export const dispatchSetPost = (postSubcription) => {
-    console.log(postSubcription)
     return {
         type: ACTIONS.SET_REALTIME_POST,
         payload: postSubcription
@@ -33,3 +32,10 @@ export const dispatchRemovePost = () => {
         type: ACTIONS.REMOVE_REALTIME_POST
     }
 }
+
+// export const dispatchClearRealtime = () => {
+//     console.log("clear")
+//     return {
+//         type: ACTIONS.CLEAR_REALTIME
+//     }
+// }

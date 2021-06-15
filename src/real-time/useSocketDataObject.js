@@ -38,10 +38,9 @@ const useSocketDataObject = () => {
     }
     
     const Unsubscribe_notify = () => {
-        console.log(realtime.notificationSubscription)
-        console.log(notificationSubscription + "notifi")
+
         if (realtime.notificationSubscription !== null) {
-          console.log("unsubscribe")
+
           realtime.notificationSubscription.unsubscribe();
           dispatch(dispatchRemoveNoti())
       }
@@ -59,16 +58,22 @@ const useSocketDataObject = () => {
 
     const Unsubscribe_post = (postSubcription) => {
         if (postSubcription !== null && realtime.isSuccess) {
-          console.log("unsubscribe")
+
           postSubcription.unsubscribe();
           dispatch(dispatchRemovePost())
       }
-      console.log(realtime.postSubcription)
   }
+
+//   const Disconnect = () => {
+//       if(realtime.ws !== null){
+//           realtime.ws.disconnect()
+//           console.log("disconnect")
+//       }
+//   }
 
 
 //   Subscribe_notify
-    return {Subscribe_notify ,ConnectSocket, Unsubscribe_notify, Subscribe_post, Unsubscribe_post}
+    return {Subscribe_notify ,ConnectSocket, Unsubscribe_notify, Subscribe_post, Unsubscribe_post, }
 
 }
 

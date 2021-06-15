@@ -42,6 +42,9 @@ const realtimeReducer = (state = data, action) => {
                 postSubcription: null
             }
         }
+        // case ACTIONS.CLEAR_REALTIME: {
+        //     return {data}
+        // }
 
         default:
             return state

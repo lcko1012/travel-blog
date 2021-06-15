@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Link, Redirect, useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import avatar from '../../asset/images/avatar.jpg'
-import Cookies from 'js-cookie'
-import axios from 'axios'
 import { dispatchLogout } from '../../redux/actions/authAction'
 import ReactHtmlParser from 'react-html-parser'
 import Notify from './Notify'
 import CookiesService from '../../services/CookiesService'
 import useSocketDataObject from '../../real-time/useSocketDataObject'
+import {dispatchClearRealtime} from '../../redux/actions/realtimeAction'
 
 function Header() {
     const dispatch = useDispatch()
@@ -16,7 +14,7 @@ function Header() {
     const userInfor = auth.user
     const history = useHistory()
     const cookiesService = CookiesService.getService()
-    const {Unsubscribe_notify} = useSocketDataObject()
+    const {Unsubscribe_notify, Disconnect} = useSocketDataObject()
     const [keyword, setKeyword] = useState('')
     const {isAdmin} = auth
 
@@ -27,13 +25,9 @@ function Header() {
 
     const handleFindSubmit = (e) => {
         e.preventDefault();
-        // var _keyword = keyword
-        // console.log(_keyword)
         history.push(`/search?keyword=${keyword}`)
         console.log("submit")
-
         setKeyword("")
-
     }
 
 
@@ -41,7 +35,12 @@ function Header() {
         try {
             cookiesService.clearToken()
             dispatch(dispatchLogout())
+
             Unsubscribe_notify()
+            // Disconnect()
+
+            // dispatch(dispatchClearRealtime())
+            
             history.push("/")
         } catch (err) {
             history.push("/")

@@ -38,7 +38,7 @@ function NewPosts() {
       }
     }
     getCate()
-// eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 
   }, [])
 
@@ -56,9 +56,9 @@ function NewPosts() {
               ...data, content: EditorState.createWithContent(
                 ContentState.createFromBlockArray(
                   convertFromHTML(_content))),
-                  title: res.data.title,
-                  postThumbnail: _thumbnail,
-                  categories: [...data.categories, res.data.categories[0].categoryId]
+              title: res.data.title,
+              postThumbnail: _thumbnail,
+              categories: [...data.categories, res.data.categories[0].categoryId]
             })
             setPost(res.data)
           }
@@ -75,7 +75,11 @@ function NewPosts() {
     }
   }, [params.slug])
 
-
+  useEffect(() => {
+    return () => {
+      setData(initialState)
+    }
+  }, [])
 
   const handleChange = (e) => {
     const target = e.target
@@ -88,13 +92,13 @@ function NewPosts() {
 
   const handleChangeCate = e => {
     // var id = e.target.selectedIndex
-    if(e.target.value !== 'nothing'){
+    if (e.target.value !== 'nothing') {
       var id = e.target.value
       var cate = []
       cate.push(parseInt(id))
       setData({ ...data, categories: cate })
     }
-    
+
   }
 
   const handleChangeAvatar = async (e) => {
@@ -106,18 +110,16 @@ function NewPosts() {
       }
 
       if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
-        // return setData({ ...data, err: "File format is incorrect", success: '' })
-        console.log("sai dinh dang")
-      }
-      console.log(e.target.files[0])
+        return  setData({ ...data, err: "Sai định dạng", success: '' })
 
+      }
       var formImage = new FormData()
       formImage.append('upload', file)
 
       const res = await axios.post('/upload', formImage)
 
       if (res) {
-        setData({ ...data, postThumbnail: res.data.url })
+        setData({ ...data, postThumbnail: res.data.url, err: '' })
       }
     } catch (error) {
       console.log(error)
@@ -226,7 +228,7 @@ function NewPosts() {
       formPost.append("categories", data.categories)
       try {
         const res = await axios.put(`/post/${post.postId}`, formPost)
-        if(res) {
+        if (res) {
           // window.location.href = `/posts/${params.slug}`
           toast.success('Sửa bài viết thành công 🎉', {
             position: "bottom-left",
@@ -263,12 +265,12 @@ function NewPosts() {
     if (!data.content.getCurrentContent().getPlainText().trim()) {
       return setData({ ...data, err: 'Hãy nhập nội dung bài viết', success: '' })
     }
-    
-      var formDraft = new FormData()
-      formDraft.append("title", data.title)
-      formDraft.append("content", stateToHTML(data.content.getCurrentContent()))
-      formDraft.append("postThumbnail", data.postThumbnail)
-      formDraft.append("categories", data.categories)
+
+    var formDraft = new FormData()
+    formDraft.append("title", data.title)
+    formDraft.append("content", stateToHTML(data.content.getCurrentContent()))
+    formDraft.append("postThumbnail", data.postThumbnail)
+    formDraft.append("categories", data.categories)
 
     const postDraft = async () => {
 
@@ -285,14 +287,14 @@ function NewPosts() {
             progress: undefined,
           });
           history.push('/myprofile')
-          
+
         }
       } catch (error) {
         console.log(error)
         setData({ ...data, err: "Không thể lưu bản nháp", success: '' })
-        
+
       }
-      
+
     }
 
     postDraft()
@@ -301,29 +303,29 @@ function NewPosts() {
   //Chuyen bai viet thanh ban nhap hoac sua ban nhap
   const handleEditDraft = async (e) => {
     e.preventDefault()
-      var formDraft = new FormData()
-      formDraft.append("title", data.title)
-      formDraft.append("content", stateToHTML(data.content.getCurrentContent()))
-      formDraft.append("postThumbnail", data.postThumbnail)
-      formDraft.append("categories", data.categories)
-      try {
-        const res = await axios.put(`/draft/${post.postId}`, formDraft)
-        if(res) {
-          toast.success('Đã lưu thành bản nháp', {
-            position: "bottom-left",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-          history.push('/myprofile')
-        }
-      } catch (error) {
-        console.log(error)
-        setData({ ...data, err: "Không thể lưu bản nháp", success: '' })
+    var formDraft = new FormData()
+    formDraft.append("title", data.title)
+    formDraft.append("content", stateToHTML(data.content.getCurrentContent()))
+    formDraft.append("postThumbnail", data.postThumbnail)
+    formDraft.append("categories", data.categories)
+    try {
+      const res = await axios.put(`/draft/${post.postId}`, formDraft)
+      if (res) {
+        toast.success('Đã lưu thành bản nháp', {
+          position: "bottom-left",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        history.push('/myprofile')
       }
+    } catch (error) {
+      console.log(error)
+      setData({ ...data, err: "Không thể lưu bản nháp", success: '' })
+    }
   }
 
   return (
@@ -362,8 +364,8 @@ function NewPosts() {
                   uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true },
                   inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
                   defaultSize: {
-                    height: 100,
-                    width: 100,
+                    height: 300,
+                    width: 300,
                   },
                 },
               }}
@@ -391,27 +393,27 @@ function NewPosts() {
             </select>
             {data.err && showErrMsg(data.err)}
             <div className="d-flex justify-content-end mb-50">
-            
-            {params.slug ?
-            <><form className="mr-10" onSubmit={handleEditDraft}>
-            <button className="newpost__submitBtn newpost__draftBtn mb-15" type="submit">Lưu nháp</button>
-            </form>
-              <form onSubmit={handleEditPost}>
-                <button className="newpost__submitBtn mb-15" type="submit">Đăng bài</button>
-              </form>
-              </>
-              :
-              <>
-<form className="mr-10" onSubmit={handleSubmitDraft}>
-            <button className="newpost__submitBtn newpost__draftBtn mb-15" type="submit">Lưu nháp</button>
-            </form>
-              <form onSubmit={handleSubmitPost} >
-                <button className="newpost__submitBtn mb-15" type="submit">Đăng bài</button>
-              </form>
-              </>
-            }
+
+              {params.slug ?
+                <><form className="mr-10" onSubmit={handleEditDraft}>
+                  <button className="newpost__submitBtn newpost__draftBtn mb-15" type="submit">Lưu nháp</button>
+                </form>
+                  <form onSubmit={handleEditPost}>
+                    <button className="newpost__submitBtn mb-15" type="submit">Đăng bài</button>
+                  </form>
+                </>
+                :
+                <>
+                  <form className="mr-10" onSubmit={handleSubmitDraft}>
+                    <button className="newpost__submitBtn newpost__draftBtn mb-15" type="submit">Lưu nháp</button>
+                  </form>
+                  <form onSubmit={handleSubmitPost} >
+                    <button className="newpost__submitBtn mb-15" type="submit">Đăng bài</button>
+                  </form>
+                </>
+              }
             </div>
-            
+
 
 
             {/* {stateToHTML(data.content.getCurrentContent())} */}

@@ -83,7 +83,6 @@ function Login() {
     }
 
     const responseGoogle = async (response) => {
-        console.log(response)
         try{
             const google_token = response.tokenId
             var loginForm = new FormData()
@@ -93,7 +92,7 @@ function Login() {
             if(res){
                 setUser({...user, err: '', success: 'Đăng nhập thành công'})
                 dispatch(dispatchLogin())
-                console.log(response.profileObj.email)
+                // console.log(response.profileObj.email)
                 cookiesService.setToken(res.data.token)
                 Subscribe_notify(response.profileObj.email)
                 history.push('/')

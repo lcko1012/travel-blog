@@ -15,7 +15,7 @@ function App() {
   const dispatch = useDispatch()
   const auth = useSelector(state => state.auth)
   const realtime = useSelector(state => state.realtime)
-  const { ConnectSocket, Subscribe_notify } = useSocketDataObject()
+  const { ConnectSocket, Subscribe_notify, Disconnect } = useSocketDataObject()
   const { user } = auth
   const cookiesService = CookiesService.getService()
 

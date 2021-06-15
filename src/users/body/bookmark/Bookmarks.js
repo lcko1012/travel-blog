@@ -16,14 +16,12 @@ const Bookmarks = () => {
         const token = Cookies.get("token")
         const getListBookmarks = async () => {
             try {
-                console.log(currentPage)
                 if (token) {
                     const res = await axios.get('/bookmark/posts', {
                         params: { page: currentPage },
                         headers: { Authorization: `Bearer ${token}` }
                     })
                     if (res) {
-                        console.log(res)
                         setListBookmarks([...listBookmarks, ...res.data])
                         if (res.data.length === 0 || res.data.length < 10) {
                             setIsEmpty(true)
@@ -39,7 +37,6 @@ const Bookmarks = () => {
         getListBookmarks()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage])
-    console.log(listBookmarks)
     return (
         <main className="main__home">
             <div className="container pb-50 pt-30">

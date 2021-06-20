@@ -12,7 +12,7 @@ function AdminUsers() {
         size: 10
     })
     //Check pagination
-    const [isDefault, setIsDefault] = useState(false)
+    // const [isDefault, setIsDefault] = useState(false)
     const [userToAdm, setUserToAdm] = useState({})
 
     const [isShowAlertToAdm, setIsShowAlertToAdm] = useState(false)
@@ -26,9 +26,6 @@ function AdminUsers() {
                     }
                 })
                 if (res) {
-                    if(res.data.length < 10 || res.data.length === 0){
-                        setIsDefault(true)
-                    }
                     setUserList(res.data);
                 }
         } catch (error) {
@@ -207,7 +204,7 @@ function AdminUsers() {
                         Prev
                     </button>
                     <button className="btn btn-secondary" disabled={true}>{pagination.page + 1}</button>
-                    <button className="btn btn-secondary ml-10" disabled={isDefault} onClick={onClickNext}>
+                    <button className="btn btn-secondary ml-10" disabled={userList.length < pagination.size} onClick={onClickNext}>
                         Next
                         <i className="far fa-chevron-double-right ml-5"></i>
                     </button>

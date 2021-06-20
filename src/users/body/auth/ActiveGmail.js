@@ -1,8 +1,9 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 const ActiveGmail = () => {
+    const history = useHistory()
     const {token} = useParams()
     const [success, setSuccess] = useState(false)
     useEffect(() => {
@@ -22,6 +23,15 @@ const ActiveGmail = () => {
             registerConfirm()
         }
     }, [])
+
+    useEffect(() => {
+        if(success){
+            setTimeout(() => {
+                history.push('/')
+            }, 3000)
+        }
+    }, [])
+
     return (
         <main className="main__auth">
             <div className="register">

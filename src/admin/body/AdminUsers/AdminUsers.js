@@ -142,7 +142,7 @@ function AdminUsers() {
     const elmUser = userList.map((user, index) => {
         return (
             <tr key={user.accountId}>
-                <th scope="row">{index + 1}</th>
+                <th scope="row">{index + 1 + (pagination.page * pagination.size)}</th>
                 <td className="">
                     <div className="user-avatar" style={{ backgroundImage: `url(${ReactHtmlParse(user.avatarLink)})` }}></div>
                 </td>

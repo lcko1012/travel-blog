@@ -10,6 +10,7 @@ import AdminReports from '../admin/body/AdminReports/AdminReports'
 import AdminUsers from '../admin/body/AdminUsers/AdminUsers'
 import AdminLayout from '../layouts/AdminLayout'
 import UserLayout from '../layouts/UserLayout'
+import ActiveGmail from '../users/body/auth/ActiveGmail'
 import ForgotPassword from '../users/body/auth/ForgotPassword'
 import Login from '../users/body/auth/Login'
 import Register from '../users/body/auth/Register'
@@ -51,6 +52,8 @@ export default () => {
                 <AppRoute path="/login" component={!isLogged ? Login : Home} exact layout={UserLayout}/>
                 <AppRoute path="/forgot_password" component={isLogged ? Home : ForgotPassword} exact layout={UserLayout}/>
                 <AppRoute path="/auth/resetPassword/:token" component={isLogged ? Home : ResetPassword} exact layout={UserLayout} />
+                <AppRoute path="/auth/active/:token" component={isLogged ? Home : ActiveGmail} exact layout={UserLayout} />
+
 
                 <AppRoute path="/posts/new" component={isLogged ? NewPosts : Home} exact layout={UserLayout}/>
                 <AppRoute path='/posts/:slug/edit' component={isLogged ? NewPosts : Home} exact layout={UserLayout} />

@@ -37,4 +37,4 @@ You can watch this video to see how this site works
 https://www.youtube.com/watch?v=xE0SKf_0tGc
 
 ## Conclusion
-I finally finished my website. This site is still under development with my interesting ideas. 😙
+I finally finished my project. But this site is still under development with my interesting ideas. 😙

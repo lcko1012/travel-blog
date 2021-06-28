@@ -14,6 +14,7 @@
 
 A project of my subject. A site where people can share travel articles.
 Link: http://langthang.eastasia.cloudapp.azure.com/
+http://ec2-13-212-96-88.ap-southeast-1.compute.amazonaws.com/
 
 
 ## Travel Blog API

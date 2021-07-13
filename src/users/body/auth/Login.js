@@ -26,7 +26,7 @@ function Login() {
     const history = useHistory()
     const {email, password, err, success} = user
     const cookiesService = CookiesService.getService()
-    const {Subscribe_notify} = useSocketDataObject()
+    const {Subscribe_notification} = useSocketDataObject()
 
     const handleChangeInput = e => {
         const {name, value} = e.target
@@ -62,7 +62,7 @@ function Login() {
                 //Da Dang Nhap
                 dispatch(dispatchLogin())
                 cookiesService.setToken(res.data.token)
-                Subscribe_notify(email)
+                Subscribe_notification(email)
                 history.push("/")
             }
         }catch(err){
@@ -94,7 +94,7 @@ function Login() {
                 dispatch(dispatchLogin())
                 // console.log(response.profileObj.email)
                 cookiesService.setToken(res.data.token)
-                Subscribe_notify(response.profileObj.email)
+                Subscribe_notification(response.profileObj.email)
                 history.push('/')
             }
             

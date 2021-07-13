@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 
 export default function withClickOutside(WrappedComponent) {
   const Component = (props) => {
-    const [openNotify, setOpenNotify] = useState(false);
+    const [openNotification, setOpenNotification] = useState(false);
 
     const ref = useRef();
 
@@ -10,7 +10,7 @@ export default function withClickOutside(WrappedComponent) {
       const handleClickOutside = (event) => {
         // console.log(event.target)
         if (!ref.current.contains(event.target)) {
-          setOpenNotify(false);
+          setOpenNotification(false);
         }
       };
       if(ref){
@@ -24,7 +24,7 @@ export default function withClickOutside(WrappedComponent) {
     }, [ref]);
 
 
-    return <WrappedComponent openNotify={openNotify} setOpenNotify={setOpenNotify} ref={ref} />;
+    return <WrappedComponent openNotification={openNotification} setOpenNotification={setOpenNotification} ref={ref} />;
   };
 
   return Component;

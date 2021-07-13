@@ -22,11 +22,8 @@ axios.interceptors.request.use(
   },
     error => {
       const originalRequest = error.config
-      console.log(error.response.config.url)
       if(error.response.config.url === '/auth/login'){
-        console.log("loi")
         return Promise.reject(error);
-
       }
       if(error.response.status === 403 && !originalRequest._retry) {
         originalRequest._retry = true
@@ -40,9 +37,6 @@ axios.interceptors.request.use(
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + cookiesService.getToken()
             //3. return originalRequest object with Axios
             return axios(originalRequest)
-          }
-          else {
-            console.log(res.status)
           }
         })
       }

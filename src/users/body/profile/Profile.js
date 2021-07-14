@@ -1,14 +1,16 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import Empty from '../../utils/Empty/Empty'
 import Loading from '../../utils/Loading/Loading'
 import CurrentPost from '../home/components/CurrentPost'
 import ReactHtmlParser from 'react-html-parser'
 import "./Profile.css"
 import profileApis from './enum/profile-apis'
+import Cookies from 'js-cookie'
 
 function Profile() {
+    const history = useHistory()
     const id = useParams().id
     const [userInfor, setUserInfor] = useState({})
     const [posts, setPosts] = useState([])
@@ -35,6 +37,8 @@ function Profile() {
     }, [id])
 
     const handleClickFollow = () => {
+        const token = Cookies.get("token")
+        if(!token) return history.push('/login')
         const postFollow = async () => {
             try {
                 const res = await axios.put(profileApis.followUser(id), null)

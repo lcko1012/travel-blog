@@ -43,8 +43,6 @@ function Header() {
         }
     }
 
-    //TODO: SHOW BẢNG THÔNG BÁO
-
     const loginMenu = () => {
         return (
             <div className="menu__right">
@@ -54,7 +52,6 @@ function Header() {
                             <i className="far fa-edit"></i>
                             <span> Viết bài</span>
                         </Link>
-
                     </li>
                     <li >
                         <Link to="/bookmarks">
@@ -92,7 +89,6 @@ function Header() {
         )
     }
 
-
     return (
         <>
             <header>
@@ -100,8 +96,8 @@ function Header() {
                     <div className="menu__left">
                         <Link to="/">
                             <p>
-                            <i className="fal fa-map-marker-edit"></i>
-                            <span>Lang Thang</span>
+                                <i className="fal fa-map-marker-edit"></i>
+                                <span>Lang Thang</span>
                             </p>
                         </Link>
                         <form onSubmit={handleFindSubmit}>

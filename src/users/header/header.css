@@ -4,6 +4,10 @@ header {
     color: var(--color-muted);
     height: min-content;
     box-shadow: 0 2px 3px -2px gray;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
 }
 
 /*Smart phone nhỏ*/
@@ -94,6 +98,7 @@ header {
     justify-content: space-between;
     align-items: center;
     font-size: 15px;
+    
 }
 
 .menu__left {

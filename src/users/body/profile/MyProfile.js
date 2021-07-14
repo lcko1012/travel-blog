@@ -4,16 +4,13 @@ import axios from 'axios'
 import CurrentPost from '../home/components/CurrentPost'
 import Empty from '../../utils/Empty/Empty'
 import ReactHtmlParser from 'react-html-parser'
-import Cookies from 'js-cookie'
 import { Link } from 'react-router-dom'
 import profileApis from './enum/profile-apis'
-
 
 const MyProfile = () => {
   const auth = useSelector(state => state.auth)
   const userInfor = auth.user
   const [posts, setPosts] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
   const [drafts, setDrafts] = useState([])
   //false load bai viet, true load ban nhap
   const [isLoadPost, setIsLoadPost] = useState(false)

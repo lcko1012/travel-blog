@@ -1,5 +1,4 @@
 import axios from 'axios'
-import Cookies, { set } from 'js-cookie'
 import React, { useState } from 'react'
 import { showErrMsg80, showSuccessMsg80 } from '../../../utils/notification/Notification'
 import { isEmpty, isLength, isMatch } from '../../../utils/validation/Validation'

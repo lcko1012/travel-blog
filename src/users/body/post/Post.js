@@ -37,6 +37,7 @@ function Post() {
   const [isReport, setIsReport] = useState(false)
   const [userPosts, setUserPosts] = useState([])
   const [reportTxt, setReportTxt] = useState('')
+  const [showBtnUp, setShowBtnUp] = useState(false)
 
   //Cu moi lan render lai
   useEffect(() => {
@@ -219,6 +220,25 @@ function Post() {
     )
   }
 
+  const toggleVisible = () => {
+    const scrolled = document.documentElement.scrollTop;
+    if (scrolled > 300){
+      setShowBtnUp(true)
+    } 
+    else if (scrolled <= 300){
+      setShowBtnUp(false)
+    }
+  };
+  
+  window.addEventListener('scroll', toggleVisible);
+
+
+  const scrollToTop = () =>{
+    window.scrollTo({
+      top: 0, 
+      behavior: 'smooth'
+    });
+  };
 
   return (
     <>
@@ -336,9 +356,16 @@ function Post() {
                 }
 
               </div>
+
             </div>
             : <Loading />}
 
+            <button className="post__button-up" 
+              style={{display: showBtnUp ? 'block' : 'none'}} 
+              onClick={scrollToTop}
+            >
+              <i className="fal fa-arrow-up"></i>
+            </button>
         </div>
       </main>
     </>

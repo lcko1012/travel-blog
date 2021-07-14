@@ -7,6 +7,7 @@ import useSocketDataObject from './real-time/useSocketDataObject'
 import CookiesService from './services/CookiesService'
 import { ToastContainer } from 'react-toastify';
 import Routes from './routes';
+import ScrollToTop from './routes/ScrollToTop';
 
 function App() {
 
@@ -44,20 +45,21 @@ function App() {
   return (
     <>
       <Router>
-        <div className="App">
-          <ToastContainer
-            position="bottom-left"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
-          <Routes />
-        </div>
+        <ScrollToTop></ScrollToTop>
+          <div className="App">
+            <ToastContainer
+              position="bottom-left"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
+            <Routes />
+          </div>
       </Router>
     </>
   );

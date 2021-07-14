@@ -5,7 +5,7 @@ import "./currentpost.css"
 
 function CurrentPost({ post }) {
     return (
-        <div className="transition-normal hover-up-2" key={post.postId}>
+        <div className="transition-normal hover-up-2" key={post.postId} >
             <div className="row-1 mb-40 list-style-1">
                 <div className="col-md-4">
                     <div className="post-thumb position-relative border-radius-5">

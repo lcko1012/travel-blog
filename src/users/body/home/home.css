@@ -2,6 +2,7 @@
     background-color: var(--color-background);
     height: auto;
     box-sizing: content-box;
+    padding-top: 50px;
 }
 
 .hieu-ung {

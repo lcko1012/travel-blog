@@ -1,6 +1,4 @@
 import Cookies from 'js-cookie'
-import React from 'react'
-
 
 const CookiesService = (function(){
     var _service

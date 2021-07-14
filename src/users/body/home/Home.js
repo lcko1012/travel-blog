@@ -7,7 +7,8 @@ import CurrentPost from './components/CurrentPost';
 import CommentPost from './components/CommentPost'
 import Loading from '../../utils/Loading/Loading';
 import homeApis from './enum/home-apis';
-
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 function Home() {
   const [currentSlide, setCurrentSlide] = useState(3);
@@ -73,6 +74,14 @@ function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage])
 
+  useEffect(() => {
+    AOS.init({
+      duration : 1000
+    })
+    AOS.refresh()
+  }, [])
+  
+
   // Di chuyen slide
   const nextSlide = () => {
     setCurrentSlide(currentSlide === length - 1 ? 3 : currentSlide + 1)
@@ -93,7 +102,8 @@ function Home() {
     <>
       {loadingPage ?
         <main className="main__home">
-          <div className="container mt-30 mb-15">
+          <div className="container pt-30 mb-15">
+            <div data-aos='fade-up'>
             {featuredPosts.map((post, index) => {
               if (index < 3) {
                 return (
@@ -130,10 +140,10 @@ function Home() {
                   </div>
                   }
                   </div>
-                  
                 )
               }
             })}
+            </div>
           </div>
 
           <div className="container">
@@ -144,6 +154,7 @@ function Home() {
             <div className="row-1">
               <div className="col-lg-8 mb-30">
                 {/* TODO: NỔI BẬT POSTS */}
+                <div data-aos='fade-up'>
                 {featuredPosts.map((post, index) => {
                   if (index < 6 && index >= 3) {
                     return (
@@ -175,12 +186,13 @@ function Home() {
                   }
                 })
                 }
+                </div>
               </div>
 
               {featuredPosts.map((post, index) => {
                 if (index > 5) {
                   return (
-                    <div className="col-lg-4 col-md-6 mb-30" key={post.postId}>
+                    <div className="col-lg-4 col-md-6 mb-30" key={post.postId} data-aos='fade-up'>
                       <div className="post-card-1 border-radius-10 hieu-ung">
                         <div className="thumb-overlay img-hover-slide position-relative" style={{ background: `url(${ReactHtmlParser(post.postThumbnail)})` }}>
                         </div>
@@ -212,7 +224,6 @@ function Home() {
                     </div>
                   )
                 }
-
               })
               }
             </div>
@@ -220,7 +231,7 @@ function Home() {
           </div>
 
           {/* TODO: NEW POSTS */}
-          <div className="pt-15 pb-50" >
+          <div className="pt-15 pb-50">
             <div className="container">
               <div className="row-1">
                 <div className="col-lg-8">
@@ -232,7 +243,10 @@ function Home() {
                     <div className="loop-list">
                       {recentPosts.map((post) => {
                         return (
-                          <CurrentPost post={post} key={post.postId} />
+                          <div data-aos='fade-up' key={post.postId}>
+                            <CurrentPost post={post} key={post.postId} />
+                          </div>
+                          
                         )
                       })}
                     </div>
@@ -259,7 +273,10 @@ function Home() {
 
                   {cmtPosts.map((item) => {
                     return (
-                      <CommentPost item={item} key={item.postId} />
+                      <div data-aos='fade-up' key={item.postId}>
+                        <CommentPost item={item} key={item.postId} />
+                      </div>
+                      
                     )
                   })}
                 </div>

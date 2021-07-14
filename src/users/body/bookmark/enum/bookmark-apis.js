@@ -1,4 +1,4 @@
-const baseUrl = '/api/bookmark/'
+const baseUrl = '/api/bookmark'
 
 export default {
     getBookmarkedPosts:  `${baseUrl}/posts`,

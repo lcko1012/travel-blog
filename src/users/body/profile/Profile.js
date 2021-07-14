@@ -1,44 +1,43 @@
 import axios from 'axios'
-import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Empty from '../../utils/Empty/Empty'
 import Loading from '../../utils/Loading/Loading'
 import CurrentPost from '../home/components/CurrentPost'
 import ReactHtmlParser from 'react-html-parser'
-
-
 import "./Profile.css"
+import profileApis from './enum/profile-apis'
 
 function Profile() {
-    const [id, setId] = useState(useParams().id)
-    console.log(id)
+    const id = useParams().id
     const [userInfor, setUserInfor] = useState({})
     const [posts, setPosts] = useState([])
     const [isLoading, setLoading] = useState(false)
 
     useEffect(() => {
         const getUserInfor = async () => {
-            const res = await axios.get(`/user/${id}`)
-            setUserInfor(res.data)
-            setLoading(true)
-            console.log(userInfor)
-            console.log(res)
+            const res = await axios.get(profileApis.getUserInfor(id))
+            if(res){
+                setUserInfor(res.data)
+                setLoading(true) 
+            }
         }
+
         const getPosts = async () => {
-            const res = await axios.get(`/user/posts/${id}`)
-            setPosts(res.data)
+            const res = await axios.get(profileApis.getPostsOfUser(id))
+            if(res){
+                setPosts(res.data)
+            }
         }
+
         getUserInfor()
         getPosts()
     }, [id])
 
     const handleClickFollow = () => {
         const postFollow = async () => {
-            const token = Cookies.get("token")
             try {
-                const res = await axios.put(`/user/follow/${id}`, null)
-
+                const res = await axios.put(profileApis.followUser(id), null)
                 if (res) {
                     setUserInfor({ ...userInfor, followCount: res.data, followed: !userInfor.followed })
                 }
@@ -62,33 +61,40 @@ function Profile() {
                                     <div className="author-info">
                                         <div style={{ display: 'flex', alignItems: 'center' }}>
                                             <div className="avatar" style={{ backgroundImage: `url(${ReactHtmlParser(userInfor.avatarLink)})` }} ></div>
+                                            
                                             <div className="post-count">
                                                 <h4>{userInfor.postCount}</h4>
                                                 <p>Bài viết</p>
                                             </div>
+
                                             <div className="follower-count inline-item">
                                                 <h4>{userInfor.followCount}</h4>
                                                 <p>Người theo dõi</p>
                                             </div>
                                         </div>
                                         <h5 className="author-name" style={{ marginTop: '5px' }}>{userInfor.name}</h5>
+                                        
                                         <div className="author__social">
                                             <i className="fab fa-instagram" onClick={() => window.open(ReactHtmlParser(userInfor.instagramLink), '_blank')} ></i>
                                             <i className="fab fa-facebook-square" onClick={() => window.open(ReactHtmlParser(userInfor.fbLink), '_blank')}></i>
                                         </div>
+                                        
                                         <p style={{ fontSize: "14px" }}>
                                             {userInfor.about}
                                         </p>
+                                        
                                         <div className="author__infor--count mt-15 d-flex">
                                             <div className="count__div">
                                                 <h5>Số Bookmark: </h5>
                                                 <h4 >{userInfor.bookmarkOnOwnPostCount}</h4>
                                             </div>
+                                            
                                             <div className="count__div">
                                                 <h5>Số bình luận: </h5>
                                                 <h4>{userInfor.commentOnOwnPostCount}</h4>
                                             </div>
                                         </div>
+                                       
                                         <div className="post-info-button" style={{ marginTop: '10px' }}>
                                             {!userInfor.followed ?
                                                 <button className="bookmark-btn"
@@ -109,8 +115,7 @@ function Profile() {
                             </div>
                             {/* TODO: TAB POSTS */}
                             <div className="mt-30 col-lg-8" >
-                                {posts.length === 0 ? <Empty />
-                                    :
+                                {posts.length === 0 ? <Empty /> :
                                     posts.map((post, index) => {
                                         return (
                                             <CurrentPost post={post} key={index} />

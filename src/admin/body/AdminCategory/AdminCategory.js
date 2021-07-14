@@ -2,7 +2,8 @@ import './AdminCategory.css';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { toast } from 'react-toastify';
+import categoryApis from './enum/category-apis';
+import { errorNotification, successNotification } from '../../../users/utils/notification/ToastNotification';
 
 function AdminCategory() {
     const [cateList, setCateList] = useState([]);
@@ -16,14 +17,10 @@ function AdminCategory() {
 
     useEffect(() => {
         const getCateList = async () => {
-            try {
-                const res = await axios.get("/category")
+                const res = await axios.get(categoryApis.getCategoryList)
                 if (res) {
                     setCateList(res.data);
                 }
-            } catch (error) {
-                console.log(error);
-            }
         }
         getCateList();
     }, [])
@@ -51,35 +48,17 @@ function AdminCategory() {
     const onDelete = async () => {
         if(delId !== null){
             try {
-                const res =  await axios.delete(`/category/${delId}`)
+                const res =  await axios.delete(categoryApis.deleteCategory(delId))
                 if(res){
                     var newArr = cateList.filter((cate) => 
-                    cate.categoryId !== delId
-                    )
+                    cate.categoryId !== delId)
                     setCateList(newArr)
-                    toast.success('Xóa thành công ✔', {
-                        position: "bottom-left",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    successNotification('Xóa thành công ✔')
                     setDelId(null)
                     setIsAlertDel(false)
-
                 }
             } catch (error) {
-                toast.error('Đã xảy ra lỗi khi xóa 🙁', {
-                    position: "bottom-left",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                errorNotification('Đã xảy ra lỗi khi xóa 🙁')
                 setIsAlertDel(false)
                 setDelId(null)
             }

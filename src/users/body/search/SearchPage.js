@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom'
 import Empty from '../../utils/Empty/Empty';
 import Loading from '../../utils/Loading/Loading';
 import CurrentPost from '../home/components/CurrentPost';
+import searchApis from './enum/search-apis';
 
 const SearchPage = () => {
     const location = useLocation()
@@ -22,29 +23,25 @@ const SearchPage = () => {
         const findPost = async () => {
             setCurrentPage(0)
             try {
-                const res = await axios.get(`/post`, {
+                const res = await axios.get(searchApis.getPosts, {
                     params: {
                         keyword: keyword
                     }
                 })
-                if(res) {
-                    setPostsResult(res.data)
-                }
+                setPostsResult(res.data)
             } catch (error) {
                 console.log(error)
             }
         }
-        if(keyword){
+        if (keyword) {
             findPost()
         }
     }, [keyword])
 
-
     useEffect(() => {
-
         try {
             const nextPost = async () => {
-                const res = await axios.get(`/post`, {
+                const res = await axios.get(searchApis.getPosts, {
                     params: {
                         keyword: keyword,
                         page: currentPage
@@ -75,19 +72,19 @@ const SearchPage = () => {
                             <h5 style={{ fontSize: '14px' }}>Kết quả tìm kiếm của: {keyword}</h5>
                         </div>
                         {postsResult.length === 0 ? <Empty /> :
-                            postsResult.map((post, index) => 
-                                
-                                    <CurrentPost post={post} key={post.postId} />
-                                
+                            postsResult.map((post) =>
+
+                                <CurrentPost post={post} key={post.postId} />
+
                             )}
                         <div className="pagination-area mb-30">
                             <nav aria-label="Page navigation example">
                                 <ul className="pagination justify-content-start">
                                     <li className={`page-item" ${isEmpty ? 'disabled' : null}`}
                                         onClick={() => setCurrentPage(currentPage + 1)}>
-                                        <a className="page-link">
+                                        <div className="page-link">
                                             <i className="fal fa-long-arrow-right"></i>
-                                        </a>
+                                        </div>
                                     </li>
                                 </ul>
                             </nav>

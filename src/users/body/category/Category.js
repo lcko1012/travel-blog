@@ -4,10 +4,10 @@ import axios from 'axios'
 import Empty from '../../utils/Empty/Empty'
 import CurrentPost from '../home/components/CurrentPost'
 import Loading from '../../utils/Loading/Loading'
+import categoryApis from './enum/category-apis'
 
 const Category = () => {
     const params = useParams()
-    // const [id, setId] = useState(params.id)
     const [currentPage, setCurrentPage] = useState(0)
     const [postsResult, setPostsResult] = useState([])
     //Kiem tra trang tiep theo co rong k?
@@ -15,56 +15,23 @@ const Category = () => {
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
-        console.log("1")
-        try {
-            const findPost = async () => {
-                const res = await axios.get(`/category/${params.id}/post`, {
-                    params: {
-                        page: currentPage
-                    }
-                })
-
-                if (res) {
-                    setPostsResult([...postsResult, ...res.data])
-                    console.log(res.data.length)
-                    setIsLoading(true)
-                    if (res.data.length === 0) {
-                        setIsEmpty(true)
-                    }
+        const findPost = async () => {
+            const res = await axios.get(categoryApis.getPostsByCategory(params.id), {
+                params: {
+                    page: currentPage
+                }
+            })
+            if (res) {
+                setPostsResult([...postsResult, ...res.data])
+                setIsLoading(true)
+                if (res.data.length === 0 || res.data.length < 10) {
+                    setIsEmpty(true)
                 }
             }
-            findPost()
-
-        } catch (error) {
-            console.log(error)
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        findPost()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage])
-
-
-    useEffect(() => {
-        try {
-            const findPost = async () => {
-                const res = await axios.get(`/category/${params.id}/post`, {
-                    params: {
-                        page: 0
-                    }
-                })
-
-                if (res) {
-                    setPostsResult(res.data)
-                    if (res.data.length === 0) {
-                        setIsEmpty(true)
-                    }
-                }
-            }
-            findPost()
-
-        } catch (error) {
-            console.log(error)
-        }
-    }, [params.id])
-
 
     return (
         <main className="main__home">
@@ -80,6 +47,7 @@ const Category = () => {
                                     <CurrentPost post={post} key={index} />
                                 )
                             })}
+
                         <div className="pagination-area mb-30">
                             <nav aria-label="Page navigation example">
                                 <ul className="pagination justify-content-start">
@@ -94,9 +62,7 @@ const Category = () => {
                         </div>
                     </>
                     : <Loading />
-
                 }
-
             </div>
         </main>
     )

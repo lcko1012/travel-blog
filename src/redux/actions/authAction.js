@@ -18,7 +18,7 @@ export const dispatchLogout = () => {
 
 //TODO: GET USER INFOR
 export const fetchUser = async () => {
-    const res = await axios.get('/whoami')
+    const res = await axios.get('/api/whoami')
     return res
 }
 

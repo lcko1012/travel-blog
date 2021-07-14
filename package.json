@@ -53,5 +53,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://langthang.eastasia.cloudapp.azure.com:8080/api"
+  "proxy": "http://langthang.eastasia.cloudapp.azure.com:8080"
 }

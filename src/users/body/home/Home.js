@@ -6,6 +6,7 @@ import ReactHtmlParser from 'react-html-parser'
 import CurrentPost from './components/CurrentPost';
 import CommentPost from './components/CommentPost'
 import Loading from '../../utils/Loading/Loading';
+import homeApis from './enum/home-apis';
 
 
 function Home() {
@@ -20,59 +21,55 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(0)
   const [isEmpty, setIsEmpty] = useState(false)
 
-
-
   //[] => chi 1 lan khi load trang
   // khong co [] load lien tuc
   useEffect(() => {
     const getData = async () => {
-      const res = await axios.get('/post', {
+      const res = await axios.get(homeApis.getPosts, {
         params: {
           prop: "bookmark",
           size: 10
         }
       })
-      setFeaturedPosts(res.data)
-      setLoadingPage(true)
+      if(res){
+        setFeaturedPosts(res.data)
+        setLoadingPage(true)
+      }
     }
     getData()
-
   }, [])
-
 
   //GET COMMENTS POST
   useEffect(() => {
     const getCmtPosts = async () => {
-      const res = await axios.get('/post', {
+      const res = await axios.get(homeApis.getPosts, {
         params: {
           prop: "comment",
           size: 11
         }
       })
-      if (res) {
-        setCmtPosts(res.data)
-      }
+      if(res) setCmtPosts(res.data)
     }
     getCmtPosts()
   }, [])
 
   useEffect(() => {
     const getRecentPost = async () => {
-      const res = await axios.get('/post', {
+      const res = await axios.get(homeApis.getPosts, {
         params: {
           page: currentPage
         }
       })
-      setRecentPosts([...recentPosts, ...res.data])
-      if (res.data.length === 0 || res.data.length < 10) {
-        setIsEmpty(true)
+      if(res){
+        setRecentPosts([...recentPosts, ...res.data])
+        if (res.data.length === 0 || res.data.length < 10) {
+          setIsEmpty(true)
+        }
       }
     }
     getRecentPost()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage])
-
-
 
   // Di chuyen slide
   const nextSlide = () => {
@@ -198,25 +195,21 @@ function Home() {
                         <ul className="pagination justify-content-start">
                           <li className={`page-item" ${isEmpty ? 'disabled' : null}`}
                             onClick={() => setCurrentPage(currentPage + 1)}>
-                            <a className="page-link">
+                            <div className="page-link">
                               <i className="fal fa-long-arrow-right"></i>
-                            </a>
+                            </div>
                           </li>
                         </ul>
                       </nav>
                     </div>
-
-                    {/* ======END PAGINATION==== */}
-
-
                   </div>
                 </div>
+
                 <div className="col-lg-4">
                   {/* TODO: NHIỀU COMMENT */}
                   <div className="mb-15">
                     <h5 className="text-uppercase" style={{ fontSize: '14px' }}>Nhiều bình luận nhất</h5>
                   </div>
-                  {/* <hr className="most-popular-hr" /> */}
 
                   {cmtPosts.map((item) => {
                     return (

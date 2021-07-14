@@ -1,35 +1,31 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ReactHtmlParse from "react-html-parser";
-import { toast } from 'react-toastify';
+import userApis from "./enum/user-apis";
+import { errorNotification, successNotification } from "../../../users/utils/notification/ToastNotification";
 
 
 function AdminUsers() {
-
     const [userList, setUserList] = useState([]);
     const [pagination, setPagination] = useState({
         page: 0,
         size: 10
     })
+
     //Check pagination
-    // const [isDefault, setIsDefault] = useState(false)
     const [userToAdm, setUserToAdm] = useState({})
 
     const [isShowAlertToAdm, setIsShowAlertToAdm] = useState(false)
     useEffect(() => {
         const getUserList = async () => {
-            try {
-                const res = await axios.get("/system/users" ,{
-                    params: {
-                        page: pagination.page,
-                        size: pagination.size
-                    }
-                })
-                if (res) {
-                    setUserList(res.data);
+            const res = await axios.get(userApis.getUserList ,{
+                params: {
+                    page: pagination.page,
+                    size: pagination.size
                 }
-        } catch (error) {
-                console.log(error);
+            })
+            if (res) {
+                setUserList(res.data);
             }
         }
         getUserList();
@@ -54,49 +50,25 @@ function AdminUsers() {
         const id = String(userToAdm.accountId)
         const toAdmin = async () => {
             try {
-                const res = await axios.put(`/user/${id}/admin`)
+                const res = await axios.put(userApis.updateRole(id))
                 if (res) {
                     var newUserList = userList.filter((item) =>
                         item.accountId !== userToAdm.accountId
                     )
                     setUserList(newUserList)
-                    toast.success(`${userToAdm.name} đã thành admin 🎉`, {
-                        position: "bottom-left",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    successNotification(`${userToAdm.name} đã thành admin 🎉`)
                     setUserToAdm({})
                     setIsShowAlertToAdm(false)
                 }
             } catch (error) {
                 if (error.response.status === 422) {
-                    toast.error('Tài khoản không tồn tại hoặc chưa kích hoạt 🙁', {
-                        position: "bottom-left",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                   errorNotification('Tài khoản không tồn tại hoặc chưa kích hoạt 🙁')
                     setUserToAdm({})
                     setIsShowAlertToAdm(false)
 
                 }
                 else {
-                    toast.error('Thảo tác không thành công', {
-                        position: "bottom-left",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    errorNotification('Thảo tác không thành công')
                     setUserToAdm({})
                     setIsShowAlertToAdm(false)
                 }
@@ -131,14 +103,6 @@ function AdminUsers() {
         )
     }
 
-
-
-    // var tmpMaxPage = userList.length / pagination.size;
-    // if ((userList.length) % (pagination.size) !== 0) {
-    //     tmpMaxPage = tmpMaxPage + 1
-    // }
-    // const maxPage = parseInt(tmpMaxPage);
-
     const elmUser = userList.map((user, index) => {
         return (
             <tr key={user.accountId}>
@@ -149,8 +113,6 @@ function AdminUsers() {
                 <td>{ReactHtmlParse(user.name)}</td>
                 <td>{user.email}</td>
                 <td className="text-center">{user.postCount}</td>
-                {/* <td className="text-center">{user.commentOnOwnPostCount}</td> */}
-                {/* <td className="text-center">{user.bookmarkOnOwnPostCount}</td> */}
                 <td className="text-center">{user.followCount}</td>
                 <td className="text-center">{user.role ? "Admin" : "User"}</td>
                 <td>
@@ -184,8 +146,6 @@ function AdminUsers() {
                                     <th scope="col">Tên</th>
                                     <th scope="col">Email</th>
                                     <th scope="col" className="text-center">Số bài viêt</th>
-                                    {/* <th scope="col" className="text-center">Số comment</th> */}
-                                    {/* <th scope="col" className="text-center">Số bookmark</th> */}
                                     <th scope="col" className="text-center">Số follow</th>
                                     <th scope="col" className="text-center">Quyền hạn</th>
                                     <th scope="col" className="text-center">Admin</th>

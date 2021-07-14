@@ -8,7 +8,7 @@ import { isEmail, isEmpty, isLength } from '../../utils/validation/Validation'
 import {GoogleLogin} from 'react-google-login'
 import CookiesService from '../../../services/CookiesService'
 import useSocketDataObject from '../../../real-time/useSocketDataObject'
-
+import authApis from './enum/authentication-apis'
 
 
 const initialState = {
@@ -35,7 +35,6 @@ function Login() {
 
     //TODO: LOGIN: Nếu người dùng nhấn đăng nhập thì lưu local là đã đăng nhập
     const handleSubmit = async e => {
-        console.log("Call submit function")
         e.preventDefault()
         if(isEmpty(email) || isEmpty(password)){
             return setUser({...user, err: 'Hãy điền đầy đủ thông tin', success: ''})
@@ -55,10 +54,9 @@ function Login() {
 
         try {
 
-            const res = await axios.post('/auth/login' , loginForm)
+            const res = await axios.post(authApis.login, loginForm)
             if(res){
                 setUser({...user, err:'', success: res.data.msg})
-                
                 //Da Dang Nhap
                 dispatch(dispatchLogin())
                 cookiesService.setToken(res.data.token)
@@ -88,16 +86,14 @@ function Login() {
             var loginForm = new FormData()
             loginForm.append('google_token', google_token)
     
-            const res = await axios.post('/auth/google', loginForm)
+            const res = await axios.post(authApis.loginByGoogle, loginForm)
             if(res){
                 setUser({...user, err: '', success: 'Đăng nhập thành công'})
                 dispatch(dispatchLogin())
-                // console.log(response.profileObj.email)
                 cookiesService.setToken(res.data.token)
                 Subscribe_notification(response.profileObj.email)
                 history.push('/')
             }
-            
         }catch(err){
             setUser({...user, err: 'Đã có lỗi xảy ra', success: ''})
         }
@@ -126,9 +122,6 @@ function Login() {
             </div>
             </form>
             <div className="register__social">
-                {/* <a href="" class="register__social--facebook">
-                    <i class="fab fa-facebook-f"></i>
-                    Facebook</a> */}
                 <GoogleLogin
                 clientId="545452035521-c4eljpuu1281eml2ci6kaud39s5kc9ct.apps.googleusercontent.com"
                 buttonText="Đăng nhập bằng Google"

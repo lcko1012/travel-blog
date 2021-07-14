@@ -2,16 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import "./Post.css"
 import axios from 'axios'
-
 import ReactHtmlParser from 'react-html-parser'
 import Loading from '../../utils/Loading/Loading'
 import Cookies from 'js-cookie'
 import Comments from './comments/Comments'
 import CommentPost from '../home/components/CommentPost'
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux'
-
+import postApi from './enum/post-api'
+import { errorNotification, successNotification } from '../../utils/notification/ToastNotification'
 
 function Post() {
   const params = useParams()
@@ -44,7 +42,7 @@ function Post() {
   useEffect(() => {
     const getPost = async () => {
       try {
-        const res = await axios.get(`/post`, {
+        const res = await axios.get(postApi.getPost, {
           params: {
             slug: params.slug
           }
@@ -71,8 +69,6 @@ function Post() {
         console.log(err)
       }
     }
-
-
     if (params.slug) {
       getPost()
     }
@@ -82,16 +78,14 @@ function Post() {
 
   useEffect(() => {
     const getAuthPosts = async () => {
-      try {
-        const res = await axios.get(`/user/posts/${author.accountId}`, {
+        const res = await axios.get(postApi.getPostsOfAuthor(author.accountId), {
           params: {
             size: 5
           }
         })
-        setUserPosts(res.data)
-      } catch (err) {
-        console.log(err)
-      }
+        if(res){
+          setUserPosts(res.data)
+        }
     }
     if (author.accountId) {
       getAuthPosts()
@@ -108,13 +102,12 @@ function Post() {
     bookmarkForm.append("postId", post.postId)
     const postBookmark = async () => {
       try {
-        const res = await axios.post('/bookmark', bookmarkForm)
+        const res = await axios.post(postApi.bookmarkPost, bookmarkForm)
         if (res) {
-          console.log(res)
           setPost({ ...post, bookmarked: true, bookmarkedCount: res.data })
         }
       } catch (err) {
-        console.log(err)
+        errorNotification("Đã có lỗi xảy ra 🙁")
       }
     }
     postBookmark()
@@ -126,13 +119,12 @@ function Post() {
 
     const deleteBookmark = async () => {
       try {
-        const res = await axios.delete(`/bookmark/${post.postId}`)
+        const res = await axios.delete(postApi.unBookmarkPost(post.postId))
         if (res) {
-          console.log(res)
           setPost({ ...post, bookmarked: false, bookmarkedCount: res.data })
         }
       } catch (err) {
-        console.log(err)
+        errorNotification("Đã có lỗi xảy ra 🙁")
       }
     }
     deleteBookmark()
@@ -145,29 +137,13 @@ function Post() {
 
   const handleDelPost = async () => {
     try {
-      const res = await axios.delete(`/post/${post.postId}`)
+      const res = await axios.delete(postApi.deletePost(post.postId))
       if (res) {
-        toast.success('Đã xóa bài viết thành công ✔', {
-          position: "bottom-left",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        successNotification('Đã xóa bài viết thành công ✔')
         history.push("/")
       }
     } catch (error) {
-      toast.error('Đã có lỗi xảy ra khi xóa bài 😢', {
-        position: "bottom-left",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      errorNotification('Đã có lỗi xảy ra khi xóa bài 😢')
     }
   }
 
@@ -179,7 +155,7 @@ function Post() {
 
   const handleReportPost = async () => {
     try {
-      const res = await axios.post('/report', null, {
+      const res = await axios.post(postApi.reportPost, null, {
         params: {
           postId: post.postId,
           content: reportTxt
@@ -187,34 +163,15 @@ function Post() {
       })
       if (res) {
         setIsReport(false)
-        toast.success('Báo cáo thành công ✔', {
-          position: "bottom-left",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-
+        successNotification('Báo cáo thành công ✔')
       }
     } catch (error) {
-      toast.error('Không thể báo cáo 🙁', {
-        position: "bottom-left",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      console.log(error)
+      errorNotification('Không thể báo cáo 🙁')
     }
   }
   const handleChangeInput = (e) => {
     const { value } = e.target
     setReportTxt(value)
-
   }
 
   const showDelAlert = () => {
@@ -293,6 +250,7 @@ function Post() {
                       <div className="avatar-write-by inline-item"
                         style={{ backgroundImage: `url(${ReactHtmlParser(author.avatarLink)})` }}
                       ></div>
+
                       <div style={{ margin: 'auto 0' }}>
                         <div className="name-write-by">
                           {author.accountId === user.accountId ?
@@ -300,8 +258,8 @@ function Post() {
                             :
                             <Link to={`/profile/${author.accountId}`}>{author.name}</Link>
                           }
-
                         </div>
+
                         <p className="date-write-by">{post.publishedDate}</p>
                       </div>
                     </div>
@@ -319,29 +277,21 @@ function Post() {
                         </button>
                       </div> :
                       //neu khong chủ bài viết thì ktra admin hay user thường: admin xóa bài được, user là báo cáo
-                      // <button className="post__delBtn" onClick={() => handleClickDel(true)}>
-                      // <i className="fal fa-trash-alt" style={{ color: '#A95252' }}></i>
-                      // </button>
-                      auth.isAdmin ?  null :
-                      <button className="post__delBtn post__reportBtn" style={{ color: 'red' }} onClick={handleShowReport}>
-                        <i className="fal fa-exclamation-triangle"></i>
-                      </button>
+                      auth.isAdmin ? null :
+                        <button className="post__delBtn post__reportBtn" style={{ color: 'red' }} onClick={handleShowReport}>
+                          <i className="fal fa-exclamation-triangle"></i>
+                        </button>
                     }
 
                   </div>
-
 
                   <div className="post-content" >
                     {ReactHtmlParser(ReactHtmlParser(post.content))}
                   </div>
                 </div>
-
                 {/* TODO: COMMENT AREA */}
-                {/* ========================COMMENT================ */}
                 <Comments setPost={setPost} id={post.postId} post={post} />
-
               </div>
-              {/* ===============================END COMMENT=========================== */}
 
               {/* TODO: POST's INFORMATION */}
               <div className="col-lg-4 mt-50" style={{ paddingLeft: '30px' }}>
@@ -374,10 +324,8 @@ function Post() {
                   </div>
                 </div>
 
-
                 {/* TODO: Same author */}
-
-                {userPosts.length-1 > 0 ?
+                {userPosts.length - 1 > 0 ?
                   <div>
                     <h5 className="mb-20">Các bài viết cùng tác giả</h5>
                     {userPosts.map(item => {

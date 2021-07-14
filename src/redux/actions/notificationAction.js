@@ -18,7 +18,7 @@ export const dispatchDecreaseCount = () => {
 }
 
 export const fetchUnseenNoti = async () => {
-    const res = await axios('/notifications/unseen')
+    const res = await axios('/api/notifications/unseen')
     return res.data.length
 }
 

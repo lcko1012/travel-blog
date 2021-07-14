@@ -1,9 +1,10 @@
 import { Link, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { toast } from 'react-toastify';
 import ReactHtmlParser from 'react-html-parser'
 import Loading from '../../../users/utils/Loading/Loading'
+import reportApis from "./enum/report-apis";
+import { errorNotification, successNotification } from "../../../users/utils/notification/ToastNotification";
 
 function AdminReportDetails() {
     const [report, setReport] = useState(false);
@@ -14,35 +15,26 @@ function AdminReportDetails() {
     const [isShowSolveForm, setIsShowSolveForm] = useState(false)
     const [isShowDel, setIsShowDel] = useState(false)
     const [solvedTxt, setSolvedTxt] = useState('')
-    const [mailTxt, setMailTxt] =useState('')
 
     useEffect(() => {
         const getReport = async () => {
-            try {
-                const res = await axios.get(`/report/${id}`)
-                if (res) {
-                    console.log(res.data)
-                    setReport(res.data);
-                }
-            } catch (error) {
-                console.log(error);
+            const res = await axios.get(reportApis.getDetailReport(id))
+            if (res) {
+                console.log(res.data)
+                setReport(res.data);
             }
         }
+
         const getPost = async () => {
             if (report.reportedPost) {
-                try {
-                    const res = await axios.get(`/post/${report.reportedPost.postId}`)
-                    if (res) {
-                        setPost(res.data)
-                    }
-                } catch (error) {
-                    console.log(error)
+                const res = await axios.get(reportApis.getPostOfReport(report.reportedPost.postId))
+                if (res) {
+                    setPost(res.data)
                 }
             }
         }
         getReport();
         getPost()
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [report.reportId, callback])
 
@@ -51,80 +43,39 @@ function AdminReportDetails() {
         const decision = new FormData()
         decision.append("decision", solvedTxt)
         try {
-            const res = await axios.put(`/report/${id}`, decision)
+            const res = await axios.put(reportApis.solveReport(id), decision)
             if (res) {
-                toast.success('Đã giải quyết ✔', {
-                    position: "bottom-left",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                successNotification('Đã giải quyết ✔')
                 setIsShowSolveForm(false)
                 setCallback(!callback)
 
             }
         } catch (error) {
-            toast.error('Đã có lỗi xảy ra 🙁', {
-                position: "bottom-left",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            errorNotification('Đã có lỗi xảy ra 🙁')
         }
     }
 
     const deletePost = async () => {
-        // console.log(report.reportedPost.postId)
         try {
-            if(report.reportedPost){
-                const res = await axios.delete(`/post/${report.reportedPost.postId}`)
-                if(res) {
-                    toast.success('Đã xóa bài viết ✔', {
-                        position: "bottom-left",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                   
+            if (report.reportedPost) {
+                const res = await axios.delete(reportApis.deletePost(report.reportedPost.postId))
+                if (res) {
+                    successNotification('Đã xóa bài viết ✔')
+
                 }
                 setIsShowDel(false)
                 setCallback(!callback)
             }
         } catch (error) {
-            if(error.response.status === 404){
-                toast.error('Bài viết không tồn tại 🙁', {
-                    position: "bottom-left",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+            if (error.response.status === 404) {
+                errorNotification('Bài viết không tồn tại 🙁')
             }
             else {
-                toast.error('Đã có lỗi xảy ra 🙁', {
-                    position: "bottom-left",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                errorNotification('Đã có lỗi xảy ra 🙁')
             }
-            
+
         }
-        
+
     }
 
     const handleChangeInput = (e) => {
@@ -134,24 +85,24 @@ function AdminReportDetails() {
 
     const showDelAlert = () => {
         return (
-          <div className="post__alert post__alert--delete ">
-            <h5>Lưu ý</h5>
-            <p>Thao tác này sẽ xóa hết dữ liệu bài viết</p>
-            <div>
-              <button className="post__delAlert--button post__delAlert--cancel"
-                onClick={() => setIsShowDel(false)}
-              >
-                Hủy
-              </button>
-              <button className="post__delAlert--button post__delAlert--delete"
-                onClick={deletePost}
-              >
-                Xóa bài
-              </button>
+            <div className="post__alert post__alert--delete ">
+                <h5>Lưu ý</h5>
+                <p>Thao tác này sẽ xóa hết dữ liệu bài viết</p>
+                <div>
+                    <button className="post__delAlert--button post__delAlert--cancel"
+                        onClick={() => setIsShowDel(false)}
+                    >
+                        Hủy
+                    </button>
+                    <button className="post__delAlert--button post__delAlert--delete"
+                        onClick={deletePost}
+                    >
+                        Xóa bài
+                    </button>
+                </div>
             </div>
-          </div>
         )
-      }
+    }
 
     const showSolveForm = () => {
         return (
@@ -175,29 +126,6 @@ function AdminReportDetails() {
             </div>
         )
     }
-    
-    // const showSendMailForm = () => {
-    //     return (
-    //         <div className="post__alert post__alert--report">
-    //             <h5>Gửi mail</h5>
-    //             <textarea
-    //                 onChange={(e) => {setMailTxt(e.target.value)}}
-    //                 name="reportTxt" className="post__reportContent" placeholder="Nội dung tin nhắn" />
-    //             <div>
-    //                 <button className="post__delAlert--button post__delAlert--cancel"
-    //                     onClick={() => setIsShowSendMailForm(false)}
-    //                 >
-    //                     Hủy
-    //                 </button>
-    //                 <button className="post__delAlert--button post__reportForm--report"
-    //                     // onClick={}
-    //                 >
-    //                     Gửi
-    //                 </button>
-    //             </div>
-    //         </div>
-    //     )
-    // }
 
     return (
         <>
@@ -211,6 +139,7 @@ function AdminReportDetails() {
                                 <h2 className="list-name">Chi tiết báo cáo</h2>
                                 <h5 className="web-name">LangThang.com</h5>
                             </div>
+
                             <div className="post-table">
                                 <div className="group-button mt-10">
                                     <Link to="/admin/reports" className="btn btn-primary">
@@ -218,17 +147,6 @@ function AdminReportDetails() {
                                         Trở lại
                                     </Link>
                                     <div className="action-button">
-                                        {/* <button className="btn btn-secondary mr-5" disabled={report.solved}>
-                                <i className="fal fa-paper-plane mr-5"></i>
-                                Gửi thông báo
-                            </button> */}
-                                        {/* <button className="btn btn-warning mr-5" onClick={() => setIsShowSendMailForm(true)}>
-                                            
-                                                    <i className="fal fa-envelope mr-5"></i>
-                                                    Gửi cảnh cáo
-
-
-                                        </button> */}
                                         <button className="btn btn-primary mr-5" disabled={report.solved} onClick={() => setIsShowSolveForm(true)}>
                                             {report.solved ?
                                                 <>
@@ -238,36 +156,37 @@ function AdminReportDetails() {
                                             }
 
                                         </button>
-                                        {/* <button className="btn btn-secondary">
-                                <i className="fal fa-eye-slash mr-5"></i>
-                                Ẩn
-                            </button> */}
                                     </div>
                                 </div>
+
                                 <div className="row">
                                     <div className="col-lg-6" style={{ borderRight: '1px solid' }}>
                                         <div>
                                             <h5 className="report-title">ID báo cáo</h5>
                                             <h6 className="report-content">{report.reportId}</h6>
                                         </div>
+
                                         <div>
                                             <h5 className="report-title">ID bài viết</h5>
                                             <h6 className="report-content">{report.reportedPost ? report.reportedPost.postId : "Không tồn tại"}</h6>
                                         </div>
+
                                         <div>
                                             <h5 className="report-title">Tên bài viết</h5>
                                             <h6 className="report-content">
-                                                {report.reportedPost ? 
-                                                <Link to={`/posts/${post.slug}`}>
-                                                {ReactHtmlParser(post.title)}
-                                                </Link> : "Không tồn tại"}
-                                                
+                                                {report.reportedPost ?
+                                                    <Link to={`/posts/${post.slug}`}>
+                                                        {ReactHtmlParser(post.title)}
+                                                    </Link> : "Không tồn tại"}
+
                                             </h6>
                                         </div>
+
                                         <div>
                                             <h5 className="report-title">Nội dung báo cáo</h5>
                                             <h6 className="report-content">{report.reportContent}</h6>
                                         </div>
+
                                         <div>
                                             <h5 className="report-title">Ngày báo cáo</h5>
                                             <h6 className="report-content">{new Date(report.reportDate).toLocaleString()}</h6>
@@ -294,24 +213,18 @@ function AdminReportDetails() {
                                         <div>
                                             <h5 className="report-title"> Xóa bài viết</h5>
                                             {/* Nếu đã solved thì không xóa được nữa */}
-                                            {report.solved  || !report.reportedPost ? 
-                                             <button className="btn btn-danger" disabled={true}>
-                                             <i className="fal fa-minus-circle mr-5"></i>
-                                             Đã xóa</button> :
+                                            {report.solved || !report.reportedPost ?
+                                                <button className="btn btn-danger" disabled={true}>
+                                                    <i className="fal fa-minus-circle mr-5"></i>
+                                                    Đã giải quyết
+                                                </button> :
+
                                                 <button className="btn btn-danger" onClick={() => setIsShowDel(true)}>
-                                                <i className="fal fa-minus-circle mr-5"></i>
-                                                    Xóa</button> 
+                                                    <i className="fal fa-minus-circle mr-5"></i>
+                                                    Xóa
+                                                </button>
                                             }
                                         </div>
-                                        {/* <div>
-                                <h5 className="report-title"> ID người bị báo cáo</h5>
-                                <h6 className="report-content">{report ? report.postOwner.accountId : ""}</h6>
-                            </div>
-                            <div>
-                                <h5 className="report-title"> Người bị báo cáo</h5>
-                                <h6 className="report-content">{report ? report.postOwner.name : ""}</h6>
-                            </div>
-                             */}
                                     </div>
                                 </div>
                             </div>

@@ -10,13 +10,15 @@ import homeApis from './enum/home-apis';
 
 
 function Home() {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(3);
+  const [currentLargePage, setCurrentLargePage] = useState(0)
   // Bai viet ở trên cùng
   const [featuredPosts, setFeaturedPosts] = useState([])
   const [cmtPosts, setCmtPosts] = useState([])
   const [recentPosts, setRecentPosts] = useState([])
   const [loadingPage, setLoadingPage] = useState(false)
-  const length = 5
+  const length = 6
+  const lengthOfLargeSlide = 3
 
   const [currentPage, setCurrentPage] = useState(0)
   const [isEmpty, setIsEmpty] = useState(false)
@@ -31,7 +33,7 @@ function Home() {
           size: 10
         }
       })
-      if(res){
+      if (res) {
         setFeaturedPosts(res.data)
         setLoadingPage(true)
       }
@@ -48,7 +50,7 @@ function Home() {
           size: 11
         }
       })
-      if(res) setCmtPosts(res.data)
+      if (res) setCmtPosts(res.data)
     }
     getCmtPosts()
   }, [])
@@ -60,7 +62,7 @@ function Home() {
           page: currentPage
         }
       })
-      if(res){
+      if (res) {
         setRecentPosts([...recentPosts, ...res.data])
         if (res.data.length === 0 || res.data.length < 10) {
           setIsEmpty(true)
@@ -73,17 +75,67 @@ function Home() {
 
   // Di chuyen slide
   const nextSlide = () => {
-    setCurrentSlide(currentSlide === length - 1 ? 0 : currentSlide + 1)
+    setCurrentSlide(currentSlide === length - 1 ? 3 : currentSlide + 1)
   }
 
   const prevSlide = () => {
-    setCurrentSlide(currentSlide === 0 ? length - 1 : currentSlide - 1)
+    setCurrentSlide(currentSlide === 3 ? length - 1 : currentSlide - 1)
+  }
+
+  const nextLargeSlide = () => {
+    setCurrentLargePage(currentLargePage === lengthOfLargeSlide - 1 ? 0 : currentLargePage + 1)
+  }
+  const prevLargeSlide = () => {
+    setCurrentLargePage(currentLargePage === 0 ? lengthOfLargeSlide - 1 : currentLargePage - 1)
   }
 
   return (
     <>
       {loadingPage ?
         <main className="main__home">
+          <div className="container mt-30 mb-15">
+            {featuredPosts.map((post, index) => {
+              if (index < 3) {
+                return (
+                  <div  key={post.postId}>
+                  {index === currentLargePage && 
+                    <div
+                    className="home__thumbnail--large"
+                    style={{ backgroundImage: `url(${ReactHtmlParser(post.postThumbnail)})` }}
+                  >
+                    <div className="home__thumbnail--content">
+                      {post.categories.map((item) => {
+                        return (
+                          <Link to={{ pathname: `/category/${item.categoryId}` }} key={item.categoryId}>
+                            <div className="home__thumbnail--category" key={item.categoryId}>{item.categoryName}</div>
+                          </Link>
+                        )
+                      })}
+                      <Link to={{pathname: `/posts/${post.slug}`}}>
+                        <h1>{post.title}</h1>
+                      </Link>
+                      <div className="entry-meta meta-1 font-x-small text-white text-uppercase">
+                        <span className="post-on">{featuredPosts[1].bookmarkedCount} bookmark</span>
+
+                        <span className="time-reading has-dos">
+                          {post.commentCount} bình luận
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="home__thumbnail--arrow">
+                      <i className="fal fa-long-arrow-left" onClick={prevLargeSlide}></i>
+                      <i className="fal fa-long-arrow-right" onClick={nextLargeSlide}></i>
+                    </div>
+                  </div>
+                  }
+                  </div>
+                  
+                )
+              }
+            })}
+          </div>
+
           <div className="container">
             {/* FEATURED POST */}
             <div className="featured__post pt-15 font-small text-uppercase pb-15">
@@ -92,37 +144,36 @@ function Home() {
             <div className="row-1">
               <div className="col-lg-8 mb-30">
                 {/* TODO: NỔI BẬT POSTS */}
-                {
-                  featuredPosts.map((post, index) => {
-                    if (index < 6) {
-                      return (
-                        <div key={post.postId}>
-                          {index === currentSlide && (
-                            <div className="slider thumb-overlay hieu-ung">
-                              <div className="arrow-cover">
-                                <i className="fal fa-long-arrow-left" onClick={prevSlide}></i>
-                                <i className="fal fa-long-arrow-right" onClick={nextSlide}></i>
-                              </div>
+                {featuredPosts.map((post, index) => {
+                  if (index < 6 && index >= 3) {
+                    return (
+                      <div key={post.postId}>
+                        {index === currentSlide && (
+                          <div className="slider thumb-overlay hieu-ung">
+                            <div className="arrow-cover">
+                              <i className="fal fa-long-arrow-left" onClick={prevSlide}></i>
+                              <i className="fal fa-long-arrow-right" onClick={nextSlide}></i>
+                            </div>
 
-                              <img src={ReactHtmlParser(post.postThumbnail)} alt='travel image' className='image' />
-                              <div className="post-content-overlay text-white ml-30 mr-30 pb-30">
-                                <h3 className="post-title mb-20" style={{ fontSize: 20 }}>
-                                  <Link to={{ pathname: `/posts/${post.slug}`, state: { id: post.postId } }}
-                                    className="text-white">
-                                    {ReactHtmlParser(post.title)}
-                                  </Link>
-                                </h3>
-                                <div className="entry-meta meta-1 font-small text-white mt-10 " style={{ textAlign: 'left' }}>
-                                  <span>{post.bookmarkedCount} lượt bookmark</span>
-                                  <span className="has-dos">{post.commentCount} bình luận</span>
-                                </div>
+                            <img src={ReactHtmlParser(post.postThumbnail)} alt='travel image' className='image' />
+                            <div className="post-content-overlay text-white ml-30 mr-30 pb-30">
+                              <h3 className="post-title mb-20" style={{ fontSize: 20 }}>
+                                <Link to={{ pathname: `/posts/${post.slug}`}}
+                                  className="text-white">
+                                  {ReactHtmlParser(post.title)}
+                                </Link>
+                              </h3>
+                              <div className="entry-meta meta-1 font-small text-white mt-10 " style={{ textAlign: 'left' }}>
+                                <span>{post.bookmarkedCount} lượt bookmark</span>
+                                <span className="has-dos">{post.commentCount} bình luận</span>
                               </div>
                             </div>
-                          )}
-                        </div>
-                      )
-                    }
-                  })
+                          </div>
+                        )}
+                      </div>
+                    )
+                  }
+                })
                 }
               </div>
 
@@ -168,7 +219,7 @@ function Home() {
 
           </div>
 
-          {/* TODO: MỚI POSTS */}
+          {/* TODO: NEW POSTS */}
           <div className="pt-15 pb-50" >
             <div className="container">
               <div className="row-1">
@@ -177,7 +228,7 @@ function Home() {
                     <div className="mb-30 position-relative">
                       <h5 className="mb-30 text-uppercase" style={{ fontSize: '14px' }}>Bài đăng mới</h5>
                     </div>
-                    {/* ==== LOOP LIST ===== */}
+
                     <div className="loop-list">
                       {recentPosts.map((post) => {
                         return (
@@ -185,10 +236,6 @@ function Home() {
                         )
                       })}
                     </div>
-
-                    {/* ======END LOOP LIST==== */}
-
-                    {/*TODO: PAGINATION*/}
 
                     <div className="pagination-area mb-30">
                       <nav aria-label="Page navigation example">
@@ -206,7 +253,6 @@ function Home() {
                 </div>
 
                 <div className="col-lg-4">
-                  {/* TODO: NHIỀU COMMENT */}
                   <div className="mb-15">
                     <h5 className="text-uppercase" style={{ fontSize: '14px' }}>Nhiều bình luận nhất</h5>
                   </div>

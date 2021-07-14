@@ -22,12 +22,12 @@ axios.interceptors.request.use(
   },
     error => {
       const originalRequest = error.config
-      if(error.response.config.url === '/auth/login'){
+      if(error.response.config.url === '/api/auth/login'){
         return Promise.reject(error);
       }
       if(error.response.status === 403 && !originalRequest._retry) {
         originalRequest._retry = true
-        return axios.post('/auth/refreshToken', null,{
+        return axios.post('/api/auth/refreshToken', null,{
           headers: {Authorization: 'Bearer ' + cookiesService.getToken()}
         }).then(res => {
           if(res.status === 200) {

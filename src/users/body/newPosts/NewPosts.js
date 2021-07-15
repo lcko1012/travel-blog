@@ -98,7 +98,7 @@ function NewPosts() {
       }
 
       if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
-        errorNotification("Sai định dạng")
+        return errorNotification("Sai định dạng")
       }
       var formImage = new FormData()
       formImage.append('upload', file)

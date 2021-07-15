@@ -125,7 +125,7 @@ function Home() {
                         <h1>{post.title}</h1>
                       </Link>
                       <div className="entry-meta meta-1 font-x-small text-white text-uppercase">
-                        <span className="post-on">{featuredPosts[1].bookmarkedCount} bookmark</span>
+                        <span className="post-on">{post.bookmarkedCount} bookmark</span>
 
                         <span className="time-reading has-dos">
                           {post.commentCount} bình luận

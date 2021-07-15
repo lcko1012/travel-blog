@@ -101,10 +101,12 @@ function Post() {
     if (!token) return history.push('/login')
     var bookmarkForm = new FormData()
     bookmarkForm.append("postId", post.postId)
+  
     const postBookmark = async () => {
       try {
         const res = await axios.post(postApi.bookmarkPost, bookmarkForm)
         if (res) {
+          console.log(res)
           setPost({ ...post, bookmarked: true, bookmarkedCount: res.data })
         }
       } catch (err) {

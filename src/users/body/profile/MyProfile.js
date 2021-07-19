@@ -4,15 +4,13 @@ import axios from 'axios'
 import CurrentPost from '../home/components/CurrentPost'
 import Empty from '../../utils/Empty/Empty'
 import ReactHtmlParser from 'react-html-parser'
-import Cookies from 'js-cookie'
 import { Link } from 'react-router-dom'
-
+import profileApis from './enum/profile-apis'
 
 const MyProfile = () => {
   const auth = useSelector(state => state.auth)
   const userInfor = auth.user
   const [posts, setPosts] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
   const [drafts, setDrafts] = useState([])
   //false load bai viet, true load ban nhap
   const [isLoadPost, setIsLoadPost] = useState(false)
@@ -24,17 +22,16 @@ const MyProfile = () => {
   const [isEmptyPosts, setIsEmptyPosts] = useState(false)
   //Co chac muon xoa bai viet khong
 
-
   //get posts
   useEffect(() => {
     const getPosts = async () => {
       try {
-        const res = await axios.get(`/user/posts/${userInfor.accountId}`, {
+        const res = await axios.get(profileApis.getPostsOfUser(userInfor.accountId), {
           params: {
             page: currentPagePosts
           }
         })
-        if(res){
+        if (res) {
           setPosts([...posts, ...res.data])
           if (res.data.length === 0 || res.data.length < 10) {
             setIsEmptyPosts(true)
@@ -51,14 +48,12 @@ const MyProfile = () => {
 
   //GET DRAFTS
   useEffect(() => {
-
     getDrafts()
   }, [userInfor.accountId, callback, currentPageDrafts])
 
   const getDrafts = async () => {
     try {
-      const token = Cookies.get("token")
-      const res = await axios.get('/user/drafts', {
+      const res = await axios.get(profileApis.getDraftsOfUser, {
         params: {
           page: currentPageDrafts
         }
@@ -70,7 +65,7 @@ const MyProfile = () => {
         }
       }
     } catch (error) {
-      // console.log(error)
+      console.log(error)
     }
   }
 
@@ -78,11 +73,9 @@ const MyProfile = () => {
     setIsLoadPost(value)
   }
 
-
-
   const handleDelDraft = async (postId) => {
     try {
-      const res = await axios.delete(`/post/${postId}`)
+      const res = await axios.delete(profileApis.deleteDraft(postId))
 
       if (res) {
         console.log(res)
@@ -114,7 +107,7 @@ const MyProfile = () => {
                     <p>Người theo dõi</p>
                   </div>
                 </div>
-                <h5 className="author-name" style={{marginTop: '5px'}}>{userInfor.name}</h5>
+                <h5 className="author-name" style={{ marginTop: '5px' }}>{userInfor.name}</h5>
                 <div className="author__social">
                   <i className="fab fa-instagram" onClick={() => window.open(ReactHtmlParser(userInfor.instagramLink), '_blank')} ></i>
                   <i className="fab fa-facebook-square" onClick={() => window.open(ReactHtmlParser(userInfor.fbLink), '_blank')}></i>
@@ -163,9 +156,9 @@ const MyProfile = () => {
                       <ul className="pagination justify-content-start">
                         <li className={`page-item" ${isEmptyPosts ? 'disabled' : null}`}
                           onClick={() => setCurrentPagePosts(currentPagePosts + 1)}>
-                          <a className="page-link">
+                          <div className="page-link">
                             <i className="fal fa-long-arrow-right"></i>
-                          </a>
+                          </div>
                         </li>
                       </ul>
                     </nav>
@@ -181,15 +174,17 @@ const MyProfile = () => {
                       return (
                         <div key={index} className="myprofile__draft ">
                           <h5>{ReactHtmlParser(draft.title)}</h5>
-                          <div style={{textAlign: 'end'}}>
+                          <div style={{ textAlign: 'end' }}>
                             <Link to={`/posts/${draft.slug}/edit`}>
-                            <button className="child-1">
-                              <i className="fal fa-pencil"></i>
-                              Tiếp tục viết</button>
+                              <button className="child-1">
+                                <i className="fal fa-pencil"></i>
+                                Tiếp tục viết</button>
                             </Link>
+
                             <button className="child-2" onClick={() => handleDelDraft(draft.postId)}>
-                            <i className="fal fa-trash-alt"></i>
-                              Xóa</button>
+                              <i className="fal fa-trash-alt"></i>
+                              Xóa
+                            </button>
                           </div>
 
                         </div>
@@ -201,9 +196,9 @@ const MyProfile = () => {
                       <ul className="pagination justify-content-start">
                         <li className={`page-item" ${isEmpty ? 'disabled' : null}`}
                           onClick={() => setCurrentPage(currentPageDrafts + 1)}>
-                          <a className="page-link">
+                          <div className="page-link">
                             <i className="fal fa-long-arrow-right"></i>
-                          </a>
+                          </div>
                         </li>
                       </ul>
                     </nav>

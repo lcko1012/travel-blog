@@ -8,10 +8,10 @@ function CommentPost({ item }) {
             <div className="post__popular--content media-body" >
                 <h6 className="post-title mb-15">
                     <Link to={{ pathname: `/posts/${item.slug}`, state: { id: item.postId } }}>
-                        {/* {ReactHtmlParser(item.title)} */}
                         {item.title.length > 40 ? ReactHtmlParser(item.title.slice(0, 40)) + "..." : ReactHtmlParser(item.title)}
                     </Link>
                 </h6>
+                
                 <div className="entry-meta meta-1 font-x-small text-uppercase">
                     <span>{item.bookmarkedCount} bookmark</span>
                     <span className="post-by has-dos">{item.commentCount} Bình luận</span>

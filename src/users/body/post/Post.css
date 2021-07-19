@@ -564,3 +564,34 @@ p {
 .left-align {
     text-align: left;
 }
+
+.post__button-up {
+    position: fixed;
+    bottom: 20px;
+    right: 10px;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    background: white;
+    border: none;
+    outline: none;
+    animation: btnUp 1s linear infinite;
+    transition: .8s ease;
+}
+
+.post__button-up:focus {
+    outline: none;
+}
+
+.post__button-up:hover {
+    background-color: rgba(199, 199, 199, 0.199);
+}
+
+@keyframes btnUp {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}

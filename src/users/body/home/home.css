@@ -1,10 +1,8 @@
 .main__home{
-    /* background-color: #f7f8f9; */
-    /* background-color: #F0F2F5; */
     background-color: var(--color-background);
-    /* background-color: white; */
     height: auto;
     box-sizing: content-box;
+    padding-top: 50px;
 }
 
 .hieu-ung {
@@ -442,4 +440,52 @@ span.has-dos {
 
 .post__popular:hover {
     transform: translate(0, -5px);
+}
+
+.home__thumbnail--large {
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    border-radius: 15px;
+    object-fit:cover;
+}
+
+.home__thumbnail--content {
+    position: absolute;
+    transition-duration: 0.2s;
+    width: 70%;
+    z-index: 20;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+}
+
+.home__thumbnail--content h1 {
+    color: white;
+    margin-top: 5px !important;
+}
+
+.home__thumbnail--category {
+    color: var(--color-primary)
+}
+
+.home__thumbnail--arrow {
+    position: absolute;
+    bottom: 30px;
+    z-index: 99;
+    color: white;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.home__thumbnail--arrow i {
+    cursor: pointer;
+}
+
+.home__thumbnail--arrow .fa-long-arrow-left {
+    margin-right: 10px ;
 }

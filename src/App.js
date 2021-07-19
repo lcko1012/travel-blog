@@ -7,15 +7,14 @@ import useSocketDataObject from './real-time/useSocketDataObject'
 import CookiesService from './services/CookiesService'
 import { ToastContainer } from 'react-toastify';
 import Routes from './routes';
-// import Body from './users/Body'
-
+import ScrollToTop from './routes/ScrollToTop';
 
 function App() {
 
   const dispatch = useDispatch()
   const auth = useSelector(state => state.auth)
   const realtime = useSelector(state => state.realtime)
-  const { ConnectSocket, Subscribe_notify, Disconnect } = useSocketDataObject()
+  const { ConnectSocket, Subscribe_notification } = useSocketDataObject()
   const { user } = auth
   const cookiesService = CookiesService.getService()
 
@@ -27,7 +26,7 @@ function App() {
         dispatch(dispatchGetUser(res))
       })
     }
-// eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth.isLogged, dispatch])
 
   useEffect(() => {
@@ -38,35 +37,29 @@ function App() {
   useEffect(() => {
     const token = cookiesService.getToken()
     if (token && realtime.ws !== null && realtime.isSuccess === true) {
-      // myVar = setTimeout(() => Subscribe_notify(user.email), 10000)
-      Subscribe_notify(user.email)
+      Subscribe_notification(user.email)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [realtime.isSuccess])
 
-
-
-
   return (
     <>
       <Router>
-        <div className="App">
-          {/* <Header /> */}
-          <ToastContainer
-            position="bottom-left"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
-          {/* <Body /> */}
-          {/* <Footer /> */}
-          <Routes />
-        </div>
+        <ScrollToTop></ScrollToTop>
+          <div className="App">
+            <ToastContainer
+              position="bottom-left"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
+            <Routes />
+          </div>
       </Router>
     </>
   );

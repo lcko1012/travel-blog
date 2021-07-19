@@ -1,6 +1,8 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
+import authApis from './enum/authentication-apis'
+
 
 const ActiveGmail = () => {
     const history = useHistory()
@@ -9,7 +11,7 @@ const ActiveGmail = () => {
     useEffect(() => {
         const  registerConfirm = async () => {
             try {
-                const res = await axios.post("/auth/registrationConfirm", {
+                const res = await axios.post(authApis.confirmRegistration, {
                     token: token
                 })
                 if(res) {

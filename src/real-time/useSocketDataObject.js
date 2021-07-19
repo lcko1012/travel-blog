@@ -2,13 +2,13 @@ import Cookies from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import SockJS from 'sockjs-client'
 import * as Stomp from 'stompjs'
-import {dispatchSetWs, dispatchSetNoti, dispatchRemoveNoti, dispatchRemovePost, dispatchSetPost} from '../redux/actions/realtimeAction'
-import {dispatchIncreaseCount} from '../redux/actions/notifyAction'
+import { dispatchSetWs, dispatchSetNoti, dispatchRemoveNoti, dispatchRemovePost, dispatchSetPost } from '../redux/actions/realtimeAction'
+import { dispatchIncreaseCount } from '../redux/actions/notificationAction'
 import { dispatchAddCmt } from '../redux/actions/commentAction'
 
 const useSocketDataObject = () => {
     let ws = null
-    let notificationSubscription= null
+    let notificationSubscription = null
     let commentSubcription = null
     const dispatch = useDispatch()
     const realtime = useSelector(state => state.realtime)
@@ -25,30 +25,27 @@ const useSocketDataObject = () => {
         })
     }
 
-    const Subscribe_notify = (email) => {
-        if(realtime.ws !== null && realtime.isSuccess === true){
-          const token = Cookies.get("token")
-          notificationSubscription = realtime.ws.subscribe(`/topic/notify/${email}`, (notify) => {
-            dispatch(dispatchIncreaseCount(JSON.parse(notify.body)))
-            
-          }, {'Authorization': `Bearer ${token}`})
-          dispatch(dispatchSetNoti(notificationSubscription))
-
+    const Subscribe_notification = (email) => {
+        if (realtime.ws !== null && realtime.isSuccess === true) {
+            const token = Cookies.get("token")
+            notificationSubscription = realtime.ws.subscribe(`/topic/notify/${email}`, (notify) => {
+                dispatch(dispatchIncreaseCount(JSON.parse(notify.body)))
+            }, { 'Authorization': `Bearer ${token}` })
+            dispatch(dispatchSetNoti(notificationSubscription))
         }
     }
-    
-    const Unsubscribe_notify = () => {
 
+    const Unsubscribe_notification = () => {
         if (realtime.notificationSubscription !== null) {
+            realtime.notificationSubscription.unsubscribe();
+            dispatch(dispatchRemoveNoti())
+        }
+    }
 
-          realtime.notificationSubscription.unsubscribe();
-          dispatch(dispatchRemoveNoti())
-      }
-  }
     const Subscribe_post = (id) => {
-        if(realtime.ws !== null && realtime.isSuccess){
+        if (realtime.ws !== null && realtime.isSuccess) {
             commentSubcription = realtime.ws.subscribe(`/topic/post/${id}`, (comment) => {
-                if(comment.body) {
+                if (comment.body) {
                     dispatch(dispatchAddCmt(JSON.parse(comment.body)))
                 }
             })
@@ -59,21 +56,19 @@ const useSocketDataObject = () => {
     const Unsubscribe_post = (postSubcription) => {
         if (postSubcription !== null && realtime.isSuccess) {
 
-          postSubcription.unsubscribe();
-          dispatch(dispatchRemovePost())
-      }
-  }
+            postSubcription.unsubscribe();
+            dispatch(dispatchRemovePost())
+        }
+    }
 
-//   const Disconnect = () => {
-//       if(realtime.ws !== null){
-//           realtime.ws.disconnect()
-//           console.log("disconnect")
-//       }
-//   }
+    // const Disconnect = () => {
+    //     if (realtime.ws !== null) {
+    //         realtime.ws.disconnect()
+    //         console.log("disconnect")
+    //     }
+    // }
 
-
-//   Subscribe_notify
-    return {Subscribe_notify ,ConnectSocket, Unsubscribe_notify, Subscribe_post, Unsubscribe_post, }
+    return { Subscribe_notification, ConnectSocket, Unsubscribe_notification, Subscribe_post, Unsubscribe_post, }
 
 }
 

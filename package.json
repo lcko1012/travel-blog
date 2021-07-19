@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
+    "aos": "^2.3.4",
     "axios": "^0.21.1",
     "draft-js": "^0.11.7",
     "draft-js-export-html": "^1.4.1",
@@ -53,5 +54,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://langthang.eastasia.cloudapp.azure.com:8080/api"
+  "proxy": "http://langthang.eastasia.cloudapp.azure.com:8080"
 }

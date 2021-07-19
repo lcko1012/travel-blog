@@ -7,7 +7,6 @@ import { useHistory } from 'react-router'
 import {
   dispatchGetComments, dispatchNextCommentsPage,
   dispatchSubmitComments, dispatchClearCmts
-
 } from '../../../../redux/actions/commentAction'
 import useSocketDataObject from '../../../../real-time/useSocketDataObject'
 import { showErrMsg } from '../../../utils/notification/Notification'
@@ -23,14 +22,12 @@ const Comments = ({ id }) => {
   const { Subscribe_post, Unsubscribe_post } = useSocketDataObject()
   const dispatch = useDispatch()
   const commentsReducer = useSelector(state => state.commentsReducer)
-  
   const realtime = useSelector(state => state.realtime)
   const ref = useRef(realtime.postSubcription)
+
   //TODO: Subcribe post to recieve a new comment
   useEffect(() => {
     Subscribe_post(id)
-    
-
   }, [realtime.isSuccess])
 
   useEffect(() => {

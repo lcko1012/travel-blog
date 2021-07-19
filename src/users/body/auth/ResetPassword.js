@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { showErrMsg, showSuccessMsg } from '../../utils/notification/Notification'
 import { isLength, isMatch } from '../../utils/validation/Validation'
-import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom'
+import authApis from './enum/authentication-apis'
+import { successNotification } from '../../utils/notification/ToastNotification'
 
 
 function ResetPassword() {
@@ -22,14 +23,13 @@ function ResetPassword() {
     useEffect(() => {
         const confirmToken = async () => {
             try {
-                const res = await axios.get('/auth/changePassword', {
+                const res = await axios.get(authApis.changePassword, {
                     params: {
                         token: token
                     }
                 })
                 if(res) {
                     setCanChange(true)
-                    // console.log(res)
                 }
             } catch (error) {
                 if(error.response.status === 401){
@@ -66,24 +66,12 @@ function ResetPassword() {
         resetForm.append('matchedPassword', matchedPassword)
         
         try{
-            const res = await axios.put('/auth/savePassword', resetForm)
+            const res = await axios.put(authApis.savePassword, resetForm)
             if(res) {
-                // setData({...data, success: 'Thay đổi mật khẩu thành công', err: ''})
-                toast.success('Đã đổi mật khẩu thành công ✔', {
-                    position: "bottom-left",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                  });
-                  history.push("/login")
+                successNotification('Đã đổi mật khẩu thành công ✔')
+                history.push("/login")
             }
         }catch(err){
-            console.log(err)
-
-
             if(err.response.status === 410){
                 setData({...data, err: 'Quá thời gian lấy lại mật khẩu', success: ''})
             }
@@ -96,7 +84,6 @@ function ResetPassword() {
             else {
                 setData({...data, err: 'Đã có lỗi xảy ra', success: ''})
             }
-            
         }
     }
 

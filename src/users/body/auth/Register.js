@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { showErrMsg, showSuccessMsg } from '../../utils/notification/Notification'
 import { isEmail, isEmpty, isLength, isMatch } from '../../utils/validation/Validation'
 import {GoogleLogin} from 'react-google-login'
+import authApis from './enum/authentication-apis'
 
 
 
@@ -42,6 +43,7 @@ function Register() {
         if(!isMatch(matchedPassword, password)){
             return setUser({...user, err:"Mật khẩu không giống nhau", success: ''})
         }
+
         try{
             var registerForm = new FormData()
             registerForm.append('name', name)
@@ -49,7 +51,7 @@ function Register() {
             registerForm.append('password', password)
             registerForm.append('matchedPassword', matchedPassword)
 
-            const res = await axios.post('/auth/registration', registerForm)
+            const res = await axios.post(authApis.register, registerForm)
             if(res.status === 202) {
                 setUser({...user, err: '', success: 'Kiểm tra email để kích hoạt tài khoản'})
             }
@@ -73,13 +75,11 @@ function Register() {
         console.log(response)
         try{
             const google_token = response.tokenId
-            console.log(google_token)
             var registerForm = new FormData()
             registerForm.append('google_token', google_token)
     
-            const res = await axios.post('/auth/google', registerForm)
-            setUser({...user, err: '', success: 'Mật khẩu đã được gửi tới gmail của bạn'})
-            console.log(res)            
+            const res = await axios.post(authApis.registerByGoogle, registerForm)
+            setUser({...user, err: '', success: 'Mật khẩu đã được gửi tới gmail của bạn'})           
         }catch(err){
             if(err.response.status === 401){
                 setUser({...user, err: 'Sai email hoặc password', success: ''})
@@ -122,7 +122,6 @@ function Register() {
             </div>
             </form>
             <div className="register__social">
-                
                 <GoogleLogin
                 clientId="545452035521-c4eljpuu1281eml2ci6kaud39s5kc9ct.apps.googleusercontent.com"
                 buttonText="Đăng ký bằng Google"

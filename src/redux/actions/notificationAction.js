@@ -18,7 +18,7 @@ export const dispatchDecreaseCount = () => {
 }
 
 export const fetchUnseenNoti = async () => {
-    const res = await axios('/notifications/unseen')
+    const res = await axios('/api/notifications/unseen')
     return res.data.length
 }
 
@@ -29,7 +29,7 @@ export const dispatchCountNoti = (count) => {
     }
 }
 
-//TODO: REMOVE ALL COUNT WHEN CLICK NOTIFY
+//TODO: REMOVE ALL COUNT WHEN CLICK NOTIFICATION
 export const dispatchRemoveCountNoti = () => {
     return {
         type: ACTIONS.REMOVE_COUNT_NOTI,

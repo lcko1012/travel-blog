@@ -6,7 +6,7 @@ import ReactHtmlParser from 'react-html-parser'
 import PassPage from './components/PassPage'
 import { fetchUser, dispatchGetUser } from '../../../redux/actions/authAction'
 import Cookies from 'js-cookie'
-
+import profileApis from './enum/profile-apis'
 
 const EditProfile = () => {
     const initialState = {
@@ -35,35 +35,31 @@ const EditProfile = () => {
             instagramLink: userInfor.instagramLink ? userInfor.instagramLink: '',
             fbLink: userInfor.fbLink ? userInfor.fbLink : ''
         })
-       
-
+    
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userInfor])
 
 
     const handleChangeInput = (e) => {
         const { name, value } = e.target
-        setNewInfor({ ...newInfor, [name]: value })
+        setNewInfor({ ...newInfor, [name]: value, err: '', success: ''})
     }
 
     const handleChangeAvatar = async (e) => {
         e.preventDefault()
         try {
             const file = e.target.files[0]
-
             if (!file) {
                 return setNewInfor
             }
-
             if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
                 return setNewInfor({ ...newInfor, err: "Sai định dạng ảnh", success: '' })
             }
           
-
             var formImage = new FormData()
             formImage.append('upload', file)
 
-            const res = await axios.post('/upload', formImage)
+            const res = await axios.post(profileApis.uploadImg, formImage)
 
             if (res) {
                 setNewAvatar(res.data.url)
@@ -82,7 +78,7 @@ const EditProfile = () => {
             formInfor.append('fbLink', newInfor.fbLink)
             formInfor.append('instagramLink', newInfor.instagramLink)
             formInfor.append('about', newInfor.about)
-            const res = await axios.put('/user/update/info', formInfor)
+            const res = await axios.put(profileApis.updateInfor, formInfor)
             if (res) {
                 setNewInfor({ ...newInfor, success: 'Cập nhật thành công', err: '' })
                 const token = Cookies.get('token')

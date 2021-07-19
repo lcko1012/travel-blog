@@ -22,15 +22,12 @@ axios.interceptors.request.use(
   },
     error => {
       const originalRequest = error.config
-      console.log(error.response.config.url)
-      if(error.response.config.url === '/auth/login'){
-        console.log("loi")
+      if(error.response.config.url === '/api/auth/login'){
         return Promise.reject(error);
-
       }
       if(error.response.status === 403 && !originalRequest._retry) {
         originalRequest._retry = true
-        return axios.post('/auth/refreshToken', null,{
+        return axios.post('/api/auth/refreshToken', null,{
           headers: {Authorization: 'Bearer ' + cookiesService.getToken()}
         }).then(res => {
           if(res.status === 200) {
@@ -40,9 +37,6 @@ axios.interceptors.request.use(
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + cookiesService.getToken()
             //3. return originalRequest object with Axios
             return axios(originalRequest)
-          }
-          else {
-            console.log(res.status)
           }
         })
       }

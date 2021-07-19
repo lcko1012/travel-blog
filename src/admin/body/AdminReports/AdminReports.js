@@ -3,33 +3,28 @@ import './AdminReports.css';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import reportApis from './enum/report-apis';
 
 function AdminReports() {
-
-
     const [reportList, setReportList] = useState([]);
 
     const [pagination, setPagination] = useState({
         page: 0,
         size: 10
     })
-    const [isDefault, setIsDefault] = useState(false)
 
     useEffect(() => {
         const getReportList = async () => {
-            try {
-                const res = await axios.get(`/report?page=${pagination.page}&size=${pagination.size}`)
-                if (res) {
-                    if(res.data.length < 10 || res.data.length === 0) {
-                        setIsDefault(true)
-                    }
-                    setReportList(res.data);
+            const res = await axios.get(reportApis.getReportList, {
+                params : {
+                    page: pagination.page,
+                    size: pagination.size
                 }
-            } catch (error) {
-                console.log(error);
+            })
+            if (res) {
+                setReportList(res.data);
             }
         }
-
         getReportList();
     }, [pagination])
 
@@ -70,12 +65,6 @@ function AdminReports() {
                 <td>{report.reportId}</td>
                 <td>{new Date(report.reportDate).toLocaleString()}</td>
                 <td>{report.solved ? solveStatus(true) : "Chưa xử lý"}</td>
-                {/* <td className="text-center">
-                    <button className="btn btn-danger">
-                        <i className="far fa-trash-alt mr-5"></i>
-                        Xóa
-                    </button>
-                </td> */}
                 <td className="text-center">
                     <Link to={to} className="btn btn-primary">
                         <i className="fal fa-eye mr-5"></i>
@@ -90,9 +79,9 @@ function AdminReports() {
         <div className="">
             <div className="right-panel">
                 <div className="post-list">
-                <div className="admin__favoriteposts--title">
-                    <h2 className="list-name">Danh sách báo cáo</h2>
-                    <h5 className="web-name">LangThang.com</h5>
+                    <div className="admin__favoriteposts--title">
+                        <h2 className="list-name">Danh sách báo cáo</h2>
+                        <h5 className="web-name">LangThang.com</h5>
                     </div>
                     <div className="post-table">
                         <table className="table table-hover">
@@ -102,7 +91,6 @@ function AdminReports() {
                                     <th scope="col">ID</th>
                                     <th scope="col">Ngày báo cáo</th>
                                     <th scope="col">Trạng thái</th>
-                                    {/* <th scope="col" className="text-center">Xóa</th> */}
                                     <th scope="col" className="text-center">Chi tiết</th>
                                 </tr>
                             </thead>
@@ -120,7 +108,7 @@ function AdminReports() {
                         Prev
                     </button>
                     <button className="btn btn-secondary" disabled={true}>{pagination.page + 1}</button>
-                    <button className="btn btn-secondary ml-10" disabled={isDefault} onClick={onClickNext}>
+                    <button className="btn btn-secondary ml-10" disabled={reportList.length < pagination.size} onClick={onClickNext}>
                         Next
                         <i className="far fa-chevron-double-right ml-5"></i>
                     </button>

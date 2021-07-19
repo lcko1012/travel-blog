@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Empty from '../../utils/Empty/Empty'
 import Loading from '../../utils/Loading/Loading'
 import CurrentPost from '../home/components/CurrentPost'
+import bookmarkApis from './enum/bookmark-apis'
 
 const Bookmarks = () => {
     const [listBookmarks, setListBookmarks] = useState([])
@@ -11,31 +12,24 @@ const Bookmarks = () => {
     const [isEmpty, setIsEmpty] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
 
-
     useEffect(() => {
-        const token = Cookies.get("token")
         const getListBookmarks = async () => {
             try {
-                if (token) {
-                    const res = await axios.get('/bookmark/posts', {
-                        params: { page: currentPage },
-                        headers: { Authorization: `Bearer ${token}` }
-                    })
-                    if (res) {
-                        setListBookmarks([...listBookmarks, ...res.data])
-                        if (res.data.length === 0 || res.data.length < 10) {
-                            setIsEmpty(true)
-                        }
-                        setIsLoading(false)
-                    }
+                const res = await axios.get(bookmarkApis.getBookmarkedPosts, {
+                    params: { page: currentPage }
+                })
+                setListBookmarks([...listBookmarks, ...res.data])
+                if (res.data.length === 0 || res.data.length < 10) {
+                    setIsEmpty(true)
                 }
+                setIsLoading(false)
+
             } catch (err) {
                 console.log(err)
             }
         }
-
         getListBookmarks()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage])
     return (
         <main className="main__home">

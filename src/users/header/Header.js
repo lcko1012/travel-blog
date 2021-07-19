@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { dispatchLogout } from '../../redux/actions/authAction'
 import ReactHtmlParser from 'react-html-parser'
-import Notify from './Notify'
+import Notification from '../body/notification/Notification'
 import CookiesService from '../../services/CookiesService'
 import useSocketDataObject from '../../real-time/useSocketDataObject'
-import {dispatchClearRealtime} from '../../redux/actions/realtimeAction'
 
 function Header() {
     const dispatch = useDispatch()
@@ -14,7 +13,7 @@ function Header() {
     const userInfor = auth.user
     const history = useHistory()
     const cookiesService = CookiesService.getService()
-    const {Unsubscribe_notify, Disconnect} = useSocketDataObject()
+    const {Unsubscribe_notification} = useSocketDataObject()
     const [keyword, setKeyword] = useState('')
     const {isAdmin} = auth
 
@@ -36,18 +35,13 @@ function Header() {
             cookiesService.clearToken()
             dispatch(dispatchLogout())
 
-            Unsubscribe_notify()
+            Unsubscribe_notification()
             // Disconnect()
-
-            // dispatch(dispatchClearRealtime())
-            
             history.push("/")
         } catch (err) {
             history.push("/")
         }
     }
-
-    //TODO: SHOW BẢNG THÔNG BÁO
 
     const loginMenu = () => {
         return (
@@ -58,7 +52,6 @@ function Header() {
                             <i className="far fa-edit"></i>
                             <span> Viết bài</span>
                         </Link>
-
                     </li>
                     <li >
                         <Link to="/bookmarks">
@@ -66,10 +59,7 @@ function Header() {
                             <span>BookMark</span>
                         </Link>
                     </li>
-                    {/* <li className="menu__right--notify">
-                        <i className="far fa-bell"></i>
-                    </li> */}
-                    <Notify/>
+                    <Notification/>
                 </ul>
 
                 <div className="menu__right--avatar">
@@ -99,7 +89,6 @@ function Header() {
         )
     }
 
-
     return (
         <>
             <header>
@@ -107,8 +96,8 @@ function Header() {
                     <div className="menu__left">
                         <Link to="/">
                             <p>
-                            <i className="fal fa-map-marker-edit"></i>
-                            <span>Lang Thang</span>
+                                <i className="fal fa-map-marker-edit"></i>
+                                <span>Lang Thang</span>
                             </p>
                         </Link>
                         <form onSubmit={handleFindSubmit}>

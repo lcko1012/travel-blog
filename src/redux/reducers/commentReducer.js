@@ -40,13 +40,10 @@ const commentReducer = (state = initialState, action) => {
         case ACTIONS.SUBMIT_COMMENT: {
             return {
                 ...state,
-                // commentsArr: [action.payload, ...state.commentsArr],
                 errData: null,
                 isLoadSubmit: false
             }
         }
-
-
 
         case ACTIONS.DELETE_COMMENT:
             return {
@@ -112,6 +109,7 @@ const commentReducer = (state = initialState, action) => {
         case ACTIONS.LOADING_COMMENT:
             return {
                 ...state,
+                errData: null,
                 isLoadSubmit: action.payload
             }
         default:

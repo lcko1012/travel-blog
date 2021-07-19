@@ -1,7 +1,8 @@
 import { Link, useHistory, useParams } from "react-router-dom";
 import React, { useState } from "react";
 import axios from "axios";
-import { toast } from 'react-toastify';
+import categoryApis from "./enum/category-apis";
+import { errorNotification, successNotification, warnNotification } from "../../../users/utils/notification/ToastNotification";
 
 
 function AdminCategoryForm(props) {
@@ -17,76 +18,32 @@ function AdminCategoryForm(props) {
 
     const postNewCate = async (data) => {
         try {
-            const res = await axios.post("/category", data)
+            const res = await axios.post(categoryApis.postNewCategory, data)
             if (res) {
-                toast.success('Thêm mới thành công ✔', {
-                    position: "bottom-left",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                successNotification('Thêm mới thành công ✔')
                 setCategory("")
-
             }
         } catch (error) {
             if(error.response.status === 409){
-                toast.error('Đã tồn tại thể loại này 🙁', {
-                    position: "bottom-left",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                errorNotification('Đã tồn tại thể loại này 🙁')
             }
             else {
-                toast.error('Đã xảy ra lỗi khi thêm mới 🙁', {
-                    position: "bottom-left",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }
-            
+                errorNotification('Đã xảy ra lỗi khi thêm mới 🙁')
+            }   
         }
-
     }
 
     const updateCate = async (data) => {
         try {
-            const res = await axios.put(`/category/${id}`, data)
+            const res = await axios.put(categoryApis.updateCategory(id), data)
             if (res) {
-                toast.success('Cập nhật thành công ✔', {
-                    position: "bottom-left",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                successNotification('Cập nhật thành công ✔')
                 setCategory("")
                 history.push("/admin/categories")
             }
         } catch (error) {
-            toast.error('Đã xảy ra lỗi khi cập nhật 🙁', {
-                position: "bottom-left",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            errorNotification('Đã xảy ra lỗi khi cập nhật 🙁')
         }
-
     }
 
     const onChange = (event) => {
@@ -99,15 +56,7 @@ function AdminCategoryForm(props) {
         data.append("name", category)
         if (isAdd) {
             if (category === "") {
-                toast.warn('Bạn chưa nhập tên thể loại', {
-                    position: "bottom-left",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                warnNotification('Bạn chưa nhập tên thể loại')
             } else {
                 postNewCate(data)
             }
@@ -115,15 +64,7 @@ function AdminCategoryForm(props) {
         }
         else {
             if (category === "") {
-                toast.warn('Bạn chưa nhập tên thể loại', {
-                    position: "bottom-left",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                warnNotification('Bạn chưa nhập tên thể loại')
             } else {
                 updateCate(data)
             }

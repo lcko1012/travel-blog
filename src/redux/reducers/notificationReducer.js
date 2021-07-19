@@ -5,7 +5,7 @@ const initialState = {
     notifications : []
 }
 
-const notifyReducer = (state = initialState, action) => {
+const notificationReducer = (state = initialState, action) => {
     switch(action.type){
         case ACTIONS.DECREASE_NOTI: 
             return {
@@ -34,4 +34,4 @@ const notifyReducer = (state = initialState, action) => {
     }
 }
 
-export default notifyReducer
+export default notificationReducer

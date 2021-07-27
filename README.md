@@ -13,29 +13,28 @@
 # Travel Blog Frontend
 
 A project of my subject. A site where people can share travel articles.
-Link: http://langthang.eastasia.cloudapp.azure.com/
-http://ec2-13-212-96-88.ap-southeast-1.compute.amazonaws.com/
+</br>
+Link: http://langthang.tech/
 
 
 ## Travel Blog API
 https://github.com/trinhdvt/lang-thang
 
 ## Description
-On this site, people can share their articles, comment on articles, save articles, and follow other users. You can also be notified of the activities of the person you are following.
+On this site, people can share their articles, comment on articles, bookmark articles, and follow other users,... You can also be notified of the activities of the person you are following. 
+</br>
+To know more about this website, you can visit the link above
 
 ## Installation
-
 
 ### `npm install`
 
 ## Running the app
-### `npm start`
+To be able to run this program you must have an api from the backend. So you can access the link of "Travel blog API" above and install it. 
+</br>
+After that, you can run the app.
 
-## How to test
-The site is deployed with azure so I can't maintain it for long because my account is not responsive enough for this service. So you can contact me to test run this site. 😞
-<br>
-You can watch this video to see how this site works
-https://www.youtube.com/watch?v=xE0SKf_0tGc
+### `npm start`
 
 ## Conclusion
 I finally finished my project. But this site is still under development with my interesting ideas. 😙

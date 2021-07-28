@@ -451,7 +451,9 @@ span.has-dos {
     overflow: hidden;
     border-radius: 15px;
     object-fit:cover;
+    background-blend-mode: saturation;
 }
+
 
 .home__thumbnail--content {
     position: absolute;
@@ -463,6 +465,7 @@ span.has-dos {
     transform: translateX(-50%) translateY(-50%);
     text-align: center;
 }
+
 
 .home__thumbnail--content h1 {
     color: white;

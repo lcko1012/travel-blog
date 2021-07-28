@@ -107,12 +107,12 @@ function Home() {
             {featuredPosts.map((post, index) => {
               if (index < 3) {
                 return (
-                  <div  key={post.postId}>
+                  <div key={post.postId}>
                   {index === currentLargePage && 
                     <div
                     className="home__thumbnail--large"
-                    style={{ backgroundImage: `url(${ReactHtmlParser(post.postThumbnail)})` }}
-                  >
+                    style={{ backgroundImage: `url(${ReactHtmlParser(post.postThumbnail)})`}}
+                    >
                     <div className="home__thumbnail--content">
                       {post.categories.map((item) => {
                         return (
@@ -160,7 +160,7 @@ function Home() {
                     return (
                       <div key={post.postId}>
                         {index === currentSlide && (
-                          <div className="slider thumb-overlay hieu-ung">
+                          <div className="slider thumb-overlay hieu-ung ">
                             <div className="arrow-cover">
                               <i className="fal fa-long-arrow-left" onClick={prevSlide}></i>
                               <i className="fal fa-long-arrow-right" onClick={nextSlide}></i>

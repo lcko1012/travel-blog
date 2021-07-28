@@ -12,9 +12,9 @@ h1 {
     font-weight: bold;
 }
 
-p {
+/* p {
     font-size: 14px;
-}
+} */
 
 .post__editBtn {
     padding: 5px 14px;
@@ -81,6 +81,9 @@ p {
     border-top: 30px solid var(--color-deep-red);
 }
 
+.post__alert--delete p {
+    margin: 5px 0px 10px 0px;
+}
 
 .post__delAlert--button {
     padding: 5px 14px;
@@ -494,6 +497,10 @@ p {
     border-radius: 10px;
     height: 150px;
     color: var(--color-muted);
+}
+
+.post-info p {
+    font-size: 14px;
 }
 
 .post-info .child-1 {

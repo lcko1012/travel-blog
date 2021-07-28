@@ -70,6 +70,7 @@ function NewPosts() {
       unmounted.current = true
     }
   }, [])
+ 
 
   const handleChange = (e) => {
     const target = e.target
@@ -318,7 +319,6 @@ function NewPosts() {
                   },
                 },
               }}
-
             />
             <p className="mt-10">Bài viết của bạn thuộc thể loại: </p>
 
@@ -359,11 +359,8 @@ function NewPosts() {
             </div>
           </div>
         </div>
-
       </div>
-
     </main>
-
   )
 }
 

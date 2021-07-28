@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
-import Cookies from 'js-cookie'
-import { EditorState, ContentState, convertFromHTML } from "draft-js";
+import React, { useRef, useState } from 'react'
+import { EditorState, RichUtils } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { stateToHTML } from "draft-js-export-html";
+import { stateFromHTML } from 'draft-js-import-html';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
 import ReactHtmlParser from 'react-html-parser'
 import newpostApis from './enum/newpost-apis';
 import { errorNotification, successNotification } from '../../utils/notification/ToastNotification';
+import image from '../../../asset/editor-imgs/image.svg'
 
 
 function NewPosts() {
@@ -17,18 +18,19 @@ function NewPosts() {
   const history = useHistory()
   const initialState = {
     title: '',
-    content: EditorState.createEmpty(),
     postThumbnail: '',
     categories: [],
   }
+  const [content, setContent] = useState(EditorState.createEmpty())
   const [data, setData] = useState(initialState)
   const [post, setPost] = useState({})
   const [category, setCategory] = useState([])
+  const unmounted = useRef(false)
 
   useEffect(() => {
     const getCate = async () => {
       const res = await axios.get(newpostApis.getCategories)
-      if (res) {
+      if (!unmounted.current) {
         setCategory(res.data)
       }
     }
@@ -39,36 +41,36 @@ function NewPosts() {
   useEffect(() => {
     if (params.slug) {
       const getPost = async () => {
-        
-          const res = await axios.get(newpostApis.loadPost(params.slug))
-          if (res) {
-            var _thumbnail = ReactHtmlParser(res.data.postThumbnail)[0]
-            var _content = ReactHtmlParser(res.data.content)[0]
-            setData({
-              ...data, content: EditorState.createWithContent(
-                ContentState.createFromBlockArray(
-                  convertFromHTML(_content))),
-              title: res.data.title,
-              postThumbnail: _thumbnail,
-              categories: [...data.categories, res.data.categories[0].categoryId]
-            })
-            setPost(res.data)
-          }
+        const res = await axios.get(newpostApis.loadPost(params.slug))
+        var _thumbnail = ReactHtmlParser(res.data.postThumbnail)[0]
+        var text = stateFromHTML(ReactHtmlParser(res.data.content)[0])
+        var _content = EditorState.createWithContent(text)
+        if (!unmounted.current) {
+          setData({
+            title: res.data.title,
+            postThumbnail: _thumbnail,
+            categories: [...data.categories, res.data.categories[0].categoryId]
+          })
+          setPost(res.data)
+          setContent(_content)
+        }
       }
       getPost()
     }
     else {
-      setData(
-        initialState
-      )
+      if (!unmounted.current) {
+        setData(initialState)
+        setContent(EditorState.createEmpty())
+      }
     }
   }, [params.slug])
 
   useEffect(() => {
     return () => {
-      setData(initialState)
+      unmounted.current = true
     }
   }, [])
+ 
 
   const handleChange = (e) => {
     const target = e.target
@@ -100,13 +102,18 @@ function NewPosts() {
       if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
         return errorNotification("Sai định dạng")
       }
+
+      if(file.size >= 1024*1024*2){
+        return errorNotification("Dung lượng ảnh phải nhỏ hơn 2MB")
+      } // 2mb
+
       var formImage = new FormData()
       formImage.append('upload', file)
 
       const res = await axios.post(newpostApis.uploadImg, formImage)
 
       if (res) {
-        setData({ ...data, postThumbnail: res.data.url})
+        setData({ ...data, postThumbnail: res.data.url })
       }
     } catch (error) {
       errorNotification("Đã xảy ra lỗi")
@@ -114,33 +121,32 @@ function NewPosts() {
   }
 
   const onEditorChange = (editorState) => {
-    setData({ ...data, content: editorState })
+    setContent(editorState)
   }
 
   function uploadImageCallBack(file) {
-    return new Promise(
-      (resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', newpostApis.uploadImg);
-        const token = Cookies.get("token")
-        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-        const data = new FormData();
-        data.append('upload', file);
-        xhr.send(data);
-        xhr.addEventListener('load', () => {
-          const response = JSON.parse(xhr.responseText);
-          resolve({
-            data: {
-              link: response.url
-            }
-          });
-        });
-        xhr.addEventListener('error', () => {
-          const error = JSON.parse(xhr.responseText);
-          reject(error);
-        });
+    return new Promise(async (resolve, reject) => {
+      if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/jpg') {
+        return reject(errorNotification("Sai định dạng"))
       }
-    );
+
+      if(file.size >= 1024*1024*2){
+        return reject(errorNotification("Dung lượng ảnh phải nhỏ hơn 2MB"))
+      } // 2mb
+
+      const data = new FormData();
+      data.append('upload', file);
+      try {
+        const res = await axios.post(newpostApis.uploadImg, data)
+        resolve({
+          data: {
+            link: res.data.url
+          }
+        });
+      } catch (e) {
+        reject(e)
+      }
+    })
   }
 
   const checkError = () => {
@@ -151,7 +157,7 @@ function NewPosts() {
       return errorNotification('Hãy thêm ảnh bìa bài viết')
     }
 
-    if (!data.content.getCurrentContent().getPlainText().trim()) {
+    if (!content.getCurrentContent().getPlainText().trim()) {
       return errorNotification('Hãy nhập nội dung bài viết')
     }
 
@@ -165,11 +171,11 @@ function NewPosts() {
     e.preventDefault()
     const _checkError = checkError()
 
-    if(_checkError === true) {
+    if (_checkError === true) {
       console.log("submit")
       var formPost = new FormData()
       formPost.append("title", data.title)
-      formPost.append("content", stateToHTML(data.content.getCurrentContent()))
+      formPost.append("content", stateToHTML(content.getCurrentContent()))
       formPost.append("postThumbnail", data.postThumbnail)
       formPost.append("categories", data.categories)
 
@@ -187,17 +193,18 @@ function NewPosts() {
       postPost()
     }
 
-    
+
   }
 
   const handleEditPost = (e) => {
     e.preventDefault()
     const _checkError = checkError()
-    if(_checkError === true) {
+    if (_checkError === true) {
       const editPost = async () => {
         var formPost = new FormData()
         formPost.append("title", data.title)
-        formPost.append("content", stateToHTML(data.content.getCurrentContent()))
+        formPost.append("content", stateToHTML(content.getCurrentContent()))
+
         formPost.append("postThumbnail", data.postThumbnail)
         formPost.append("categories", data.categories)
         try {
@@ -211,26 +218,25 @@ function NewPosts() {
         }
       }
       editPost()
-    } 
+    }
   }
 
   const handleSubmitDraft = (e) => {
     e.preventDefault()
     const _checkError = checkError()
-    if(_checkError === true) {
+    if (_checkError === true) {
       var formDraft = new FormData()
       formDraft.append("title", data.title)
-      formDraft.append("content", stateToHTML(data.content.getCurrentContent()))
+      formDraft.append("content", stateToHTML(content.getCurrentContent()))
       formDraft.append("postThumbnail", data.postThumbnail)
       formDraft.append("categories", data.categories)
-  
+
       const postDraft = async () => {
         try {
           const res = await axios.post(newpostApis.saveDraft, formDraft)
           if (res) {
             successNotification('Đã lưu lại bản nháp ✔')
             history.push('/myprofile')
-  
           }
         } catch (error) {
           errorNotification("Không thể lưu bản nháp")
@@ -244,9 +250,11 @@ function NewPosts() {
     e.preventDefault()
     var formDraft = new FormData()
     formDraft.append("title", data.title)
-    formDraft.append("content", stateToHTML(data.content.getCurrentContent()))
+    formDraft.append("content", stateToHTML(content.getCurrentContent()))
+
     formDraft.append("postThumbnail", data.postThumbnail)
     formDraft.append("categories", data.categories)
+
     try {
       const res = await axios.put(newpostApis.updateDraft(post.postId), formDraft)
       if (res) {
@@ -262,42 +270,55 @@ function NewPosts() {
     <main className="main__home">
       <div className="container">
         <div className="row">
-          <div className="offset-lg-2 col-lg-8">
+          <div className="col-lg-12">
             <input className="newpost__input mt-30"
               type="text"
               placeholder="Tựa đề hay gây ấn tượng cho người đọc"
-              onChange={handleChange} value={data.title} name="title" />
+              onChange={handleChange} value={data.title} name="title"
+            />
 
-            <label className="newpost__thumnailBtn">
+            <label className="newpost__thumnail-btn">
               <i className="fa fa-image"></i>
-
               <input type="file" style={{ display: 'none' }} name="postThumbnail"
-                onChange={(e) => handleChangeAvatar(e)} 
+                onChange={(e) => handleChangeAvatar(e)}
               />
 
-              {
-                data.postThumbnail ? data.postThumbnail : 'Chọn ảnh bìa cho bài viết của bạn'
-              }
+              {data.postThumbnail ? data.postThumbnail : 'Chọn ảnh bìa cho bài viết của bạn'}
             </label>
 
             <Editor
-              editorState={data.content}
+              editorState={content}
               onEditorStateChange={onEditorChange}
+              handleKeyCommand={(command) => {
+                let newState = RichUtils.handleKeyCommand(content, command)
+                if (newState) {
+                  onEditorChange(newState)
+                  return "handled"
+                }
+                return "not-handled"
+              }}
+              toolbarClassName="toolbarClassName"
+              wrapperClassName="wrapperClassName"
+              editorClassName="editorClassName"
               toolbar={{
-                options: ['inline', 'link', 'list', 'image'],
-                inline: { inDropdown: true },
-                link: { inDropdown: true },
-                history: { inDropdown: true },
+                options: ['inline', 'link', 'list', 'image', 'history'],
+                inline: {
+                   options: ['bold', 'italic', 'underline', 'strikethrough'],
+                   },
+                list: { options: ['ordered']},
                 image: {
-                  uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true },
-                  inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
+                  icon: image,
+                  className: "new-post__eidtor--img-custom",
+                  previewImage: true,
+                  alignmentEnabled: false,
+                  uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: false },
+                  inputAccept: 'image/jpeg,image/jpg,image/png',
                   defaultSize: {
-                    height: 300,
-                    width: 300,
+                    height: '100%',
+                    width: '100%',
                   },
                 },
               }}
-
             />
             <p className="mt-10">Bài viết của bạn thuộc thể loại: </p>
 
@@ -340,7 +361,6 @@ function NewPosts() {
         </div>
       </div>
     </main>
-
   )
 }
 

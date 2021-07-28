@@ -202,7 +202,10 @@ header {
     border-radius: 10px;
     align-items: center;
     border-radius: 12px;
+}
 
+.menu__right--dropdown p {
+    font-size: 14px;
 }
 
 .menu__right--avatar:hover .menu__right--dropdown {

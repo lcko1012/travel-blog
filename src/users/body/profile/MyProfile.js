@@ -94,7 +94,7 @@ const MyProfile = () => {
         <div className="row">
           {/* TODO: TAB INFOR */}
           <div className="mt-30 mb-30 col-lg-4" >
-            <div className="information">
+            <div className="information mb-30">
               <div className="author-info">
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <div className="avatar" style={{ backgroundImage: `url(${ReactHtmlParser(userInfor.avatarLink)})` }} ></div>

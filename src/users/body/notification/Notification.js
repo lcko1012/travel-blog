@@ -72,7 +72,6 @@ const Notification = forwardRef(({ openNotification, setOpenNotification }, ref)
             if (res) {
                 dispatch(dispatchRemoveCountNoti())
                 setNotifications([...notifications, ...res.data])
-                console.log(res)
             }
         } catch (error) {
             console.log(error)
@@ -123,7 +122,6 @@ const Notification = forwardRef(({ openNotification, setOpenNotification }, ref)
                                             </Link>
                                         </li>
                                     )
-
                                 })}
                             </div>
                         </InfiniteScroll>

@@ -61,7 +61,7 @@ function Profile() {
                         <div className="row">
                             {/* TODO: TAB INFOR */}
                             <div className="mt-30 col-lg-4" >
-                                <div className="information">
+                                <div className="information mb-30">
                                     <div className="author-info">
                                         <div style={{ display: 'flex', alignItems: 'center' }}>
                                             <div className="avatar" style={{ backgroundImage: `url(${ReactHtmlParser(userInfor.avatarLink)})` }} ></div>
@@ -76,14 +76,14 @@ function Profile() {
                                                 <p>Người theo dõi</p>
                                             </div>
                                         </div>
-                                        <h5 className="author-name" style={{ marginTop: '5px' }}>{userInfor.name}</h5>
+                                        <h5 className="author-name mt-10">{userInfor.name}</h5>
                                         
                                         <div className="author__social">
                                             <i className="fab fa-instagram" onClick={() => window.open(ReactHtmlParser(userInfor.instagramLink), '_blank')} ></i>
                                             <i className="fab fa-facebook-square" onClick={() => window.open(ReactHtmlParser(userInfor.fbLink), '_blank')}></i>
                                         </div>
                                         
-                                        <p style={{ fontSize: "14px" }}>
+                                        <p className="mt-10" style={{ fontSize: "14px" }}>
                                             {userInfor.about}
                                         </p>
                                         

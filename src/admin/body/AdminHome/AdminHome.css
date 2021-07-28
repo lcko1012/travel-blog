@@ -1,5 +1,3 @@
-
-
 .left-panel {
     background-color: white;
 }
@@ -63,15 +61,11 @@
     border-radius: 10px;
     padding: 10px;
     transition: 0.25s;
-    
 }
 
 .admin__home--hieuung:hover {
-    transform:  translateY(-5px);
+    transform: translateY(-5px);
 }
-
-
-
 
 .admin__home .admin__favoriteposts {
     margin-right: 30px;
@@ -79,14 +73,12 @@
 
     background-color: white;
     border-radius: 5px;
-
 }
 
 .admin__favoriteposts--title {
     background-color: var(--color-primary);
     color: white;
     padding: 20px 0 10px 0;
-
 }
 
 .most-favorite-post-table {
@@ -170,13 +162,11 @@
     padding: 10px 25px 10px 25px;
 }
 
-
 .admin__pagination {
     display: flex;
     justify-content: center;
     margin-top: 30px;
 }
-
 
 .content {
     margin-left: 250px;
@@ -192,4 +182,22 @@
     background-size: cover;
     margin: auto;
     background-position: center;
+}
+
+.thead {
+    @media screen and (min-width: 768px) {
+        visibility: visible !important;
+    }
+}
+
+.tr {
+    @media screen and (min-width: 768px) {
+        display: table-row !important;
+    }
+}
+
+.td {
+    @media screen and (min-width: 768px) {
+        display: table-cell !important;
+    }
 }

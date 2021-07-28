@@ -58,7 +58,7 @@ function AdminPosts() {
                         {post.title.length > 40 ? ReactHtmlParse(post.title.slice(0, 40) + "...") : ReactHtmlParse(post.title)}
                     </Link>
                 </td>
-                
+
                 <td>
                     {new Date(post.publishedDate).toLocaleString()}
                 </td>
@@ -76,7 +76,7 @@ function AdminPosts() {
                     <h2 className="list-name">Danh sách bài viết</h2>
                     <h5 className="web-name">LangThang.com</h5>
                 </div>
-                <div className="post-table">
+                <div className="post-table table-responsive">
                     <table className="table table-hover">
                         <thead>
                             <tr>
@@ -104,7 +104,7 @@ function AdminPosts() {
                 </button>
 
                 <button className="btn btn-secondary" disabled={true}>{pagination.page + 1}</button>
-                
+
                 <button className="btn btn-secondary ml-10" disabled={postList.length < pagination.size} onClick={onClickNext}>
                     Next
                     <i className="far fa-chevron-double-right ml-5"></i>

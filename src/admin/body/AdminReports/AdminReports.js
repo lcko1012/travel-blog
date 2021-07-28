@@ -16,7 +16,7 @@ function AdminReports() {
     useEffect(() => {
         const getReportList = async () => {
             const res = await axios.get(reportApis.getReportList, {
-                params : {
+                params: {
                     page: pagination.page,
                     size: pagination.size
                 }
@@ -83,7 +83,7 @@ function AdminReports() {
                         <h2 className="list-name">Danh sách báo cáo</h2>
                         <h5 className="web-name">LangThang.com</h5>
                     </div>
-                    <div className="post-table">
+                    <div className="post-table table-responsive">
                         <table className="table table-hover">
                             <thead>
                                 <tr>

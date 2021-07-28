@@ -32,10 +32,10 @@ function AdminHome() {
         }
 
         const getTopPosts = async () => {
-            const res = await axios.get(homeApis.getTopPosts,  {
+            const res = await axios.get(homeApis.getTopPosts, {
                 params: {
-                  prop: "bookmark",
-                  size: 10
+                    prop: "bookmark",
+                    size: 10
                 }
             })
 
@@ -156,7 +156,7 @@ function AdminHome() {
                                     <h5 className="web-name">Bài viết được yêu thích nhất</h5>
                                 </div>
 
-                                <div className="most-favorite-post-table">
+                                <div className="most-favorite-post-table table-responsive">
                                     <table className="table table-hover">
                                         <thead>
                                             <tr>
@@ -166,7 +166,7 @@ function AdminHome() {
                                                 <th scope="col" className="text-center">Bookmark</th>
                                             </tr>
                                         </thead>
-                                        
+
                                         <tbody>
                                             {elmPost}
                                         </tbody>
@@ -181,7 +181,7 @@ function AdminHome() {
                                     <h5 className="web-name">Người có nhiều follow nhất</h5>
                                 </div>
 
-                                <div className="most-followed-user-table">
+                                <div className="most-followed-user-table table-responsive">
                                     <table className="table table-hover">
                                         <thead>
                                             <tr>

@@ -49,7 +49,7 @@ const menu = [
     }
 ]
 
-const MenuLink = ({icon, label, to, activeOnlyWhenExact }) => {
+const MenuLink = ({ icon, label, to, activeOnlyWhenExact }) => {
     return (
         <Route path={to} exact={activeOnlyWhenExact} children={({ match }) => {
             var active = match ? "nav-item active" : "nav-item";
@@ -79,17 +79,16 @@ const showMenu = (menu) => {
 
 function Menu() {
     const auth = useSelector(state => state.auth)
-    const {user} = auth
+    const { user } = auth
     return (
-        <div className="admin__menu">   
-                <div className="admin__menu--infor">
-                    <div className="admin__menu--avatar"style={{ backgroundImage: `url(${ReactHtmlParser(user.avatarLink)})` }} ></div>
-                    <h5 className="admin__menu--name "> {user.name}</h5>
-                </div>
-                <ul className="nav flex-column">
-                    {showMenu(menu)}
-                </ul>
-            
+        <div className="admin__menu">
+            <div className="admin__menu--infor">
+                <div className="admin__menu--avatar" style={{ backgroundImage: `url(${ReactHtmlParser(user.avatarLink)})` }} ></div>
+                <h5 className="admin__menu--name "> {user.name}</h5>
+            </div>
+            <ul className="nav flex-column">
+                {showMenu(menu)}
+            </ul>
         </div>
 
     );

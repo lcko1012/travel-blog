@@ -18,7 +18,7 @@ function AdminUsers() {
     const [isShowAlertToAdm, setIsShowAlertToAdm] = useState(false)
     useEffect(() => {
         const getUserList = async () => {
-            const res = await axios.get(userApis.getUserList ,{
+            const res = await axios.get(userApis.getUserList, {
                 params: {
                     page: pagination.page,
                     size: pagination.size
@@ -29,7 +29,7 @@ function AdminUsers() {
             }
         }
         getUserList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pagination])
 
     const onClickNext = () => {
@@ -62,7 +62,7 @@ function AdminUsers() {
                 }
             } catch (error) {
                 if (error.response.status === 422) {
-                   errorNotification('Tài khoản không tồn tại hoặc chưa kích hoạt 🙁')
+                    errorNotification('Tài khoản không tồn tại hoặc chưa kích hoạt 🙁')
                     setUserToAdm({})
                     setIsShowAlertToAdm(false)
 
@@ -116,9 +116,9 @@ function AdminUsers() {
                 <td className="text-center">{user.followCount}</td>
                 <td className="text-center">{user.role ? "Admin" : "User"}</td>
                 <td>
-                    <button 
-                    style={{whiteSpace: 'nowrap', margin: 'auto'}}
-                    className={user.role ? "btn btn-secondary" : "btn btn-primary"}
+                    <button
+                        style={{ whiteSpace: 'nowrap', margin: 'auto' }}
+                        className={user.role ? "btn btn-secondary" : "btn btn-primary"}
                         disabled={user.role}
                         onClick={() => handleShowAlertToAdmin(user)} >
                         {user.role ? "Admin" : "Cấp quyền"}
@@ -133,11 +133,11 @@ function AdminUsers() {
             {isShowAlertToAdm && showAlertToAdmin()}
             <div className="right-panel">
                 <div className="post-list">
-                <div className="admin__favoriteposts--title">
-                    <h2 className="list-name">Danh sách người dùng</h2>
-                    <h5 className="web-name">LangThang.com</h5>
+                    <div className="admin__favoriteposts--title">
+                        <h2 className="list-name">Danh sách người dùng</h2>
+                        <h5 className="web-name">LangThang.com</h5>
                     </div>
-                    <div className="post-table">
+                    <div className="post-table table-responsive">
                         <table className="table table-hover">
                             <thead>
                                 <tr>

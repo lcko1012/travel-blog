@@ -17,10 +17,10 @@ function AdminCategory() {
 
     useEffect(() => {
         const getCateList = async () => {
-                const res = await axios.get(categoryApis.getCategoryList)
-                if (res) {
-                    setCateList(res.data);
-                }
+            const res = await axios.get(categoryApis.getCategoryList)
+            if (res) {
+                setCateList(res.data);
+            }
         }
         getCateList();
     }, [])
@@ -46,12 +46,12 @@ function AdminCategory() {
     }
 
     const onDelete = async () => {
-        if(delId !== null){
+        if (delId !== null) {
             try {
-                const res =  await axios.delete(categoryApis.deleteCategory(delId))
-                if(res){
-                    var newArr = cateList.filter((cate) => 
-                    cate.categoryId !== delId)
+                const res = await axios.delete(categoryApis.deleteCategory(delId))
+                if (res) {
+                    var newArr = cateList.filter((cate) =>
+                        cate.categoryId !== delId)
                     setCateList(newArr)
                     successNotification('Xóa thành công ✔')
                     setDelId(null)
@@ -63,7 +63,7 @@ function AdminCategory() {
                 setDelId(null)
             }
         }
-        
+
     }
 
     const handleShowAlertDel = (value, id) => {
@@ -72,23 +72,23 @@ function AdminCategory() {
     }
 
     const showAlertDel = () => {
-        return(
+        return (
             <div className="post__alert post__alert--delete ">
-        <h5>Lưu ý</h5>
-        <p>Bạn có muốn xóa thể loại này không?</p>
-        <div>
-          <button className="post__delAlert--button post__delAlert--cancel"
-            onClick={() => setIsAlertDel(false)}
-          >
-            Hủy
-          </button>
-          <button className="post__delAlert--button post__delAlert--delete"
-            onClick={onDelete}
-          >
-            Xóa 
-          </button>
-        </div>
-      </div>
+                <h5>Lưu ý</h5>
+                <p>Bạn có muốn xóa thể loại này không?</p>
+                <div>
+                    <button className="post__delAlert--button post__delAlert--cancel"
+                        onClick={() => setIsAlertDel(false)}
+                    >
+                        Hủy
+                    </button>
+                    <button className="post__delAlert--button post__delAlert--delete"
+                        onClick={onDelete}
+                    >
+                        Xóa
+                    </button>
+                </div>
+            </div>
         )
     }
 
@@ -113,7 +113,7 @@ function AdminCategory() {
                     </Link>
                 </td>
                 <td className="text-center">
-                    <button className="btn btn-danger" onClick={() => handleShowAlertDel(true,cate.categoryId)}>
+                    <button className="btn btn-danger" onClick={() => handleShowAlertDel(true, cate.categoryId)}>
                         <i className="far fa-trash-alt mr-5"></i>
                         Xóa
                     </button>
@@ -128,31 +128,33 @@ function AdminCategory() {
             <div className="right-panel">
 
                 <div className="post-list">
-                <div className="admin__favoriteposts--title">
-                    <h2 className="list-name">Danh sách thể loại</h2>
-                    <h5 className="web-name">LangThang.com</h5>
+                    <div className="admin__favoriteposts--title">
+                        <h2 className="list-name">Danh sách thể loại</h2>
+                        <h5 className="web-name">LangThang.com</h5>
                     </div>
                     <div className="post-table">
                         <Link to="/admin/categoriesAdd" className="btn btn-primary right-align mb-10">
                             <i className="far fa-plus mr-5"></i>
                             Thêm mới
                         </Link>
-                        <table className="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Tên thể loại</th>
-                                    <th scope="col" className="text-center">Số lượng bài viết</th>
-                                    <th scope="col" className="text-center">Sửa</th>
-                                    <th scope="col" className="text-center">Xóa</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {elmCate}
-                            </tbody>
-                        </table>
-                    </div>
 
+                        <div className="table-responsive">
+                            <table className="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Tên thể loại</th>
+                                        <th scope="col" className="text-center">Số lượng bài viết</th>
+                                        <th scope="col" className="text-center">Sửa</th>
+                                        <th scope="col" className="text-center">Xóa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {elmCate}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="admin__pagination">

@@ -36,7 +36,7 @@ After that, you can run the app.
 
 ### `npm start`
 
-## Next Task 
+## Next Tasks
 - Use Editor.js to create a new text editor instead of Draft.js
 - PWA
 

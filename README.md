@@ -36,5 +36,9 @@ After that, you can run the app.
 
 ### `npm start`
 
+## Next Task 
+- Use Editor.js to create a new text editor instead of Draft.js
+- PWA
+
 ## Conclusion
 I finally finished my project. But this site is still under development with my interesting ideas. 😙

@@ -22,14 +22,15 @@ function AdminCategoryForm(props) {
             if (res) {
                 successNotification('Thêm mới thành công ✔')
                 setCategory("")
+                history.push("/admin/categories")
             }
         } catch (error) {
-            if(error.response.status === 409){
+            if (error.response.status === 409) {
                 errorNotification('Đã tồn tại thể loại này 🙁')
             }
             else {
                 errorNotification('Đã xảy ra lỗi khi thêm mới 🙁')
-            }   
+            }
         }
     }
 
@@ -73,20 +74,20 @@ function AdminCategoryForm(props) {
 
     return (
         <div className="right-panel-100vh">
-        <div className="cate-form">
-            
-            <h1 className="form-title">{isAdd ? "Thêm mới" : "Sửa"}</h1>
-            <form onSubmit={onSubmit} >
-                <div className="mb-3">
-                    <label className="form-label">Tên thể loại</label>
-                    <input type="text" className="form-control" name="category" value={category} onChange={onChange} />
-                </div>
+            <div className="cate-form">
 
-                <div className="cate-group-button">
-                    <button className="btn btn-primary mr-5" type="submit">OK</button>
-                    <Link to="/admin/categories" className="btn btn-danger">Hủy</Link>
-                </div>
-            </form>
+                <h1 className="form-title">{isAdd ? "Thêm mới" : "Sửa"}</h1>
+                <form onSubmit={onSubmit} >
+                    <div className="mb-3">
+                        <label className="form-label">Tên thể loại</label>
+                        <input type="text" className="form-control" name="category" value={category} onChange={onChange} />
+                    </div>
+
+                    <div className="cate-group-button">
+                        <button className="btn btn-primary mr-5" type="submit">Lưu</button>
+                        <Link to="/admin/categories" className="btn btn-danger">Hủy</Link>
+                    </div>
+                </form>
             </div>
         </div>
     )

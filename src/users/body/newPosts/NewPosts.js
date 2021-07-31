@@ -338,21 +338,21 @@ function NewPosts() {
               {params.slug ?
                 <>
                   <form className="mr-10" onSubmit={handleEditDraft}>
-                    <button className="newpost__submitBtn newpost__draftBtn mb-15" type="submit">Lưu nháp</button>
+                    <button className="button button-primary-no-hover mb-15" type="submit">Lưu nháp</button>
                   </form>
 
                   <form onSubmit={handleEditPost}>
-                    <button className="newpost__submitBtn mb-15" type="submit">Đăng bài</button>
+                    <button className="button button-primary mb-15" type="submit">Đăng bài</button>
                   </form>
                 </>
                 :
                 <>
                   <form className="mr-10" onSubmit={handleSubmitDraft}>
-                    <button className="newpost__submitBtn newpost__draftBtn mb-15" type="submit">Lưu nháp</button>
+                    <button className="button button-primary-no-hover mb-15" type="submit">Lưu nháp</button>
                   </form>
 
                   <form onSubmit={handleSubmitPost} >
-                    <button className="newpost__submitBtn mb-15" type="submit">Đăng bài</button>
+                    <button className="button button-primary mb-15" type="submit">Đăng bài</button>
                   </form>
                 </>
               }

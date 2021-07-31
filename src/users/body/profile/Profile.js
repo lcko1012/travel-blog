@@ -1,6 +1,6 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import React, { forwardRef, useEffect, useState } from 'react'
+import { Link, useHistory, useParams } from 'react-router-dom'
 import Empty from '../../utils/Empty/Empty'
 import Loading from '../../utils/Loading/Loading'
 import CurrentPost from '../home/components/CurrentPost'
@@ -8,13 +8,17 @@ import ReactHtmlParser from 'react-html-parser'
 import "./Profile.css"
 import profileApis from './enum/profile-apis'
 import Cookies from 'js-cookie'
+import withClickOutsideFollowerDialog from './withClickOutsideFollower'
+import { useSelector } from 'react-redux'
 
-function Profile() {
+const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) => {
+    const auth = useSelector(state => state.auth)
     const history = useHistory()
     const id = useParams().id
     const [userInfor, setUserInfor] = useState({})
     const [posts, setPosts] = useState([])
     const [isLoading, setLoading] = useState(false)
+    const [followerList, setFollowerList] = useState([])
 
     useEffect(() => {
         const getUserInfor = async () => {
@@ -36,6 +40,8 @@ function Profile() {
         getPosts()
     }, [id])
 
+   
+
     const handleClickFollow = () => {
         const token = Cookies.get("token")
         if(!token) return history.push('/login')
@@ -52,6 +58,62 @@ function Profile() {
         }
         postFollow()
     }
+    
+    useEffect(() => {
+        if (openFollowerDialog) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = 'unset';
+        }
+      }, [openFollowerDialog]);
+
+    const redirectToAnotherProfile = (id) => {
+        setOpenFollowerDialog(false)
+        if(id === auth.user.accountId){
+            history.push('/myprofile')
+        }
+        else history.push(`/profile/${id}`)
+    }
+
+    const followerDialog = () => {
+        return (
+          <div className="dialog-container">
+            <div className="profile__follower-dialog--header">
+              <span>Người theo dõi</span>
+              <i 
+              className="fal fa-times"
+              onClick={() => setOpenFollowerDialog(false)}
+              ></i>
+            </div>
+            <div className="profile__follower-dialog--list">
+              {
+                followerList.map((follower) => 
+                  <div key={follower.accountId}
+                  className="profile__follower-dialog--list-item"
+                  >
+                      <div 
+                      className="profile__follower-dialog--avatar"
+                      style={{backgroundImage: `url(${ReactHtmlParser(follower.avatarLink)})`}}
+                      ></div>
+                      <span onClick={() => redirectToAnotherProfile(follower.accountId)}>
+                          {follower.name}
+                      </span>
+                  </div>
+                )
+              }
+            </div>
+          </div>
+        )
+      }
+      const getFollower = async () => {
+        const response = await axios.get(profileApis.loadFollowerList(id))
+        setFollowerList(response.data)
+    }
+
+      const showFollower = () => {
+        getFollower()
+        setOpenFollowerDialog(!openFollowerDialog)
+      }
 
     return (
         <>
@@ -60,6 +122,10 @@ function Profile() {
                     <div className="container">
                         <div className="row">
                             {/* TODO: TAB INFOR */}
+                            <div ref={ref}>
+                                {openFollowerDialog && followerDialog()}
+                            </div>
+
                             <div className="mt-30 col-lg-4" >
                                 <div className="information mb-30">
                                     <div className="author-info">
@@ -72,7 +138,7 @@ function Profile() {
                                             </div>
 
                                             <div className="follower-count inline-item">
-                                                <h4>{userInfor.followCount}</h4>
+                                                <h4 onClick={showFollower}>{userInfor.followCount}</h4>
                                                 <p>Người theo dõi</p>
                                             </div>
                                         </div>
@@ -101,11 +167,11 @@ function Profile() {
                                        
                                         <div className="post-info-button" style={{ marginTop: '10px' }}>
                                             {!userInfor.followed ?
-                                                <button className="bookmark-btn"
+                                                <button className="button button-primary bookmark-btn"
                                                     style={{ backgroundColor: '#5869DA', color: 'white' }}
                                                     onClick={handleClickFollow}>Theo dõi</button>
                                                 :
-                                                <button className="bookmark-btn"
+                                                <button className="button button-light bookmark-btn"
                                                     onClick={handleClickFollow}
                                                 >
                                                     <i className="fal fa-user-check" style={{ marginRight: '5px' }}></i>
@@ -138,6 +204,6 @@ function Profile() {
 
         </>
     )
-}
+})
 
-export default Profile
+export default withClickOutsideFollowerDialog(Profile)

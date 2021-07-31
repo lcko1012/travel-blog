@@ -83,7 +83,7 @@ const Notification = forwardRef(({ openNotification, setOpenNotification }, ref)
             <li className="menu__right--notify" style={{ position: 'relative' }} ref={ref}>
                 {count > 0 ?
                     <div className="menu__notify--unseen">{count}</div>
-                    : null}
+                : null}
 
                 <i className="far fa-bell" onClick={showNotification}></i>
 

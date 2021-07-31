@@ -102,6 +102,7 @@
     background: #fff;
     border-radius: 10px;
     height: 420px;
+    /* height: 100%; */
 }
 
 .post-card-1:hover{
@@ -110,26 +111,11 @@
 }
 
 
-/* .post-card-1::before {
-    content: "";
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    bottom: 0;
-    left: 10px;
-    border-radius: 10px;
-    box-shadow: var(--box-shadow-normal), 0 0 0 transparent;
-    z-index: -1;
-} */
-
 .post-card-1 .thumb-overlay {
     min-height: 220px;
     border-radius: 10px 10px 0 0;
 }
 
-/* .post-content {
-    margin: 10px 0;
-} */
 
 .thumb-overlay::before {
     position: absolute;
@@ -153,14 +139,15 @@
 .post-card-1 .post-content {
     background: #fff;
     border-radius: 0 0 10px 10px;
+    height: 200px;
 }
 
 .post-card-content {
     flex-direction: column;
-    justify-content: space-between;
     width: 100%;
+    justify-content: space-between;
     height: 100%;
-    min-height: 115px;
+    padding-bottom: 40px;
 }
 
 .post-title {
@@ -168,7 +155,6 @@
     font-style: normal;
     font-size: 16px;
     font-weight: 600;
-    /* font-family: 'Source Sans Pro', sans-serif; */
 }
 
 a {

@@ -197,17 +197,17 @@ function Home() {
                         <div className="thumb-overlay img-hover-slide position-relative" style={{ background: `url(${ReactHtmlParser(post.postThumbnail)})` }}>
                         </div>
                         <div className="post-content p-30">
-                          <div className="d-flex post-card-content">
-                            <div className="currentPost__cataArea mb-10">
+                        <div className="current-post__category-area mb-10">
                               {post.categories.map((item) => {
 
                                 return (
                                   <Link to={{ pathname: `/category/${item.categoryId}` }} key={item.categoryId}>
-                                    <div className="currentPost__cata" key={item.categoryId}>{item.categoryName}</div>
+                                    <div className="current-post__category" key={item.categoryId}>{item.categoryName}</div>
                                   </Link>
                                 )
                               })}
                             </div>
+                          <div className="d-flex post-card-content">
                             <h5 className="post-title">
                               <Link to={{ pathname: `/posts/${post.slug}`, state: { id: post.postId } }}>
                                 {ReactHtmlParser(post.title)}

@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, forwardRef } from 'react'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 import CurrentPost from '../home/components/CurrentPost'
 import Empty from '../../utils/Empty/Empty'
 import ReactHtmlParser from 'react-html-parser'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import profileApis from './enum/profile-apis'
+import withClickOutsideFollowerDialog from './withClickOutsideFollower'
 
-const MyProfile = () => {
+
+const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) => {
   const auth = useSelector(state => state.auth)
   const userInfor = auth.user
+  const history = useHistory()
   const [posts, setPosts] = useState([])
   const [drafts, setDrafts] = useState([])
   //false load bai viet, true load ban nhap
@@ -22,27 +25,31 @@ const MyProfile = () => {
   const [isEmptyPosts, setIsEmptyPosts] = useState(false)
   //Co chac muon xoa bai viet khong
 
+  const [followerList, setFollowerList] = useState([])
+
   //get posts
   useEffect(() => {
     const getPosts = async () => {
-      try {
-        const res = await axios.get(profileApis.getPostsOfUser(userInfor.accountId), {
-          params: {
-            page: currentPagePosts
-          }
-        })
-        if (res) {
-          setPosts([...posts, ...res.data])
-          if (res.data.length === 0 || res.data.length < 10) {
-            setIsEmptyPosts(true)
-          }
+      const res = await axios.get(profileApis.getPostsOfUser(userInfor.accountId), {
+        params: {
+          page: currentPagePosts
         }
-      } catch (error) {
-        // console.log(error)
+      })
+      if (res) {
+        setPosts([...posts, ...res.data])
+        if (res.data.length === 0 || res.data.length < 10) {
+          setIsEmptyPosts(true)
+        }
       }
     }
+    const getFollower = async () => {
+      const response = await axios.get(profileApis.loadFollowerList(userInfor.accountId))
+      setFollowerList(response.data)
+    }
+
     if (userInfor.accountId) {
       getPosts()
+      getFollower()
     }
   }, [userInfor.accountId, currentPagePosts])
 
@@ -88,11 +95,65 @@ const MyProfile = () => {
     }
   }
 
+  const redirectToAnotherProfile = (id) => {
+    setOpenFollowerDialog(false)
+    if(id === userInfor.accountId){
+        history.push('/myprofile')
+    }
+    else history.push(`/profile/${id}`)
+}
+
+  const followerDialog = () => {
+    return (
+      <div className="dialog-container">
+        <div className="profile__follower-dialog--header">
+          <span>Người theo dõi</span>
+          <i 
+          className="fal fa-times"
+          onClick={() => setOpenFollowerDialog(false)}
+          ></i>
+        </div>
+        <div className="profile__follower-dialog--list">
+          {
+            followerList.map((follower) => 
+              <div key={follower.accountId}
+              className="profile__follower-dialog--list-item"
+              >
+                  <div 
+                  className="profile__follower-dialog--avatar"
+                  style={{backgroundImage: `url(${ReactHtmlParser(follower.avatarLink)})`}}
+                  ></div>
+                  <span onClick={() => redirectToAnotherProfile(follower.accountId)}>
+                      {follower.name}
+                  </span>
+              </div>
+            )
+          }
+        </div>
+      </div>
+    )
+  }
+
+  useEffect(() => {
+    if (openFollowerDialog) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [openFollowerDialog]);
+
+  const showFollower = () => {
+    setOpenFollowerDialog(!openFollowerDialog)
+  }
+
   return (
     <main className="main__home">
       <div className="container">
         <div className="row">
-          {/* TODO: TAB INFOR */}
+          <div ref={ref}>
+            {openFollowerDialog && followerDialog()}
+          </div>
+          
           <div className="mt-30 mb-30 col-lg-4" >
             <div className="information mb-30">
               <div className="author-info">
@@ -103,7 +164,7 @@ const MyProfile = () => {
                     <p>Bài viết</p>
                   </div>
                   <div className="follower-count inline-item">
-                    <h4>{userInfor.followCount}</h4>
+                    <h4 onClick={showFollower}>{userInfor.followCount}</h4>
                     <p>Người theo dõi</p>
                   </div>
                 </div>
@@ -114,7 +175,6 @@ const MyProfile = () => {
                 </div>
                 <p style={{ fontSize: "14px" }}>
                   {ReactHtmlParser(userInfor.about)}
-                  {/* {userInfor.about} */}
                 </p>
                 <div className="author__infor--count mt-15 d-flex">
                   <div className="count__div">
@@ -128,13 +188,9 @@ const MyProfile = () => {
                 </div>
 
                 <div className="myprofile__choice">
-                  <button className="child-1" onClick={() => handleClickLoad(false)}>Xem các bài viết</button>
-                  <button className="child-2" onClick={() => handleClickLoad(true)} >Xem các bài nháp</button>
+                  <button className={`child-1 ${!isLoadPost ? 'active' : null}`} onClick={() => handleClickLoad(false)}>Xem các bài viết</button>
+                  <button className={`child-2 ${isLoadPost ? 'active' : null}`} onClick={() => handleClickLoad(true)} >Xem các bài nháp</button>
                 </div>
-                {/* <div className="post-info-button" style={{ marginTop: '10px' }}>
-                                    <button className="bookmark-btn">Chỉnh sửa trang cá nhân</button>
-                                </div> */}
-
               </div>
             </div>
           </div>
@@ -176,12 +232,12 @@ const MyProfile = () => {
                           <h5>{ReactHtmlParser(draft.title)}</h5>
                           <div style={{ textAlign: 'end' }}>
                             <Link to={`/posts/${draft.slug}/edit`}>
-                              <button className="child-1">
+                              <button className="button button-primary mr-5">
                                 <i className="fal fa-pencil"></i>
                                 Tiếp tục viết</button>
                             </Link>
 
-                            <button className="child-2" onClick={() => handleDelDraft(draft.postId)}>
+                            <button className="button button-red" onClick={() => handleDelDraft(draft.postId)}>
                               <i className="fal fa-trash-alt"></i>
                               Xóa
                             </button>
@@ -210,6 +266,6 @@ const MyProfile = () => {
       </div>
     </main>
   )
-}
+})
 
-export default MyProfile
+export default withClickOutsideFollowerDialog(MyProfile)

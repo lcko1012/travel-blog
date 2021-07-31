@@ -179,16 +179,16 @@ function Post() {
 
   const showDelAlert = () => {
     return (
-      <div className="post__alert post__alert--delete ">
+      <div className="dialog-container post__delete-dialog">
         <h5>Lưu ý</h5>
         <p>Thao tác này sẽ xóa hết dữ liệu bài viết</p>
-        <div>
-          <button className="post__delAlert--button post__delAlert--cancel"
+        <div className="post__report-delete-dialog--btn-container">
+          <button className="button button-red-no-hover mr-5"
             onClick={() => handleClickDel(false)}
           >
             Hủy
           </button>
-          <button className="post__delAlert--button post__delAlert--delete"
+          <button className="button button-red"
             onClick={handleDelPost}
           >
             Xóa bài
@@ -200,19 +200,19 @@ function Post() {
 
   const showReportForm = () => {
     return (
-      <div className="post__alert post__alert--report">
+      <div className="dialog-container post__alert--report">
         <h5>Báo cáo bài viết</h5>
 
         <textarea
           onChange={handleChangeInput}
-          name="reportTxt" className="post__reportContent" placeholder="Nội dung báo cáo" />
-        <div>
-          <button className="post__delAlert--button post__delAlert--cancel"
+          name="reportTxt" className="post__report-content" placeholder="Nội dung báo cáo" />
+        <div className="post__report-delete-dialog--btn-container">
+          <button className="button button-warn-no-hover mr-5"
             onClick={() => setIsReport(false)}
           >
             Hủy
           </button>
-          <button className="post__delAlert--button post__reportForm--report"
+          <button className="button button-warn"
             onClick={handleReportPost}
           >
             Báo cáo
@@ -254,12 +254,13 @@ function Post() {
                 <div className="content-area">
                   <h1 className="post__title">{ReactHtmlParser(post.title)}</h1>
                   {/* Catalogy area */}
-                  <div className="post__cataArea">
+                  <div className="post__category-area">
                     {post.categories.map((item) => {
                       return (
                         <Link to={{ pathname: `/category/${item.categoryId}` }} key={item.categoryId}>
-                          <div className="post__cata"
-                            key={item.categoryId}>{item.categoryName}</div>
+                          <div className="post__category"
+                            key={item.categoryId}>{item.categoryName}
+                          </div>
                         </Link>
                       )
 
@@ -289,18 +290,18 @@ function Post() {
                     {post.owner ?
                       <div >
                         <Link to={`/posts/${post.slug}/edit`}>
-                          <button className="post__editBtn">
+                          <button className="button button-primary mr-5">
                             <i className="fal fa-pen" style={{ marginRight: '5px' }}></i>
                             Sửa bài viết</button>
                         </Link>
 
-                        <button className="post__delBtn" onClick={() => handleClickDel(true)}>
-                          <i className="fal fa-trash-alt" style={{ color: '#A95252' }}></i>
+                        <button className="button button-red" onClick={() => handleClickDel(true)}>
+                          <i className="fal fa-trash-alt"></i>
                         </button>
                       </div> :
                       //neu khong chủ bài viết thì ktra admin hay user thường: admin xóa bài được, user là báo cáo
                       auth.isAdmin ? null :
-                        <button className="post__delBtn post__reportBtn" style={{ color: 'red' }} onClick={handleShowReport}>
+                        <button className="button button-warn" onClick={handleShowReport}>
                           <i className="fal fa-exclamation-triangle"></i>
                         </button>
                     }
@@ -331,14 +332,14 @@ function Post() {
                   </div>
                   <div className="post-info-button">
                     {post.bookmarked ?
-                      <button className="bookmark-btn"
+                      <button className="button button-light bookmark-btn"
                         onClick={handleUnBookmark}
                       >
                         <i className="fal fa-check" style={{ marginRight: '5px' }}></i>
                         Đã bookmark</button>
                       :
-                      <button className="bookmark-btn" onClick={handleBookmark}
-                        style={{ backgroundColor: '#5869DA', color: 'white' }}
+                      <button className="button button-primary bookmark-btn" onClick={handleBookmark}
+                       
                       >
                         <i className="fas fa-bookmark" style={{ marginRight: '5px' }}></i>
                         Bookmark</button>

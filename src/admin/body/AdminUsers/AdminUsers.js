@@ -83,16 +83,16 @@ function AdminUsers() {
 
     const showAlertToAdmin = () => {
         return (
-            <div className="post__alert post__alert--delete ">
+            <div className="dialog-container post__delete-dialog">
                 <h5>Lưu ý</h5>
                 <p style={{ margin: '0px 5px 10px 5px' }}>Bạn có muốn nâng {userToAdm.name} làm admin?</p>
-                <div>
-                    <button className="post__delAlert--button post__delAlert--cancel"
+                <div className="post__report-delete-dialog--btn-container">
+                    <button className="button button-red-no-hover mr-5"
                         onClick={() => setIsShowAlertToAdm(false)}
                     >
                         Hủy
                     </button>
-                    <button className="post__delAlert--button post__delAlert--delete"
+                    <button className="button button-red"
                         onClick={onToAdmin}
                     >
                         Đồng ý

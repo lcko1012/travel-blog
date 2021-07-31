@@ -73,20 +73,26 @@ function Post() {
     if (params.slug) {
       getPost()
     }
+
+    return () => {
+      setPost(initialState)
+      setLoading(false)
+      setAuthor({})
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.slug])
 
 
   useEffect(() => {
     const getAuthPosts = async () => {
-        const res = await axios.get(postApi.getPostsOfAuthor(author.accountId), {
-          params: {
-            size: 5
-          }
-        })
-        if(res){
-          setUserPosts(res.data)
+      const res = await axios.get(postApi.getPostsOfAuthor(author.accountId), {
+        params: {
+          size: 5
         }
+      })
+      if (res) {
+        setUserPosts(res.data)
+      }
     }
     if (author.accountId) {
       getAuthPosts()
@@ -101,7 +107,7 @@ function Post() {
     if (!token) return history.push('/login')
     var bookmarkForm = new FormData()
     bookmarkForm.append("postId", post.postId)
-  
+
     const postBookmark = async () => {
       try {
         const res = await axios.post(postApi.bookmarkPost, bookmarkForm)
@@ -224,20 +230,20 @@ function Post() {
 
   const toggleVisible = () => {
     const scrolled = document.documentElement.scrollTop;
-    if (scrolled > 300){
+    if (scrolled > 300) {
       setShowBtnUp(true)
-    } 
-    else if (scrolled <= 300){
+    }
+    else if (scrolled <= 300) {
       setShowBtnUp(false)
     }
   };
-  
+
   window.addEventListener('scroll', toggleVisible);
 
 
-  const scrollToTop = () =>{
+  const scrollToTop = () => {
     window.scrollTo({
-      top: 0, 
+      top: 0,
       behavior: 'smooth'
     });
   };
@@ -339,7 +345,7 @@ function Post() {
                         Đã bookmark</button>
                       :
                       <button className="button button-primary bookmark-btn" onClick={handleBookmark}
-                       
+
                       >
                         <i className="fas fa-bookmark" style={{ marginRight: '5px' }}></i>
                         Bookmark</button>
@@ -359,25 +365,19 @@ function Post() {
                 }
 
               </div>
-
             </div>
             : <Loading />}
 
-            <button className="post__button-up" 
-              style={{display: showBtnUp ? 'block' : 'none'}} 
-              onClick={scrollToTop}
-            >
-              <i className="fal fa-arrow-up"></i>
-            </button>
+          <button className="post__button-up"
+            style={{ display: showBtnUp ? 'block' : 'none' }}
+            onClick={scrollToTop}
+          >
+            <i className="fal fa-arrow-up"></i>
+          </button>
         </div>
       </main>
     </>
   )
-
-
-
-
-
 }
 
 export default Post

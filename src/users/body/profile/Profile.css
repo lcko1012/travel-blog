@@ -234,6 +234,10 @@
     cursor: pointer;
 }
 
+.profile__follower-dialog--header span {
+    font-weight: 600;
+}
+
 .profile__follower-dialog--list {
     height: 300px;
     overflow-y: scroll;
@@ -243,6 +247,13 @@
     display: flex;
     align-items: center;
     margin: 15px 10px;
+    justify-content: space-between;
+}
+
+
+.profile__follower-dialog--left {
+    display: flex;
+    align-items: center;
 }
 
 .profile__follower-dialog--list-item span {
@@ -264,5 +275,10 @@
 
 
 
+@media screen and (max-width: 768px){
+    .profile__follower-dialog {
+        width: 350px;
+    }
+}
 
 

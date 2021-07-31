@@ -88,7 +88,7 @@ const Notification = forwardRef(({ openNotification, setOpenNotification }, ref)
                 <i className="far fa-bell" onClick={showNotification}></i>
 
                 {openNotification && (
-                    <ul className="menu__notify--dropdown" style={{ display: 'block !important' }}>
+                    <ul className="menu__notify--dropdown">
                         <h5 style={{ marginLeft: '12px', marginTop: '12px' }}>Thông báo</h5>
                         <InfiniteScroll
                             dataLength={notifications.length}

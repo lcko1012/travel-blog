@@ -7,6 +7,9 @@ import ReactHtmlParser from 'react-html-parser'
 import { Link, useHistory } from 'react-router-dom'
 import profileApis from './enum/profile-apis'
 import withClickOutsideFollowerDialog from './withClickOutsideFollower'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import Loading from '../../utils/Loading/Loading'
+
 
 
 const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) => {
@@ -26,6 +29,8 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
   //Co chac muon xoa bai viet khong
 
   const [followerList, setFollowerList] = useState([])
+  const [followerPage, setFollowerPage] = useState(0)
+  const [isLoadingFollower, setIsLoadingFollower] = useState(false)
 
   //get posts
   useEffect(() => {
@@ -42,16 +47,34 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
         }
       }
     }
-    const getFollower = async () => {
-      const response = await axios.get(profileApis.loadFollowerList(userInfor.accountId))
-      setFollowerList(response.data)
-    }
 
     if (userInfor.accountId) {
       getPosts()
-      getFollower()
     }
   }, [userInfor.accountId, currentPagePosts])
+
+  const getFollowers = async () => {
+    const response = await axios.get(profileApis.loadFollowerList(userInfor.accountId), {
+      params: {
+        size: 10,
+        page: followerPage
+      }
+    })
+    setFollowerList([...followerList, ...response.data])
+    setFollowerPage(followerPage + 1)
+  }
+
+  const getFirstFollowers = async () => {
+    const response = await axios.get(profileApis.loadFollowerList(userInfor.accountId), {
+      params: {
+        size: 10,
+        page: 0
+      }
+    })
+    setFollowerList(response.data)
+    setIsLoadingFollower(true)
+    setFollowerPage(1)
+  }
 
   //GET DRAFTS
   useEffect(() => {
@@ -97,39 +120,75 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
 
   const redirectToAnotherProfile = (id) => {
     setOpenFollowerDialog(false)
-    if(id === userInfor.accountId){
-        history.push('/myprofile')
+    if (id === userInfor.accountId) {
+      history.push('/myprofile')
     }
     else history.push(`/profile/${id}`)
-}
+  }
+
+  const followUser = async (id) => {
+    await axios.put(profileApis.followUser(id), null)
+    const editedFollowerList = followerList.map((follower) =>
+      follower.accountId === id ? { ...follower, followed: !follower.followed } : follower
+    )
+    setFollowerList(editedFollowerList)
+  }
 
   const followerDialog = () => {
     return (
-      <div className="dialog-container">
+      <div className="dialog-container profile__follower-dialog">
         <div className="profile__follower-dialog--header">
           <span>Người theo dõi</span>
-          <i 
-          className="fal fa-times"
-          onClick={() => setOpenFollowerDialog(false)}
+          <i
+            className="fal fa-times"
+            onClick={() => setOpenFollowerDialog(false)}
           ></i>
         </div>
-        <div className="profile__follower-dialog--list">
-          {
-            followerList.map((follower) => 
-              <div key={follower.accountId}
-              className="profile__follower-dialog--list-item"
-              >
-                  <div 
-                  className="profile__follower-dialog--avatar"
-                  style={{backgroundImage: `url(${ReactHtmlParser(follower.avatarLink)})`}}
-                  ></div>
-                  <span onClick={() => redirectToAnotherProfile(follower.accountId)}>
+
+        <div>
+          <InfiniteScroll
+            dataLength={followerList.length}
+            next={getFollowers}
+            hasMore={true}
+            height={350}
+            scrollableTarget="profile__follower-dialog--list"
+          >
+            {
+              isLoadingFollower ? 
+              followerList.map((follower) =>
+                <div key={follower.accountId}
+                  className="profile__follower-dialog--list-item"
+                >
+                  <div className="profile__follower-dialog--left">
+                    <div
+                      className="profile__follower-dialog--avatar"
+                      style={{ backgroundImage: `url(${ReactHtmlParser(follower.avatarLink)})` }}
+                    ></div>
+                    <span onClick={() => redirectToAnotherProfile(follower.accountId)}>
                       {follower.name}
-                  </span>
-              </div>
-            )
-          }
+                    </span>
+                  </div>
+
+                  <div>
+                    <button
+                      className={`${follower.followed ? 'button-light' : 'button-primary-no-hover'} button`}
+                      style={{ padding: '3px 8px' }}
+                      onClick={() => { followUser(follower.accountId) }}
+                    >
+                      {follower.followed ? "Đang theo dõi" : "Theo dõi"}
+                    </button>
+                  </div>
+                </div>
+              )
+              : <span
+                  style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%'}}
+                >
+                  Loading...
+                </span>
+            }
+          </InfiniteScroll>
         </div>
+
       </div>
     )
   }
@@ -143,6 +202,7 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
   }, [openFollowerDialog]);
 
   const showFollower = () => {
+    getFirstFollowers()
     setOpenFollowerDialog(!openFollowerDialog)
   }
 
@@ -153,7 +213,7 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
           <div ref={ref}>
             {openFollowerDialog && followerDialog()}
           </div>
-          
+
           <div className="mt-30 mb-30 col-lg-4" >
             <div className="information mb-30">
               <div className="author-info">
@@ -163,8 +223,8 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
                     <h4>{userInfor.postCount}</h4>
                     <p>Bài viết</p>
                   </div>
-                  <div className="follower-count inline-item">
-                    <h4 onClick={showFollower}>{userInfor.followCount}</h4>
+                  <div className="follower-count inline-item" onClick={showFollower}>
+                    <h4 >{userInfor.followCount}</h4>
                     <p>Người theo dõi</p>
                   </div>
                 </div>

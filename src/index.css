@@ -62,6 +62,12 @@ code {
   --box-shadow-hover: 0 4px 60px 0 rgba(0,0,0,0.2);
   --button-shadow-color-normal: hsla(0,0%,42.4%,0.2);
   --color-deep-red: #A95252;
+  --color-deep-yellow: #F59E0B;
+  --color-gray: #D1D5DB;
+  --color-deep-gray: #374151;
+  --mutted-border-color: #eaecee;
+
+  
 }
 
 
@@ -270,6 +276,94 @@ a:hover{
 
 .pl-30 {
   padding-left: 30px;
+}
+
+.button {
+  padding: 5px 14px;
+  border-radius: 10px;
+  outline: none !important;
+  transition: 0.3s;
+  border: 1px solid;
+  text-align: center;
+}
+
+.button-primary {
+  border-color: var(--color-primary);
+  background-color: white;
+  color: var(--color-primary);
+}
+
+.button-primary-no-hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.button-primary:hover {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.button-red {
+  border-color: var(--color-deep-red);
+  background-color: white;
+  color: var(--color-deep-red);
+}
+
+.button-red-no-hover {
+  border-color: var(--color-deep-red);
+  background-color: var(--color-deep-red);
+  color: white;
+}
+
+.button-red:hover {
+  background-color: var(--color-deep-red);
+  color: white;
+}
+
+.button-warn {
+  border-color: var(--color-deep-yellow);
+  background-color: white;
+  color: var(--color-deep-yellow);
+}
+
+.button-warn-no-hover {
+  border-color: var(--color-deep-yellow);
+  background-color: var(--color-deep-yellow);
+  color: white;
+}
+
+.button-warn:hover {
+  background-color: var(--color-deep-yellow);
+  color: white;
+}
+
+.button-light {
+  border-color: var(--color-gray);
+  background-color: white;
+  color: var(--color-deep-gray);
+}
+
+.button-light:hover {
+  background-color: var(--color-gray);
+}
+
+.dialog-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background-color: white;
+  height: auto;
+  padding: 10px 0;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  box-shadow: 0px 0px 2px rgba(131, 131, 131, 0.822);
+  width: 400px;
 }
 
 @import url("./users/header/header.css");

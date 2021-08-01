@@ -19,34 +19,6 @@
     background-color: var(--color-background);
 }
 
-.newpost__submitBtn {
-    margin-top: 10px;
-    padding: 5px 14px;
-    border-radius: 20px;
-    border: 1px solid var(--color-primary) !important;
-    background-color: var(--color-primary);
-    color: var(--color-white);
-    outline: none !important;
-    transition: 0.3s;
-}
-
-.newpost__submitBtn:hover {
-    /* transform: translate(0px, -3px); */
-    background-color: white;
-    color: var(--color-primary);
-}
-
-
-.newpost__draftBtn {
-    background-color: white;
-    color: var(--color-primary)
-}
-
-.newpost__draftBtn:hover {
-    background-color: var(--color-primary);
-    color: white;
-}
-
 
 .newpost__thumnail-btn {
     padding: 3px 5px;
@@ -131,6 +103,12 @@ div.DraftEditor-editorContainer,
     box-shadow: none !important;
 }
 
+@media screen and (max-width: 480px){
+    .rdw-image-modal {
+        left: unset !important;
+        right: 20px;
+    }
+}
 
 select {
     -webkit-appearance: button;

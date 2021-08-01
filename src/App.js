@@ -8,15 +8,20 @@ import CookiesService from './services/CookiesService'
 import { ToastContainer } from 'react-toastify';
 import Routes from './routes';
 import ScrollToTop from './routes/ScrollToTop';
+import ReactGA from 'react-ga'
 
 function App() {
-
   const dispatch = useDispatch()
   const auth = useSelector(state => state.auth)
   const realtime = useSelector(state => state.realtime)
   const { ConnectSocket, Subscribe_notification } = useSocketDataObject()
   const { user } = auth
   const cookiesService = CookiesService.getService()
+
+  useEffect(() => {
+    ReactGA.initialize('UA-203735232-1')
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, [window.location.pathname + window.location.search])
 
   useEffect(() => {
     const token = cookiesService.getToken()
@@ -41,6 +46,7 @@ function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [realtime.isSuccess])
+
 
   return (
     <>

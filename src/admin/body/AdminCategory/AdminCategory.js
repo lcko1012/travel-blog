@@ -73,16 +73,16 @@ function AdminCategory() {
 
     const showAlertDel = () => {
         return (
-            <div className="post__alert post__alert--delete ">
+            <div className="dialog-container post__delete-dialog">
                 <h5>Lưu ý</h5>
                 <p>Bạn có muốn xóa thể loại này không?</p>
-                <div>
-                    <button className="post__delAlert--button post__delAlert--cancel"
+                <div className="post__report-delete-dialog--btn-container">
+                    <button className="button button-red-no-hover mr-5"
                         onClick={() => setIsAlertDel(false)}
                     >
                         Hủy
                     </button>
-                    <button className="post__delAlert--button post__delAlert--delete"
+                    <button className="button button-red"
                         onClick={onDelete}
                     >
                         Xóa

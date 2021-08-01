@@ -20,4 +20,7 @@ export default {
     getPostsOfAuthor(accountId){
         return `${baseUrl}/user/posts/${accountId}`
     },
+    loadFollowerList(account_id) {
+        return  `${baseUrl}/user/${account_id}/follow`
+    }
 }

@@ -7,7 +7,6 @@
 
 .hieu-ung {
     box-shadow: 3px 3px 03px 0px rgba(0, 0, 0, 0.2);
-
 }
 
 .position-relative {
@@ -102,6 +101,20 @@
     background: #fff;
     border-radius: 10px;
     height: 420px;
+    /* height: 100%; */
+}
+
+.post-card-1::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    bottom: 0;
+    left: 10px;
+    border-radius: 10px;
+    box-shadow: var(--box-shadow-normal),0 0 0 transparent;
+    transition: all .25s cubic-bezier(.02,.01,.47,1);
+    z-index: -1;
 }
 
 .post-card-1:hover{
@@ -110,26 +123,11 @@
 }
 
 
-/* .post-card-1::before {
-    content: "";
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    bottom: 0;
-    left: 10px;
-    border-radius: 10px;
-    box-shadow: var(--box-shadow-normal), 0 0 0 transparent;
-    z-index: -1;
-} */
-
 .post-card-1 .thumb-overlay {
     min-height: 220px;
     border-radius: 10px 10px 0 0;
 }
 
-/* .post-content {
-    margin: 10px 0;
-} */
 
 .thumb-overlay::before {
     position: absolute;
@@ -153,14 +151,15 @@
 .post-card-1 .post-content {
     background: #fff;
     border-radius: 0 0 10px 10px;
+    height: 200px;
 }
 
 .post-card-content {
     flex-direction: column;
-    justify-content: space-between;
     width: 100%;
+    justify-content: space-between;
     height: 100%;
-    min-height: 115px;
+    padding-bottom: 40px;
 }
 
 .post-title {
@@ -168,7 +167,6 @@
     font-style: normal;
     font-size: 16px;
     font-weight: 600;
-    /* font-family: 'Source Sans Pro', sans-serif; */
 }
 
 a {
@@ -178,9 +176,8 @@ a {
 
 
 /* Phan chu nho trong post-content */
-
 .font-x-small {
-    font-size: 10px;
+    font-size: 9px;
 }
 
 .entry-meta {
@@ -227,6 +224,11 @@ span.has-dos {
 
 .hover-up-2:hover {
     transform: translate(0, -5px);
+}
+
+.hover-up-1:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-hover),0 0 0 transparent;
 }
 
 .transition-normal {
@@ -382,43 +384,6 @@ span.has-dos {
     width: 30%;
     border: solid 2px;
 }
-/* 
-.most-popular-img {
-    display: inline-block;
-    width: 90px;
-    height: 80px;
-    border-radius: 10px;
-    vertical-align: middle;
-    margin-left: 20px;
-}
-
-.most-popular-title {
-    display: inline-block;
-    text-align: left;
-    margin-right: 20px;
-    width: 60%;
-}
-
-.most-popular-date {
-    font-size: small;
-    vertical-align: center;
-    margin-right: 8px;
-}
-
-.post-view {
-    position: relative;
-}
-
-.post-view-has-pot:before {
-    content: "";
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: black;
-    position: absolute;
-    top: 25%;
-    left: -8px;
-} */
 
 
 .post__popular {
@@ -427,6 +392,7 @@ span.has-dos {
     margin-bottom: 30px;
     border-radius: 10px;
     transition: .5s;
+    border: 1px solid var(--mutted-border-color);
 }
 
 .media-body {

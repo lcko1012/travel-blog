@@ -178,7 +178,7 @@ function AdminHome() {
                             <div className="admin__topusers hieu-ung">
                                 <div className="admin__favoriteposts--title">
                                     <h3 className="list-name">Top 10</h3>
-                                    <h5 className="web-name">Người có nhiều follow nhất</h5>
+                                    <h5 className="web-name">Người có nhiều lượt theo dõi nhất</h5>
                                 </div>
 
                                 <div className="most-followed-user-table table-responsive">

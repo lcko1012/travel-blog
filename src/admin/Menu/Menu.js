@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 
 const menu = [
     {
-        name: "Dash Board",
+        name: "Thống kê",
         to: "/admin/dashboard",
         icon: <i className="fas fa-chart-bar mr-5"></i>,
         exact: true
@@ -36,7 +36,7 @@ const menu = [
         exact: true
     },
     {
-        name: "Report",
+        name: "Báo cáo",
         to: "/admin/reports",
         icon: <i className="fas fa-exclamation-triangle mr-5"></i>,
         exact: true

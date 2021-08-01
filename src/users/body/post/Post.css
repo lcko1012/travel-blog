@@ -12,132 +12,63 @@ h1 {
     font-weight: bold;
 }
 
-/* p {
-    font-size: 14px;
-} */
-
-.post__editBtn {
-    padding: 5px 14px;
-    border-radius: 20px;
-    border: 1px solid var(--color-primary) !important;
-    background-color: white;
-    color: var(--color-muted);
-    outline: none !important;
-    transition: 0.3s;
-}
-
-.post__delBtn {
-    margin-left: 5px;
-    padding: 5px 14px;
-    border-radius: 20px;
-    border: 1px solid var(--color-deep-red) !important;
-    background-color: white;
-    color: var(--color-muted);
-    outline: none !important;
-    transition: 0.3s;
-}
-
-.post__reportBtn {
-    color: #e8b90d !important; 
-    border: 1px solid #e8b90d !important;
-}
-
-.post__reportBtn:hover {
-    box-shadow: 0px 0px 5px #e8b90d !important;
-    transform: scale(1.01);
-}
-
-.post__editBtn:hover {
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-    transform: scale(1.01);
-}
-.post__delBtn:hover {
-    box-shadow: 0px 0px 5px rgba(241, 4, 4, 0.822);
-    transform: scale(1.01);
-}
 
 
-.post__alert {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    /* bring your own prefixes */
-    transform: translate(-50%, -50%);
-    z-index: 10;
-    background-color: white;
-    height: auto;
-    padding: 10px 0;
-    width: 300px;
-    border-radius: 16px;
-    box-shadow: 0px 0px 5px rgba(39, 39, 39, 0.822);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    
-}
-
-.post__alert--delete {
+.post__delete-dialog {
     border-top: 30px solid var(--color-deep-red);
+    padding: 10px;
+    width: 300px;
 }
 
-.post__alert--delete p {
+.post__report-delete-dialog--btn-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.post__delete-dialog  h5 {
+    font-size: 20px;
+    color: var(--color-deep-red);
+}
+
+
+.post__delete-dialog p {
     margin: 5px 0px 10px 0px;
 }
 
-.post__delAlert--button {
-    padding: 5px 14px;
-    border-radius: 16px;
-    outline: none !important;
-    transition: 0.3s;
-    border-width: 1px;
-    border-style: solid;
+
+.post__alert--report {
+    border-top: 30px solid var(--color-deep-yellow);
+    width: 300px;
+    padding: 10px;
 }
 
-.post__delAlert--cancel {
-    border-color: var(--color-primary);
-    background-color: var(--color-primary);
-    color: white;
-    margin-right: 5px;
-}
-.post__delAlert--delete {
-    border-color: var(--color-deep-red);
-    background-color:var(--color-deep-red);
-    color: white;
-}
 
-.post__reportForm--report {
-    color: white;
-    border-color: #e8b90d;
-    background-color: #e8b90d;
-}
-
-.post__reportContent {
+.post__report-content {
     padding: 10px 10px;
     outline: none;
     height: 100px;
-    margin: 10px 10px;
     border: 1px solid;
-
+    margin-bottom: 10px;
 }
 
-.post__alert--report {
-    border-top: 30px solid #e8b90d;
+.post__alert-solve--dialog {
+    border-top: 30px solid var(--color-primary);
+    padding: 10px;
+    width: 350px;
 }
 
 
-.post__cataArea {
+
+.post__category-area {
     display: flex;
     margin-bottom: 30px;
 }
 
-.post__cata {
+.post__category {
     font-size: 15px;
     padding: 1px 7px;
     margin-right: 7px;
     border: 1px solid #b3d7ff;
-    /* background: rgb(0 123 255 / 50%); */
-    /* background-color: var(--color-primary); */
     background-color: #8e97ff ;
     border-radius: 3px;
 }
@@ -172,41 +103,6 @@ h1 {
     box-shadow: 0 2px 4px var(--button-shadow-color-normal),0 0 0 transparent;
 }
 
-
-/* author */
-
-/* .author-info {
-    padding: 30px;
-    border: 1px;
-    border-radius: 10px;
-    background-color: white;
-}
-
-.author-name {
-    text-align: left;
-}
-
-.avatar {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    margin-bottom: 15px;
-    margin-right: 30px;
-    background-size: cover;
-    float: left;
-}
-
-.post-count {
-    width: 20%;
-    text-align: center;
-    display: inline-block;
-
-} */
-
-/* .follower-count {
-    text-align: center;
-    display: block;
-} */
 
 .avatar-comment {
     max-width: 50px;
@@ -534,21 +430,12 @@ h1 {
 }
 
 .bookmark-btn {
-    background-color: rgb(253, 253, 253);
-    border: 1px solid rgb(225, 225, 225);;
-    border-radius: 20px;
     width: 50%;
     height: 40px;
     text-align: center;
     margin: 5px auto;
     font-size: 16px;
     outline: none  !important;
-}
-
-.bookmark-btn:hover {
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    transform: scale(1.05);
-    transition-duration: 0.25s;
 }
 
 .comment-count {

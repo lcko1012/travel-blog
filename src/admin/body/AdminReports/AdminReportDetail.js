@@ -20,7 +20,6 @@ function AdminReportDetails() {
         const getReport = async () => {
             const res = await axios.get(reportApis.getDetailReport(id))
             if (res) {
-                console.log(res.data)
                 setReport(res.data);
             }
         }
@@ -85,16 +84,16 @@ function AdminReportDetails() {
 
     const showDelAlert = () => {
         return (
-            <div className="post__alert post__alert--delete ">
+            <div className="dialog-container post__delete-dialog">
                 <h5>Lưu ý</h5>
                 <p>Thao tác này sẽ xóa hết dữ liệu bài viết</p>
-                <div>
-                    <button className="post__delAlert--button post__delAlert--cancel"
+                <div className="post__report-delete-dialog--btn-container">
+                    <button className="button button-red-no-hover mr-5"
                         onClick={() => setIsShowDel(false)}
                     >
                         Hủy
                     </button>
-                    <button className="post__delAlert--button post__delAlert--delete"
+                    <button className="button button-red"
                         onClick={deletePost}
                     >
                         Xóa bài
@@ -106,18 +105,18 @@ function AdminReportDetails() {
 
     const showSolveForm = () => {
         return (
-            <div className="post__alert post__alert--solve">
+            <div className="dialog-container post__alert-solve--dialog">
                 <h5>Giải quyết</h5>
                 <textarea
                     onChange={handleChangeInput}
-                    name="reportTxt" className="post__reportContent" placeholder="Nội dung giải quyết" />
-                <div>
-                    <button className="post__delAlert--button post__delAlert--cancel"
+                    name="reportTxt" className="post__report-content" placeholder="Nội dung giải quyết" />
+                <div className="post__report-delete-dialog--btn-container">
+                    <button className="button button-primary-no-hover mr-5"
                         onClick={() => setIsShowSolveForm(false)}
                     >
                         Hủy
                     </button>
-                    <button className="post__delAlert--button post__alert--solvebtn"
+                    <button className="button button-primary"
                         onClick={solved}
                     >
                         Giải quyết

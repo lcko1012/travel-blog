@@ -106,7 +106,7 @@ const PassPage = () => {
             </div>
             
             <div>
-                <button type="submit" className="editProfile__submitBtn">
+                <button type="submit" className="button button-primary-no-hover">
                     <i className="fal fa-save" style={{marginRight: '5px'}}></i>
                     Đổi mật khẩu</button>
             </div>

@@ -20,20 +20,22 @@ function CurrentPost({ post }) {
 
                 <div className="col-md-8 align-self-center" style={{ margin: '10px 0' }}>
                     <div className="post-content">
-                        <h5 className="post-title  mb-10">
-                            <Link to={{ pathname: `/posts/${post.slug}`, state: { id: post.postId } }}
-                                href="">{ReactHtmlParser(post.title)}</Link>
-                        </h5>
-
-                        <div className="currentPost__cataArea mb-10">
+                        <div className="current-post__category-area mb-10 ">
                             {post.categories.map((item) => {
                                 return (
                                     <Link to={{ pathname: `/category/${item.categoryId}` }} key={item.categoryId}>
-                                        <div className="currentPost__cata" key={item.categoryId}>{item.categoryName}</div>
+                                        <div className="current-post__category" key={item.categoryId}>{item.categoryName}</div>
                                     </Link>
                                 )
                             })}
                         </div>
+
+                        <h5 className="current-post__title mb-10">
+                            <Link to={{ pathname: `/posts/${post.slug}`, state: { id: post.postId } }}
+                                href="">{ReactHtmlParser(post.title)}</Link>
+                        </h5>
+
+                        
                         
                         <div className="entry-meta meta-1 float-left font-x-small text-uppercase">
                             <span className="post-on">{post.bookmarkedCount} bookmark</span>

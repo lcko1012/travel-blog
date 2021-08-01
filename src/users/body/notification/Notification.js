@@ -25,14 +25,10 @@ const Notification = forwardRef(({ openNotification, setOpenNotification }, ref)
 
     //Seen one notification
     const seenNotification = async (notificationId) => {
-        try {
-            const res = await axios.put(notificationApis.seenNotification(notificationId), null)
-            if (res) {
-                setOpenNotification(!openNotification)
-                dispatch(dispatchDecreaseCount())
-            }
-        } catch (error) {
-            console.log(error)
+        const res = await axios.put(notificationApis.seenNotification(notificationId), null)
+        if (res) {
+            setOpenNotification(!openNotification)
+            dispatch(dispatchDecreaseCount())
         }
     }
 
@@ -42,39 +38,32 @@ const Notification = forwardRef(({ openNotification, setOpenNotification }, ref)
     }
 
 
-    const getFirstNotifications = async () => {
-        try {
-            const res = await axios.get(notificationApis.getNotifications, {
-                params: {
-                    page: 0,
-                    size: 6
-                }
-            })
-            if (res) {
-                dispatch(dispatchRemoveCountNoti())
-                setNotifications(res.data)
-                setPageNoti(1)
+    const getFirstNotifications = async () => {  
+        const res = await axios.get(notificationApis.getNotifications, {
+            params: {
+                page: 0,
+                size: 6
             }
-        } catch (error) {
-            console.log(error)
+        })
+        if (res) {
+            dispatch(dispatchRemoveCountNoti())
+            setNotifications(res.data)
+            setPageNoti(1)
         }
     }
 
     const getNotifications = async () => {
         setPageNoti(pageNoti + 1)
-        try {
-            const res = await axios.get(notificationApis.getNotifications, {
-                params: {
-                    page: pageNoti,
-                    size: 6
-                }
-            })
-            if (res) {
-                dispatch(dispatchRemoveCountNoti())
-                setNotifications([...notifications, ...res.data])
+
+        const res = await axios.get(notificationApis.getNotifications, {
+            params: {
+                page: pageNoti,
+                size: 6
             }
-        } catch (error) {
-            console.log(error)
+        })
+        if (res) {
+            dispatch(dispatchRemoveCountNoti())
+            setNotifications([...notifications, ...res.data])
         }
     }
 

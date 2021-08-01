@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { forwardRef, useEffect, useState } from 'react'
-import { Link, useHistory, useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import Empty from '../../utils/Empty/Empty'
 import Loading from '../../utils/Loading/Loading'
 import CurrentPost from '../home/components/CurrentPost'
@@ -23,34 +23,48 @@ const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) 
   const [followerList, setFollowerList] = useState([])
   const [followerPage, setFollowerPage] = useState(0)
   const [isLoadingFollower, setIsLoadingFollower] = useState(false)
+  const [currentPage, setCurrentPage] = useState(0)
+
 
   useEffect(() => {
     const getUserInfor = async () => {
       const res = await axios.get(profileApis.getUserInfor(id))
       if (res) {
         setUserInfor(res.data)
-        setLoading(true)
       }
     }
-
-    const getPosts = async () => {
-      const res = await axios.get(profileApis.getPostsOfUser(id))
-      if (res) {
-        setPosts(res.data)
-      }
+    const getFirstPosts = async () => {
+      const res = await axios.get(profileApis.getPostsOfUser(id), {
+        params: {
+          page: 0,
+          size: 10
+        }
+      })
+      setPosts(res.data)
+      setLoading(true)
     }
 
     getUserInfor()
-    getPosts()
+    getFirstPosts()
 
     return () => {
-      setFollowerList([])
-      setUserInfor({})
-      setPosts([])
       setLoading(false)
+      setCurrentPage(0)
       setIsLoadingFollower(false)
     }
+
   }, [id])
+
+  const getPosts = async () => {
+    const res = await axios.get(profileApis.getPostsOfUser(id), {
+      params: {
+        page: currentPage + 1,
+        size: 10
+      }
+    })
+    setPosts([...posts, ...res.data])
+    setCurrentPage(currentPage + 1)
+  }
 
 
 
@@ -63,11 +77,7 @@ const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) 
     if (res) {
       setUserInfor({ ...userInfor, followCount: res.data, followed: !userInfor.followed })
     }
-
-
   }
-
-
 
   const followUser = async (id) => {
     await axios.put(profileApis.followUser(id), null)
@@ -154,20 +164,17 @@ const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) 
     )
   }
   const getFollowers = async () => {
-    console.log(followerPage)
     const response = await axios.get(profileApis.loadFollowerList(userInfor.accountId), {
       params: {
         size: 10,
         page: followerPage
       }
     })
-    console.log(response)
     setFollowerList([...followerList, ...response.data])
     setFollowerPage(followerPage + 1)
   }
 
   const getFirstFollowers = async () => {
-    console.log(followerPage)
     const response = await axios.get(profileApis.loadFollowerList(userInfor.accountId), {
       params: {
         size: 10,
@@ -262,6 +269,18 @@ const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) 
                     )
                   })
                 }
+                <div className="pagination-area mb-30">
+                    <nav aria-label="Page navigation example">
+                      <ul className="pagination justify-content-start">
+                        <li className={`page-item" ${((posts.length-10) < currentPage*10) ? 'disabled' : null}`}
+                          onClick={getPosts}>
+                          <div className="page-link">
+                            <i className="fal fa-long-arrow-right"></i>
+                          </div>
+                        </li>
+                      </ul>
+                    </nav>
+                </div>
               </div>
             </div>
           </div>

@@ -8,7 +8,6 @@ import { Link, useHistory } from 'react-router-dom'
 import profileApis from './enum/profile-apis'
 import withClickOutsideFollowerDialog from './withClickOutsideFollower'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import Loading from '../../utils/Loading/Loading'
 
 
 
@@ -82,20 +81,16 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
   }, [userInfor.accountId, callback, currentPageDrafts])
 
   const getDrafts = async () => {
-    try {
-      const res = await axios.get(profileApis.getDraftsOfUser, {
-        params: {
-          page: currentPageDrafts
-        }
-      })
-      if (res) {
-        setDrafts([...drafts, ...res.data])
-        if (res.data.length === 0 || res.data.length < 10) {
-          setIsEmpty(true)
-        }
+    const res = await axios.get(profileApis.getDraftsOfUser, {
+      params: {
+        page: currentPageDrafts
       }
-    } catch (error) {
-      console.log(error)
+    })
+    if (res) {
+      setDrafts([...drafts, ...res.data])
+      if (res.data.length === 0 || res.data.length < 10) {
+        setIsEmpty(true)
+      }
     }
   }
 
@@ -104,17 +99,11 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
   }
 
   const handleDelDraft = async (postId) => {
-    try {
-      const res = await axios.delete(profileApis.deleteDraft(postId))
+    const res = await axios.delete(profileApis.deleteDraft(postId))
 
-      if (res) {
-        console.log(res)
-        setDrafts([])
-        setCallback(!callback)
-      }
-
-    } catch (error) {
-      console.log(error)
+    if (res) {
+      setDrafts([])
+      setCallback(!callback)
     }
   }
 
@@ -286,7 +275,6 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
                 <>
                   {
                     drafts.map((draft, index) => {
-                      console.log(drafts.length)
                       return (
                         <div key={index} className="myprofile__draft ">
                           <h5>{ReactHtmlParser(draft.title)}</h5>

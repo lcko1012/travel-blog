@@ -8,7 +8,6 @@ export default function withClickOutsideFollowerDialog(WrappedComponent) {
 
     useEffect(() => {
       const handleClickOutside = (event) => {
-        // console.log(event.target)
         if (!ref.current.contains(event.target)) {
           setOpenFollowerDialog(false);
         }
@@ -17,7 +16,7 @@ export default function withClickOutsideFollowerDialog(WrappedComponent) {
           document.addEventListener("mousedown", handleClickOutside);
       }
       else {
-            document.removeEventListener("mousedown", handleClickOutside)
+          document.removeEventListener("mousedown", handleClickOutside)
       }
       return () => document.removeEventListener("mousedown", handleClickOutside)
       

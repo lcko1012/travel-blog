@@ -124,38 +124,38 @@ const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) 
           >
             {
               isLoadingFollower ?
-              followerList.map((follower) =>
-                <div key={follower.accountId}
-                  className="profile__follower-dialog--list-item"
-                >
-                  <div className="profile__follower-dialog--left">
-                    <div
-                      className="profile__follower-dialog--avatar"
-                      style={{ backgroundImage: `url(${ReactHtmlParser(follower.avatarLink)})` }}
-                    ></div>
-                    <span onClick={() => redirectToAnotherProfile(follower.accountId)}>
-                      {follower.name}
-                    </span>
-                  </div>
+                followerList.map((follower) =>
+                  <div key={follower.accountId}
+                    className="profile__follower-dialog--list-item"
+                  >
+                    <div className="profile__follower-dialog--left">
+                      <div
+                        className="profile__follower-dialog--avatar"
+                        style={{ backgroundImage: `url(${ReactHtmlParser(follower.avatarLink)})` }}
+                      ></div>
+                      <span onClick={() => redirectToAnotherProfile(follower.accountId)}>
+                        {follower.name}
+                      </span>
+                    </div>
 
-                  <div>
-                    {auth.user.accountId === follower.accountId ? null
-                      :
-                      <button
-                        className={`${follower.followed ? 'button-light' : 'button-primary-no-hover'} button`}
-                        style={{ padding: '3px 8px' }}
-                        onClick={() => { followUser(follower.accountId) }}
-                      >
-                        {follower.followed ? "Đang theo dõi" : "Theo dõi"}
-                      </button>
-                    }
+                    <div>
+                      {auth.user.accountId === follower.accountId ? null
+                        :
+                        <button
+                          className={`${follower.followed ? 'button-light' : 'button-primary-no-hover'} button`}
+                          style={{ padding: '3px 8px' }}
+                          onClick={() => { followUser(follower.accountId) }}
+                        >
+                          {follower.followed ? "Đang theo dõi" : "Theo dõi"}
+                        </button>
+                      }
+                    </div>
                   </div>
-                </div>
-              )
-              : <span
-                  style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%'}}
+                )
+                : <span
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}
                 >
-                Loading...
+                  Loading...
                 </span>
             }
           </InfiniteScroll>
@@ -254,42 +254,45 @@ const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) 
                           <i className="fal fa-user-check" style={{ marginRight: '5px' }}></i>
                           Đã theo dõi</button>
                       }
-
                     </div>
-
                   </div>
                 </div>
               </div>
               {/* TODO: TAB POSTS */}
               <div className="mt-30 col-lg-8" >
                 {posts.length === 0 ? <Empty /> :
-                  posts.map((post, index) => {
-                    return (
-                      <CurrentPost post={post} key={index} />
-                    )
-                  })
+                  <>
+                    {
+                      posts.map((post, index) => {
+                        return (
+                          <CurrentPost post={post} key={index} />
+                        )
+                      })
+                    }
+                    <div className="pagination-area mb-30">
+                      <nav aria-label="Page navigation example">
+                        <ul className="pagination justify-content-start">
+                          <li className={`page-item" ${((posts.length - 10) < currentPage * 10) ? 'disabled' : null}`}
+                            onClick={getPosts}>
+                            <div className="page-link">
+                              <i className="fal fa-long-arrow-right"></i>
+                            </div>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
+                  </>
                 }
-                <div className="pagination-area mb-30">
-                    <nav aria-label="Page navigation example">
-                      <ul className="pagination justify-content-start">
-                        <li className={`page-item" ${((posts.length-10) < currentPage*10) ? 'disabled' : null}`}
-                          onClick={getPosts}>
-                          <div className="page-link">
-                            <i className="fal fa-long-arrow-right"></i>
-                          </div>
-                        </li>
-                      </ul>
-                    </nav>
-                </div>
               </div>
             </div>
           </div>
         </main>
 
         :
-        <Loading />
+        <div ref={ref}>
+          <Loading />
+        </div>
       }
-
     </>
   )
 })

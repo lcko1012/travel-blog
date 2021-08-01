@@ -20,7 +20,6 @@ function AdminReportDetails() {
         const getReport = async () => {
             const res = await axios.get(reportApis.getDetailReport(id))
             if (res) {
-                console.log(res.data)
                 setReport(res.data);
             }
         }

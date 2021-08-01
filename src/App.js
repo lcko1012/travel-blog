@@ -19,9 +19,9 @@ function App() {
   const cookiesService = CookiesService.getService()
 
   useEffect(() => {
-    ReactGA.initialize('G-E28TPT7BGT')
+    ReactGA.initialize('UA-203735232-1')
     ReactGA.pageview(window.location.pathname + window.location.search);
-  }, [])
+  }, [window.location.pathname + window.location.search])
 
   useEffect(() => {
     const token = cookiesService.getToken()
@@ -46,6 +46,7 @@ function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [realtime.isSuccess])
+
 
   return (
     <>

@@ -112,7 +112,6 @@ function Post() {
       try {
         const res = await axios.post(postApi.bookmarkPost, bookmarkForm)
         if (res) {
-          console.log(res)
           setPost({ ...post, bookmarked: true, bookmarkedCount: res.data })
         }
       } catch (err) {
@@ -269,7 +268,6 @@ function Post() {
                           </div>
                         </Link>
                       )
-
                     })}
                   </div>
 

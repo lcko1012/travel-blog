@@ -103,6 +103,12 @@ div.DraftEditor-editorContainer,
     box-shadow: none !important;
 }
 
+@media screen and (max-width: 480px){
+    .rdw-image-modal {
+        left: unset !important;
+        right: 20px;
+    }
+}
 
 select {
     -webkit-appearance: button;

@@ -85,7 +85,7 @@ function AdminUsers() {
         return (
             <div className="dialog-container post__delete-dialog">
                 <h5>Lưu ý</h5>
-                <p style={{ margin: '0px 5px 10px 5px' }}>Bạn có muốn nâng {userToAdm.name} làm admin?</p>
+                <p style={{ margin: '0px 5px 10px 5px' }}>Bạn có muốn nâng {ReactHtmlParse(userToAdm.name)} làm admin?</p>
                 <div className="post__report-delete-dialog--btn-container">
                     <button className="button button-red-no-hover mr-5"
                         onClick={() => setIsShowAlertToAdm(false)}

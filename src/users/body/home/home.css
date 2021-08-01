@@ -7,7 +7,6 @@
 
 .hieu-ung {
     box-shadow: 3px 3px 03px 0px rgba(0, 0, 0, 0.2);
-
 }
 
 .position-relative {
@@ -105,6 +104,19 @@
     /* height: 100%; */
 }
 
+.post-card-1::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    bottom: 0;
+    left: 10px;
+    border-radius: 10px;
+    box-shadow: var(--box-shadow-normal),0 0 0 transparent;
+    transition: all .25s cubic-bezier(.02,.01,.47,1);
+    z-index: -1;
+}
+
 .post-card-1:hover{
     transform: translate(0, -5px);
     /* box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2); */
@@ -164,9 +176,8 @@ a {
 
 
 /* Phan chu nho trong post-content */
-
 .font-x-small {
-    font-size: 10px;
+    font-size: 9px;
 }
 
 .entry-meta {
@@ -213,6 +224,11 @@ span.has-dos {
 
 .hover-up-2:hover {
     transform: translate(0, -5px);
+}
+
+.hover-up-1:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-hover),0 0 0 transparent;
 }
 
 .transition-normal {
@@ -368,43 +384,6 @@ span.has-dos {
     width: 30%;
     border: solid 2px;
 }
-/* 
-.most-popular-img {
-    display: inline-block;
-    width: 90px;
-    height: 80px;
-    border-radius: 10px;
-    vertical-align: middle;
-    margin-left: 20px;
-}
-
-.most-popular-title {
-    display: inline-block;
-    text-align: left;
-    margin-right: 20px;
-    width: 60%;
-}
-
-.most-popular-date {
-    font-size: small;
-    vertical-align: center;
-    margin-right: 8px;
-}
-
-.post-view {
-    position: relative;
-}
-
-.post-view-has-pot:before {
-    content: "";
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: black;
-    position: absolute;
-    top: 25%;
-    left: -8px;
-} */
 
 
 .post__popular {
@@ -413,6 +392,7 @@ span.has-dos {
     margin-bottom: 30px;
     border-radius: 10px;
     transition: .5s;
+    border: 1px solid var(--mutted-border-color);
 }
 
 .media-body {

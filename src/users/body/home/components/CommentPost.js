@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom'
 function CommentPost({ item }) {
     item = {...item, title: ReactHtmlParser(item.title)[0]}
     return (
-        <div className="post__popular d-flex hieu-ung" key={item.postId}>
+        <div className="post__popular d-flex hover-up-1" key={item.postId}>
             <div className="post__popular--content media-body" >
-                <h6 className="post-title mb-15">
+                <h6 className="post-title mb-15" title={item.title}>
                     <Link to={{ pathname: `/posts/${item.slug}`, state: { id: item.postId } }}>
-                        {item.title.length > 40 ? ReactHtmlParser(item.title.slice(0, 40)) + "..." : ReactHtmlParser(item.title)}
+                        {item.title.length > 36 ? ReactHtmlParser(item.title.slice(0, 36)) + "..." : ReactHtmlParser(item.title)}
                     </Link>
                 </h6>
                 

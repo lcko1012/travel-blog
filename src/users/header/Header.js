@@ -25,7 +25,6 @@ function Header() {
     const handleFindSubmit = (e) => {
         e.preventDefault();
         history.push(`/search?keyword=${keyword}`)
-        console.log("submit")
         setKeyword("")
     }
 

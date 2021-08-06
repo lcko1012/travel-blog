@@ -61,6 +61,8 @@ const Comment = ({ comment, color }) => {
                         <h5 className="comment-name">{comment.commenter.name}</h5>
                     </Link>
 
+                    {!showEditCmt ? 
+                    <>
                     {comment.commenter.email === userInfor.email ?
                         <i className="fal fa-chevron-down  ml-10" style={{ fontSize: '12px', cursor: 'pointer' }} onClick={() => setShowChoose(!showChoose)}>
                             <div className="comment-choose" style={showChoose ? { display: 'block' } : { display: 'none' }}>
@@ -76,7 +78,8 @@ const Comment = ({ comment, color }) => {
                             </div>
                         </i> : null
                     }
-
+                    </>
+                    : null}
                 </div>
 
                 <p style={{ fontSize: "12px" }}>{comment.commentDate}</p>

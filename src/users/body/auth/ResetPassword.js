@@ -23,7 +23,7 @@ function ResetPassword() {
     useEffect(() => {
         const confirmToken = async () => {
             try {
-                const res = await axios.get(authApis.changePassword, {
+                const res = await axios.get(authApis.resetPassword, {
                     params: {
                         token: token
                     }
@@ -66,7 +66,7 @@ function ResetPassword() {
         resetForm.append('matchedPassword', matchedPassword)
         
         try{
-            const res = await axios.put(authApis.savePassword, resetForm)
+            const res = await axios.put(authApis.resetPassword, resetForm)
             if(res) {
                 successNotification('Đã đổi mật khẩu thành công ✔')
                 history.push("/login")

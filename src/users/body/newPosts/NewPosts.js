@@ -11,6 +11,7 @@ import ReactHtmlParser from 'react-html-parser'
 import newpostApis from './enum/newpost-apis';
 import { errorNotification, successNotification } from '../../utils/notification/ToastNotification';
 import image from '../../../asset/editor-imgs/image.svg'
+import { isImgFormat, isImgSize } from '../../utils/validation/Validation';
 
 
 function NewPosts() {
@@ -98,14 +99,17 @@ function NewPosts() {
       if (!file) {
         return
       }
+      // if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+      //   return errorNotification("Sai định dạng")
+      // }
+      if(!isImgFormat(file)) return errorNotification("Sai định dạng")
 
-      if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
-        return errorNotification("Sai định dạng")
-      }
+      // if(file.size >= 1024*1024*2){
+      //   return errorNotification("Dung lượng ảnh phải nhỏ hơn 2MB")
+      // } // 2mb
 
-      if(file.size >= 1024*1024*2){
-        return errorNotification("Dung lượng ảnh phải nhỏ hơn 2MB")
-      } // 2mb
+      if(!isImgSize(file)) return errorNotification("Dung lượng ảnh phải nhỏ hơn 2MB")
+
 
       var formImage = new FormData()
       formImage.append('upload', file)
@@ -116,7 +120,10 @@ function NewPosts() {
         setData({ ...data, postThumbnail: res.data.url })
       }
     } catch (error) {
-      errorNotification("Đã xảy ra lỗi")
+      if(error.response.status === 413) {
+        errorNotification("Dung lượng ảnh phải nhỏ hơn 2MB")
+      }
+      else errorNotification("Đã xảy ra lỗi")
     }
   }
 
@@ -126,14 +133,10 @@ function NewPosts() {
 
   function uploadImageCallBack(file) {
     return new Promise(async (resolve, reject) => {
-      if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/jpg') {
-        return reject(errorNotification("Sai định dạng"))
-      }
-
-      if(file.size >= 1024*1024*2){
-        return reject(errorNotification("Dung lượng ảnh phải nhỏ hơn 2MB"))
-      } // 2mb
-
+      if(!isImgFormat(file)) return reject(errorNotification("Sai định dạng"))
+      
+      if(!isImgSize(file)) return reject(errorNotification("Dung lượng ảnh phải nhỏ hơn 2MB"))
+      
       const data = new FormData();
       data.append('upload', file);
       try {
@@ -144,6 +147,9 @@ function NewPosts() {
           }
         });
       } catch (e) {
+        if(e.response.status === 413) {
+          reject(errorNotification("Dung lượng ảnh phải nhỏ hơn 2MB"))
+        }
         reject(e)
       }
     })
@@ -153,6 +159,11 @@ function NewPosts() {
     if (!data.title) {
       return errorNotification('Hãy nhập tiêu đề bài viết')
     }
+    
+    if(data.title.length > 200) {
+      return errorNotification('Hãy nhập tiêu đề có độ dài ít hơn 200 ký tự')
+    }
+
     if (!data.postThumbnail) {
       return errorNotification('Hãy thêm ảnh bìa bài viết')
     }

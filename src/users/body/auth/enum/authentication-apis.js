@@ -5,8 +5,8 @@ export default {
     loginByGoogle: `${baseUrl}/google`,
     register:  `${baseUrl}/registration`,
     registerByGoogle: `${baseUrl}/google`,
-    changePassword: `${baseUrl}/changePassword`,
-    savePassword: `${baseUrl}/savePassword`,
+    // changePassword: `${baseUrl}/changePassword`,
+    // savePassword: `${baseUrl}/savePassword`,
     resetPassword: `${baseUrl}/resetPassword`,
     confirmRegistration: `${baseUrl}/resetPassword`,
 }

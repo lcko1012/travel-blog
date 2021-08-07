@@ -72,7 +72,6 @@ const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) 
     const token = Cookies.get("token")
     if (!token) return history.push('/login')
 
-
     const res = await axios.put(profileApis.followUser(id), null)
     if (res) {
       setUserInfor({ ...userInfor, followCount: res.data, followed: !userInfor.followed })
@@ -80,6 +79,9 @@ const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) 
   }
 
   const followUser = async (id) => {
+    const token = Cookies.get("token")
+    if (!token) return history.push('/login')
+    
     await axios.put(profileApis.followUser(id), null)
     const editedFollowerList = followerList.map((follower) =>
       follower.accountId === id ? { ...follower, followed: !follower.followed } : follower

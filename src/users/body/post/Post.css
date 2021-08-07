@@ -238,16 +238,15 @@ h1 {
     position: absolute;
     background-color: white;
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.2);
 }
 
 .comment-choose--option {
     color: var(--color-muted);
     align-items: center;
-    padding: 5px;
-    border-radius: 16px;
-
+    padding: 10px;
+    
 }
 
 .comment-choose--option:hover {

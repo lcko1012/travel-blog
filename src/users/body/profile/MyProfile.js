@@ -164,7 +164,7 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
                       style={{ padding: '3px 8px' }}
                       onClick={() => { followUser(follower.accountId) }}
                     >
-                      {follower.followed ? "Đang theo dõi" : "Theo dõi"}
+                      {follower.followed ? "Đang theo dõi" : "Theo dõi lại"}
                     </button>
                   </div>
                 </div>

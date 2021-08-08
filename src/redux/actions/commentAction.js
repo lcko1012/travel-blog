@@ -71,7 +71,6 @@ export const dispatchGetComments = (id) => async dispatch => {
 }
 
 export const dispatchSubmitComments = (id, commentForm) => async dispatch => {
-    console.log("dispatch submit comment")
     try {
         const res = await axios.post(commentApis.postComment(id), commentForm)
 

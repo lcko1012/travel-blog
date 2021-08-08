@@ -134,7 +134,10 @@ const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) 
                       <div
                         className="profile__follower-dialog--avatar"
                         style={{ backgroundImage: `url(${ReactHtmlParser(follower.avatarLink)})` }}
-                      ></div>
+                        onClick={() => redirectToAnotherProfile(follower.accountId)}
+                      >
+                      </div>
+
                       <span onClick={() => redirectToAnotherProfile(follower.accountId)}>
                         {follower.name}
                       </span>

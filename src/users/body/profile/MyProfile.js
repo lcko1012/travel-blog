@@ -25,7 +25,6 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
 
   const [isEmpty, setIsEmpty] = useState(false)
   const [isEmptyPosts, setIsEmptyPosts] = useState(false)
-  //Co chac muon xoa bai viet khong
 
   const [followerList, setFollowerList] = useState([])
   const [followerPage, setFollowerPage] = useState(0)
@@ -152,7 +151,10 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
                     <div
                       className="profile__follower-dialog--avatar"
                       style={{ backgroundImage: `url(${ReactHtmlParser(follower.avatarLink)})` }}
-                    ></div>
+                      onClick={() => redirectToAnotherProfile(follower.accountId)}
+                    >
+                    </div>
+
                     <span onClick={() => redirectToAnotherProfile(follower.accountId)}>
                       {follower.name}
                     </span>

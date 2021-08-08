@@ -110,12 +110,13 @@ function Header() {
 
                     </div>
                     {auth.isLogged ? loginMenu() :
+                    <div className="menu__right menu__right__login">
                         <Link to="/login">
-                            <div className="menu__right menu__right__login">
                                 <i className="far fa-user"></i>
                             Đăng nhập
-                            </div>
+                           
                         </Link>
+                         </div>
                     }
                 </div>
             </header>

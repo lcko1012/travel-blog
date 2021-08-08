@@ -129,6 +129,10 @@ a:hover{
   }
 }
 
+.text-12-px {
+  font-size: 12px;
+}
+
 .pb-50 {
   padding-bottom: 50px !important;
 }
@@ -251,8 +255,6 @@ a:hover{
 .p-30 {
   padding: 30px;
 }
-
-
 
 .pr-5 {
   padding-right: 5px;

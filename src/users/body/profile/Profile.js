@@ -100,10 +100,7 @@ const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) 
 
   const redirectToAnotherProfile = (id) => {
     setOpenFollowerDialog(false)
-    if (id === auth.user.accountId) {
-      history.push('/myprofile')
-    }
-    else history.push(`/profile/${id}`)
+    history.push(`/profile/${id}`)
   }
 
   const followerDialog = () => {

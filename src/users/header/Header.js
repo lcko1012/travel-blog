@@ -70,7 +70,7 @@ function Header() {
                             <i className="fal fa-users-cog"></i>
                             <p>Trang admin</p>
                         </Link> : null}
-                        <Link to="/myprofile">
+                        <Link to={`/profile/${userInfor.accountId}`}>
                             <i className="far fa-user"></i>
                             <p>Trang cá nhân</p>
                         </Link>

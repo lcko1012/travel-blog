@@ -3,6 +3,7 @@ import axios from "axios";
 import ReactHtmlParse from "react-html-parser";
 import userApis from "./enum/user-apis";
 import { errorNotification, successNotification } from "../../../users/utils/notification/ToastNotification";
+import { Link } from "react-router-dom";
 
 
 function AdminUsers() {
@@ -110,7 +111,11 @@ function AdminUsers() {
                 <td className="">
                     <div className="user-avatar" style={{ backgroundImage: `url(${ReactHtmlParse(user.avatarLink)})` }}></div>
                 </td>
-                <td>{ReactHtmlParse(user.name)}</td>
+                <td>
+                    <Link to={`/profile/${user.accountId}`}>
+                        {ReactHtmlParse(user.name)}
+                    </Link>
+                </td>
                 <td>{user.email}</td>
                 <td className="text-center">{user.postCount}</td>
                 <td className="text-center">{user.followCount}</td>

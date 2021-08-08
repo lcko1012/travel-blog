@@ -52,7 +52,7 @@ const Comment = ({ comment, color }) => {
 
   return (
     <div className="comment-item" key={comment.commentId}>
-      <Link to={userInfor.accountId === comment.commenter.accountId ? `/myprofile` : `/profile/${comment.commenter.accountId}`}>
+      <Link to={`/profile/${comment.commenter.accountId}`}>
         <div className="avatar-comment inline-item"
           style={{ backgroundImage: `url(${ReactHtmlParser(comment.commenter.avatarLink)})` }}>  
         </div>
@@ -62,7 +62,7 @@ const Comment = ({ comment, color }) => {
         style={color ? { color: '#f1efef', transition: '0.4s' } : null}
       >
         <div className='d-flex' style={{ alignItems: 'center' }}>
-          <Link to={userInfor.accountId === comment.commenter.accountId ? `/myprofile` : `/profile/${comment.commenter.accountId}`}>
+          <Link to={`/profile/${comment.commenter.accountId}`}>
             <h5 className="comment-name">{comment.commenter.name}</h5>
           </Link>
 

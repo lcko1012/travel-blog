@@ -23,6 +23,7 @@ import Post from '../users/body/post/Post'
 import EditProfile from '../users/body/profile/EditProfile'
 import MyProfile from '../users/body/profile/MyProfile'
 import Profile from '../users/body/profile/Profile'
+import ProfileWrapper from '../users/body/profile/ProfileWrapper'
 import SearchPage from '../users/body/search/SearchPage'
 import NotFound from '../users/utils/NotFound/NotFound'
 import NotPermission from '../users/utils/NotFound/NotPermission'
@@ -64,8 +65,10 @@ export default () => {
                 <AppRoute path='/bookmarks' component={isLogged ? Bookmarks : Login} exact layout={UserLayout}/>
                 <AppRoute path='/category/:id' component={Category} exact layout={UserLayout}/>
 
-                <AppRoute path="/profile/:id" component={Profile} exact layout={UserLayout}/>
-                <AppRoute path="/myprofile" component={isLogged ? MyProfile : Login} exact layout={UserLayout}/>
+                {/* <AppRoute path="/profile/:id" component={Profile} exact layout={UserLayout}/> */}
+                <AppRoute path="/profile/:id" component={ProfileWrapper} exact layout={UserLayout}/>
+
+                {/* <AppRoute path="/myprofile" component={isLogged ? MyProfile : Login} exact layout={UserLayout}/> */}
                 <AppRoute path="/myprofile/edit" component={isLogged ? EditProfile : Login} exact layout={UserLayout} />
                 
                 <AppRoute path="/admin/dashboard" component={isAdmin ? AdminHome : NotPermission} exact  layout={isAdmin ? AdminLayout : UserLayout}/>

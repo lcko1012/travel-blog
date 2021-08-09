@@ -67,7 +67,8 @@ const Comment = ({ comment }) => {
           <div className="comment__title">
             {!showEditCmt ?
               <span className="comment__title--name">
-                <Link to={`/profile/${comment.commenter.accountId}`}>{comment.commenter.name}
+                <Link to={`/profile/${comment.commenter.accountId}`}>
+                  {ReactHtmlParser(comment.commenter.name)}
                 </Link>
               </span> : null
             }

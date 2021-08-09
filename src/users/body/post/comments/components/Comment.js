@@ -31,7 +31,7 @@ const Comment = ({ comment }) => {
   }
 
   const handleSubmitChangeCmt = async (e) => {
-    if (e.key == "Enter" && e.shiftKey == false) {
+    if ((e.key == "Enter" || e.which === 13) && e.shiftKey == false) {
       e.preventDefault()
       if (!Cookies.get("token")) return history.push('/login')
       if(!commentInputChange.trim()) return

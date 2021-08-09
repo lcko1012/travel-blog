@@ -89,7 +89,6 @@ const Comments = ({ id }) => {
           onKeyUp={handleSubmitComment}
           onChange={handleChangeInput}
         />
-
       </form>
 
       {commentsReducer.errData && showErrMsg(commentsReducer.errData)}

@@ -24,8 +24,7 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(0)
   const [isEmpty, setIsEmpty] = useState(false)
 
-  //[] => chi 1 lan khi load trang
-  // khong co [] load lien tuc
+
   useEffect(() => {
     const getData = async () => {
       const res = await axios.get(homeApis.getPosts, {
@@ -248,7 +247,7 @@ function Home() {
                       {recentPosts.map((post) => {
                         return (
                           <div data-aos='fade-up' key={post.postId}>
-                            <CurrentPost post={post} key={post.postId} />  
+                            <CurrentPost post={post} key={post.postId} />
                           </div>
                         )
                       })}

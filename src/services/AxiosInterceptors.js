@@ -31,7 +31,7 @@ axios.interceptors.response.use(response => {
 }, error => {
   const { config, response: { status } } = error;
   const originalRequest = config;
-  if((status === 400 || status === 403) && originalRequest.url.includes("/api/auth/refreshToken")) {
+  if((status === 400 || status === 403 || status === 401) && originalRequest.url.includes("/api/auth/refreshToken")) {
     cookiesService.clearToken()
     store.dispatch(dispatchLogout())
     window.location.href = "/login"

@@ -7,6 +7,7 @@ import PassPage from './components/PassPage'
 import { fetchUser, dispatchGetUser } from '../../../redux/actions/authAction'
 import Cookies from 'js-cookie'
 import profileApis from './enum/profile-apis'
+import { isImgFormat, isImgSize } from '../../utils/validation/Validation'
 
 const EditProfile = () => {
     const initialState = {
@@ -52,9 +53,13 @@ const EditProfile = () => {
             if (!file) {
                 return setNewInfor
             }
-            if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
-                return setNewInfor({ ...newInfor, err: "Sai định dạng ảnh", success: '' })
-            }
+            // if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+            //     return setNewInfor({ ...newInfor, err: "Sai định dạng ảnh", success: '' })
+            // }
+
+            if(!isImgFormat(file)) return setNewInfor({ ...newInfor, err: "Sai định dạng ảnh", success: '' })
+
+            if(!isImgSize(file)) return setNewInfor({ ...newInfor, err: "Vui lòng đăng ảnh dung lượng nhỏ hơn 2MB", success: '' })
           
             var formImage = new FormData()
             formImage.append('upload', file)
@@ -65,7 +70,10 @@ const EditProfile = () => {
                 setNewAvatar(res.data.url)
             }
         } catch (error) {
-            setNewInfor({ ...newInfor, err: "Đã xảy ra lỗi", success: '' })
+            if(error.response.status === 413) {
+                setNewInfor({ ...newInfor, err: "Vui lòng đăng ảnh dung lượng nhỏ hơn 2MB", success: '' })
+            }
+            else setNewInfor({ ...newInfor, err: "Đã xảy ra lỗi", success: '' })
         }
     }
 

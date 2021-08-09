@@ -3,7 +3,7 @@ header {
     margin: 0;
     color: var(--color-muted);
     height: min-content;
-    box-shadow: 0 2px 3px -2px gray;
+    box-shadow: 0 2px 3px -2px #dadada;
     position: fixed;
     top: 0;
     width: 100%;
@@ -15,6 +15,11 @@ header {
     .menu__left input {
        display: none;
     }
+
+    .menu__left form i {
+        display: none;
+    }
+
     .menu__right span{
         display: none;
     }
@@ -26,10 +31,14 @@ header {
     }
 }
 /*Iphone(320 x 480)*/
-@media screen and (min-width: 320px){
+@media screen and (min-width: 360px){
     .menu__left input {
-        max-width: 25px; 
+        width: 100px; 
         display: inline;
+    }
+
+    .menu__left form i {
+        display: inline-block;
     }
 
     .menu__right span{
@@ -45,10 +54,14 @@ header {
 /*Tablet nhỏ(480 x 640)*/
 @media screen and (min-width: 480px){
     .menu__left input {
-        max-width: 500px;
-        min-width: 200px;
+        width: 150px;
         display: inline;
     }
+
+    .menu__left form i {
+        display: inline-block;
+    }
+
     .menu__left span {
         display: none;
     }
@@ -59,10 +72,15 @@ header {
 /*Ipad dọc(768 x 1024)*/
 @media screen and (min-width: 768px){
     .menu__left input {
-        max-width: 500px;
         display: inline;
-        min-width: 200px;
+        width: 350px;
     }
+
+    .menu__left form i {
+        display: inline-block;
+    }
+
+
     .menu__notify--dropdown {
         min-width: 350px;
     } 
@@ -73,10 +91,14 @@ header {
 /*Ipad ngang(1024 x 768)*/
 @media screen and (min-width: 1024px){
     .menu__left input {
-        max-width: 1000px;
         display: inline;
         min-width: 300px;
     }
+    
+    .menu__left form i {
+        display: inline-block;
+    }
+
     .menu__notify--dropdown {
         min-width: 350px;
     } 
@@ -89,14 +111,15 @@ header {
 }
 
 
+
 .menu {
     margin-top: 5px !important;
     margin-bottom: 5px !important;
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: center;
     font-size: 15px;
-    
+    height: 45px;
 }
 
 .menu__left {
@@ -122,17 +145,24 @@ header {
 .menu__left form {
     margin-left: 20px;
     width: auto;
+    position: relative;
+}
+
+.menu__left form i {
+    position: absolute;
+    top: 28%;
+    left: 15px;
 }
 
 .menu__left input {
     font-size: 14px;
-    margin-left: 10px;
-    padding: 15px 0px;
+    margin-left: 5px;
+    padding: 15px 15px 15px 30px;
     height: 20px;
     outline: none;
-    border: 1px solid rgb(255, 255, 255);
-    border-radius: 5px;
-
+    border: 1px solid var(--color-background);
+    border-radius: 10px;
+    background-color: var(--color-background);
 }
 
 
@@ -142,6 +172,8 @@ header {
     display: flex;
     align-items: center;
     flex-direction: row;
+    margin-left: auto;
+
 }
 
 .menu__right__login {

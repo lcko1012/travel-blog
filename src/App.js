@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify';
 import Routes from './routes';
 import ScrollToTop from './routes/ScrollToTop';
 import ReactGA from 'react-ga'
+import ButtonUp from './users/utils/ButtonUp/ButtonUp';
 
 function App() {
   const dispatch = useDispatch()
@@ -64,6 +65,7 @@ function App() {
               draggable
               pauseOnHover
             />
+            <ButtonUp />
             <Routes />
           </div>
       </Router>

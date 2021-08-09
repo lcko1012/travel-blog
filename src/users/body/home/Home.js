@@ -76,11 +76,11 @@ function Home() {
 
   useEffect(() => {
     AOS.init({
-      duration : 1000
+      duration: 1000
     })
     AOS.refresh()
   }, [])
-  
+
 
   // Di chuyen slide
   const nextSlide = () => {
@@ -104,46 +104,46 @@ function Home() {
         <main className="main__home">
           <div className="container pt-30 mb-15">
             <div data-aos='fade-up'>
-            {featuredPosts.map((post, index) => {
-              if (index < 3) {
-                return (
-                  <div key={post.postId}>
-                  {index === currentLargePage && 
+              {featuredPosts.map((post, index) => {
+                if (index < 3) {
+                  return (
+                    <div key={post.postId}>
+                      {index === currentLargePage &&
 
-                    <div
-                    className="home__thumbnail--large"
-                    style={{ backgroundImage: `url(${ReactHtmlParser(post.postThumbnail)})`}}
-                    >
-                    <div className="home__thumbnail--content">
-                      {post.categories.map((item) => {
-                        return (
-                          <Link to={{ pathname: `/category/${item.categoryId}` }} key={item.categoryId}>
-                            <div className="home__thumbnail--category" key={item.categoryId}>{item.categoryName}</div>
-                          </Link>
-                        )
-                      })}
-                      <Link to={{pathname: `/posts/${post.slug}`}}>
-                        <h1>{post.title}</h1>
-                      </Link>
-                      <div className="entry-meta meta-1 font-x-small text-white text-uppercase">
-                        <span className="post-on">{post.bookmarkedCount} bookmark</span>
+                        <div
+                          className="home__thumbnail--large"
+                          style={{ backgroundImage: `url(${ReactHtmlParser(post.postThumbnail)})` }}
+                        >
+                          <div className="home__thumbnail--content">
+                            {post.categories.map((item) => {
+                              return (
+                                <Link to={{ pathname: `/category/${item.categoryId}` }} key={item.categoryId}>
+                                  <div className="home__thumbnail--category" key={item.categoryId}>{item.categoryName}</div>
+                                </Link>
+                              )
+                            })}
+                            <Link to={{ pathname: `/posts/${post.slug}` }}>
+                              <h1>{post.title}</h1>
+                            </Link>
+                            <div className="entry-meta meta-1 text-12-px text-white text-uppercase">
+                              <span className="post-on">{post.bookmarkedCount} bookmark</span>
 
-                        <span className="time-reading has-dos">
-                          {post.commentCount} bình luận
-                        </span>
-                      </div>
+                              <span className="time-reading has-dos">
+                                {post.commentCount} bình luận
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="home__thumbnail--arrow">
+                            <i className="fal fa-long-arrow-left" onClick={prevLargeSlide}></i>
+                            <i className="fal fa-long-arrow-right" onClick={nextLargeSlide}></i>
+                          </div>
+                        </div>
+                      }
                     </div>
-
-                    <div className="home__thumbnail--arrow">
-                      <i className="fal fa-long-arrow-left" onClick={prevLargeSlide}></i>
-                      <i className="fal fa-long-arrow-right" onClick={nextLargeSlide}></i>
-                    </div>
-                  </div>
-                  }
-                  </div>
-                )
-              }
-            })}
+                  )
+                }
+              })}
             </div>
           </div>
 
@@ -156,38 +156,38 @@ function Home() {
               <div className="col-lg-8 mb-30">
                 {/* TODO: NỔI BẬT POSTS */}
                 <div data-aos='fade-up'>
-                {featuredPosts.map((post, index) => {
-                  if (index < 6 && index >= 3) {
-                    return (
-                      <div key={post.postId}>
-                        {index === currentSlide && (
-                          <div className="slider thumb-overlay hieu-ung ">
-                            <div className="arrow-cover">
-                              <i className="fal fa-long-arrow-left" onClick={prevSlide}></i>
-                              <i className="fal fa-long-arrow-right" onClick={nextSlide}></i>
-                            </div>
-                            
-                            <img src={ReactHtmlParser(post.postThumbnail)} alt='travel image' className='image' />
-                            
-                            <div className="post-content-overlay text-white ml-30 mr-30 pb-30">
-                              <h3 className="post-title mb-20" style={{ fontSize: 20 }}>
-                                <Link to={{ pathname: `/posts/${post.slug}`}}
-                                  className="text-white">
-                                  {ReactHtmlParser(post.title)}
-                                </Link>
-                              </h3>
-                              <div className="entry-meta meta-1 font-small text-white mt-10 " style={{ textAlign: 'left' }}>
-                                <span>{post.bookmarkedCount} lượt bookmark</span>
-                                <span className="has-dos">{post.commentCount} bình luận</span>
+                  {featuredPosts.map((post, index) => {
+                    if (index < 6 && index >= 3) {
+                      return (
+                        <div key={post.postId}>
+                          {index === currentSlide && (
+                            <div className="slider thumb-overlay hieu-ung ">
+                              <div className="arrow-cover">
+                                <i className="fal fa-long-arrow-left" onClick={prevSlide}></i>
+                                <i className="fal fa-long-arrow-right" onClick={nextSlide}></i>
+                              </div>
+
+                              <img src={ReactHtmlParser(post.postThumbnail)} alt='travel image' className='image' />
+
+                              <div className="post-content-overlay text-white ml-30 mr-30 pb-30">
+                                <h3 className="post-title mb-20" style={{ fontSize: 20 }}>
+                                  <Link to={{ pathname: `/posts/${post.slug}` }}
+                                    className="text-white">
+                                    {ReactHtmlParser(post.title)}
+                                  </Link>
+                                </h3>
+                                <div className="entry-meta meta-1 font-small text-white mt-10 " style={{ textAlign: 'left' }}>
+                                  <span>{post.bookmarkedCount} lượt bookmark</span>
+                                  <span className="has-dos">{post.commentCount} bình luận</span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        )}
-                      </div>
-                    )
+                          )}
+                        </div>
+                      )
+                    }
+                  })
                   }
-                })
-                }
                 </div>
               </div>
 
@@ -196,21 +196,21 @@ function Home() {
                   return (
                     <div className="col-lg-4 col-md-6 mb-30" key={post.postId} data-aos='fade-up'>
                       <div className="post-card-1 border-radius-10 hover-up-1">
-                        <Link to={{pathname: `/posts/${post.slug}`}}>
+                        <Link to={{ pathname: `/posts/${post.slug}` }}>
                           <div className="thumb-overlay img-hover-slide position-relative" style={{ background: `url(${ReactHtmlParser(post.postThumbnail)})` }}>
                           </div>
-                       </Link>
-                        
+                        </Link>
+
                         <div className="post-content p-30">
-                        <div className="current-post__category-area mb-10">
-                              {post.categories.map((item) => {
-                                return (
-                                  <Link to={{ pathname: `/category/${item.categoryId}` }} key={item.categoryId}>
-                                    <div className="current-post__category" key={item.categoryId}>{item.categoryName}</div>
-                                  </Link>
-                                )
-                              })}
-                            </div>
+                          <div className="current-post__category-area mb-10">
+                            {post.categories.map((item) => {
+                              return (
+                                <Link to={{ pathname: `/category/${item.categoryId}` }} key={item.categoryId}>
+                                  <div className="current-post__category" key={item.categoryId}>{item.categoryName}</div>
+                                </Link>
+                              )
+                            })}
+                          </div>
                           <div className="d-flex post-card-content">
                             <h5 className="post-title">
                               <Link to={{ pathname: `/posts/${post.slug}`, state: { id: post.postId } }}>
@@ -248,9 +248,8 @@ function Home() {
                       {recentPosts.map((post) => {
                         return (
                           <div data-aos='fade-up' key={post.postId}>
-                            <CurrentPost post={post} key={post.postId} />
+                            <CurrentPost post={post} key={post.postId} />  
                           </div>
-                          
                         )
                       })}
                     </div>

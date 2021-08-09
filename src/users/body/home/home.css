@@ -420,6 +420,16 @@ span.has-dos {
     background-blend-mode: saturation;
 }
 
+.home__thumbnail--large::before {
+    background: linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.8) 100%);
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
 
 .home__thumbnail--content {
     position: absolute;

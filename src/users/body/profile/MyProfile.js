@@ -25,7 +25,6 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
 
   const [isEmpty, setIsEmpty] = useState(false)
   const [isEmptyPosts, setIsEmptyPosts] = useState(false)
-  //Co chac muon xoa bai viet khong
 
   const [followerList, setFollowerList] = useState([])
   const [followerPage, setFollowerPage] = useState(0)
@@ -109,10 +108,7 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
 
   const redirectToAnotherProfile = (id) => {
     setOpenFollowerDialog(false)
-    if (id === userInfor.accountId) {
-      history.push('/myprofile')
-    }
-    else history.push(`/profile/${id}`)
+    history.push(`/profile/${id}`)
   }
 
   const followUser = async (id) => {
@@ -152,7 +148,10 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
                     <div
                       className="profile__follower-dialog--avatar"
                       style={{ backgroundImage: `url(${ReactHtmlParser(follower.avatarLink)})` }}
-                    ></div>
+                      onClick={() => redirectToAnotherProfile(follower.accountId)}
+                    >
+                    </div>
+
                     <span onClick={() => redirectToAnotherProfile(follower.accountId)}>
                       {follower.name}
                     </span>
@@ -164,7 +163,7 @@ const MyProfile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref
                       style={{ padding: '3px 8px' }}
                       onClick={() => { followUser(follower.accountId) }}
                     >
-                      {follower.followed ? "Đang theo dõi" : "Theo dõi"}
+                      {follower.followed ? "Đang theo dõi" : "Theo dõi lại"}
                     </button>
                   </div>
                 </div>

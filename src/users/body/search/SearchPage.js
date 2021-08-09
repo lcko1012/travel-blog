@@ -50,7 +50,6 @@ const SearchPage = () => {
 
                 if (res) {
                     setPostsResult([...postsResult, ...res.data])
-                    console.log(res.data.length)
                     if (res.data.length === 0 || res.data.length < 10) {
                         setIsEmpty(true)
                     }

@@ -70,7 +70,7 @@ function Header() {
                             <i className="fal fa-users-cog"></i>
                             <p>Trang admin</p>
                         </Link> : null}
-                        <Link to="/myprofile">
+                        <Link to={`/profile/${userInfor.accountId}`}>
                             <i className="far fa-user"></i>
                             <p>Trang cá nhân</p>
                         </Link>
@@ -110,12 +110,13 @@ function Header() {
 
                     </div>
                     {auth.isLogged ? loginMenu() :
+                    <div className="menu__right menu__right__login">
                         <Link to="/login">
-                            <div className="menu__right menu__right__login">
                                 <i className="far fa-user"></i>
                             Đăng nhập
-                            </div>
+                           
                         </Link>
+                         </div>
                     }
                 </div>
             </header>

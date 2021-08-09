@@ -72,7 +72,6 @@ const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) 
     const token = Cookies.get("token")
     if (!token) return history.push('/login')
 
-
     const res = await axios.put(profileApis.followUser(id), null)
     if (res) {
       setUserInfor({ ...userInfor, followCount: res.data, followed: !userInfor.followed })
@@ -80,6 +79,9 @@ const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) 
   }
 
   const followUser = async (id) => {
+    const token = Cookies.get("token")
+    if (!token) return history.push('/login')
+    
     await axios.put(profileApis.followUser(id), null)
     const editedFollowerList = followerList.map((follower) =>
       follower.accountId === id ? { ...follower, followed: !follower.followed } : follower
@@ -98,10 +100,7 @@ const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) 
 
   const redirectToAnotherProfile = (id) => {
     setOpenFollowerDialog(false)
-    if (id === auth.user.accountId) {
-      history.push('/myprofile')
-    }
-    else history.push(`/profile/${id}`)
+    history.push(`/profile/${id}`)
   }
 
   const followerDialog = () => {
@@ -132,7 +131,10 @@ const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) 
                       <div
                         className="profile__follower-dialog--avatar"
                         style={{ backgroundImage: `url(${ReactHtmlParser(follower.avatarLink)})` }}
-                      ></div>
+                        onClick={() => redirectToAnotherProfile(follower.accountId)}
+                      >
+                      </div>
+
                       <span onClick={() => redirectToAnotherProfile(follower.accountId)}>
                         {follower.name}
                       </span>

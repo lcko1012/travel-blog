@@ -7,13 +7,11 @@ import DataProvider from './redux/store'
 import  './services/AxiosInterceptors'
 
 
-
 ReactDOM.render(
   <React.StrictMode>
     <DataProvider>
       <App />
     </DataProvider>
-    
   </React.StrictMode>,
   document.getElementById('root')
 );

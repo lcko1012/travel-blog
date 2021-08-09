@@ -1,3 +1,4 @@
+
 export const isMatch = (cf_password, password) => {
     if(cf_password === password) return true
     return false
@@ -17,3 +18,16 @@ export const isEmpty = value => {
     if(!value) return true
     return false
 }
+
+export const isImgFormat = file => {
+    if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/jpg') return false
+    return true
+    
+}
+
+export const isImgSize = file => {
+    if(file.size >= 1024*1024*2) return false // 2mb
+    return true
+}
+
+

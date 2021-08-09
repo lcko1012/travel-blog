@@ -162,6 +162,9 @@ function Post() {
   }
 
   const handleReportPost = async () => {
+    if(!reportTxt.trim()) {
+      return errorNotification('Hãy điền nội dung báo cáo')
+    }
     try {
       const res = await axios.post(postApi.reportPost, null, {
         params: {
@@ -174,7 +177,12 @@ function Post() {
         successNotification('Báo cáo thành công ✔')
       }
     } catch (error) {
-      errorNotification('Không thể báo cáo 🙁')
+      if(error.response.status === 400){
+        errorNotification('Hãy điền nội dung báo cáo')
+      }
+      else {
+        errorNotification('Không thể báo cáo 🙁')
+      }
     }
   }
   const handleChangeInput = (e) => {
@@ -227,26 +235,6 @@ function Post() {
     )
   }
 
-  const toggleVisible = () => {
-    const scrolled = document.documentElement.scrollTop;
-    if (scrolled > 300) {
-      setShowBtnUp(true)
-    }
-    else if (scrolled <= 300) {
-      setShowBtnUp(false)
-    }
-  };
-
-  window.addEventListener('scroll', toggleVisible);
-
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
-
   return (
     <>
       <main className="main__home" >
@@ -274,17 +262,16 @@ function Post() {
                   {/* TODO:WRITE BY AREA */}
                   <div className="write-by mb-30">
                     <div className="d-flex">
-                      <div className="avatar-write-by inline-item"
-                        style={{ backgroundImage: `url(${ReactHtmlParser(author.avatarLink)})` }}
-                      ></div>
+                      <Link to={`/profile/${author.accountId}`}>
+                        <div className="avatar-write-by inline-item"
+                          style={{ backgroundImage: `url(${ReactHtmlParser(author.avatarLink)})` }}
+                        >
+                        </div>
+                      </Link>
 
                       <div style={{ margin: 'auto 0' }}>
                         <div className="name-write-by">
-                          {author.accountId === user.accountId ?
-                            <Link to="/myprofile">{author.name}</Link>
-                            :
                             <Link to={`/profile/${author.accountId}`}>{author.name}</Link>
-                          }
                         </div>
 
                         <p className="date-write-by">{post.publishedDate}</p>
@@ -365,13 +352,6 @@ function Post() {
               </div>
             </div>
             : <Loading />}
-
-          <button className="post__button-up"
-            style={{ display: showBtnUp ? 'block' : 'none' }}
-            onClick={scrollToTop}
-          >
-            <i className="fal fa-arrow-up"></i>
-          </button>
         </div>
       </main>
     </>

@@ -1,5 +1,4 @@
 import axios from 'axios'
-import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
 import Empty from '../../utils/Empty/Empty'
 import Loading from '../../utils/Loading/Loading'

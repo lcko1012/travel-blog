@@ -310,3 +310,33 @@ header {
 }
 
 
+.menu__notify--header {
+    display: flex;
+    position: relative;
+    padding: 18px 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menu__notify--header h5 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.menu__notify--header-clear-all-notif {
+    font-size: 14px;
+}
+
+.menu__notify--header-clear-all-notif i {
+    display: none;
+}
+
+.menu__notify--header-clear-all-notif:hover i {
+    display: inline-block;
+
+}
+
+.menu__notify--header-clear-all-notif:hover {
+    color: var(--color-primary);
+}
+

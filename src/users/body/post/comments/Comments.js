@@ -11,10 +11,12 @@ import {
 import useSocketDataObject from '../../../../real-time/useSocketDataObject'
 import { showErrMsg } from '../../../utils/notification/Notification'
 import TextareaAutosize from 'react-textarea-autosize';
+import { Redirect, useLocation } from 'react-router-dom'
 
 
 const Comments = ({ id }) => {
   const history = useHistory()
+  const location = useLocation()
   const auth = useSelector(state => state.auth)
   const userInfor = auth.user
   const [commentInput, setCommentInput] = useState('')
@@ -55,7 +57,8 @@ const Comments = ({ id }) => {
   const handleSubmitComment = (e) => {
     if ((e.key == "Enter" || e.which === 13) && e.shiftKey == false) {
       e.preventDefault()
-      if (!Cookies.get("token")) return history.push('/login')
+      if (!Cookies.get("token")) return history.push(`/login?redirectTo=${location.pathname}`)
+
       if(commentInput.trim()){
         var commentForm = new FormData()
         commentForm.append('content', commentInput)

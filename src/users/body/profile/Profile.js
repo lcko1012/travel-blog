@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { forwardRef, useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
 import Empty from '../../utils/Empty/Empty'
 import Loading from '../../utils/Loading/Loading'
 import CurrentPost from '../home/components/CurrentPost'
@@ -14,6 +14,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 
 
 const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) => {
+  const location = useLocation()
   const auth = useSelector(state => state.auth)
   const history = useHistory()
   const id = useParams().id
@@ -69,8 +70,7 @@ const Profile = forwardRef(({ openFollowerDialog, setOpenFollowerDialog }, ref) 
 
 
   const handleClickFollow = async () => {
-    const token = Cookies.get("token")
-    if (!token) return history.push('/login')
+    if (!Cookies.get("token")) return history.push(`/login?redirectTo=${location.pathname}`)
 
     const res = await axios.put(profileApis.followUser(id), null)
     if (res) {

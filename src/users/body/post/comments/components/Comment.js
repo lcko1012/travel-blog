@@ -1,12 +1,13 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
 import ReactHtmlParser from 'react-html-parser'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { dispatchDeleteCmt, dispatchLikeCmt, dispatchEditCmt } from '../../../../../redux/actions/commentAction'
 import TextareaAutosize from 'react-textarea-autosize';
 
 const Comment = ({ comment }) => {
+  const location = useLocation()
   const auth = useSelector(state => state.auth)
   const userInfor = auth.user
   const history = useHistory()
@@ -26,14 +27,15 @@ const Comment = ({ comment }) => {
   }
 
   const handleLikeCmt = (commentId) => {
-    if (!Cookies.get("token")) return history.push('/login')
+    if (!Cookies.get("token")) return history.push(`/login?redirectTo=${location.pathname}`)
     dispatch(dispatchLikeCmt(commentId))
   }
 
   const handleSubmitChangeCmt = async (e) => {
     if ((e.key == "Enter" || e.which === 13) && e.shiftKey == false) {
       e.preventDefault()
-      if (!Cookies.get("token")) return history.push('/login')
+      if (!Cookies.get("token")) return history.push(`/login?redirectTo=${location.pathname}`)
+      
       if(!commentInputChange.trim()) return
       const formData = new FormData()
       formData.append("content", commentInputChange)
@@ -121,14 +123,10 @@ const Comment = ({ comment }) => {
               {comment.likeCount}
 
               <i className="fal fa-thumbs-up ml-5 mr-5"></i>
-
               <p className="text-12-px">{comment.commentDate}</p>
-
             </>
           }
-
         </div>
-
       </div>
     </div>
   )

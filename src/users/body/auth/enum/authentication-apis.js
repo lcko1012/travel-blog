@@ -8,5 +8,5 @@ export default {
     // changePassword: `${baseUrl}/changePassword`,
     // savePassword: `${baseUrl}/savePassword`,
     resetPassword: `${baseUrl}/resetPassword`,
-    confirmRegistration: `${baseUrl}/resetPassword`,
+    confirmRegistration: `${baseUrl}/registrationConfirm`,
 }

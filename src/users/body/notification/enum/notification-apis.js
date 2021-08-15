@@ -4,5 +4,6 @@ export default {
     seenNotification(notificationId){
         return `${baseUrl}/${notificationId}/seen`
     },
-    getNotifications: `${baseUrl}`
+    getNotifications: `${baseUrl}`,
+    seenAllNotification: `${baseUrl}/seenAll`
 }

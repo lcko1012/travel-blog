@@ -54,7 +54,6 @@ const Notification = forwardRef(({ openNotification, setOpenNotification }, ref)
 
     const getNotifications = async () => {
         setPageNoti(pageNoti + 1)
-
         const res = await axios.get(notificationApis.getNotifications, {
             params: {
                 page: pageNoti,
@@ -64,6 +63,16 @@ const Notification = forwardRef(({ openNotification, setOpenNotification }, ref)
         if (res) {
             dispatch(dispatchRemoveCountNoti())
             setNotifications([...notifications, ...res.data])
+        }
+    }
+
+    const seenAllNotification = async () => {
+        const res = await axios.put(notificationApis.seenAllNotification)
+        if(res) {
+            var updatedNotifications = notifications.map((notification) => {
+                return {...notification, seen: true}
+            })
+            setNotifications(updatedNotifications)
         }
     }
 
@@ -78,7 +87,16 @@ const Notification = forwardRef(({ openNotification, setOpenNotification }, ref)
 
                 {openNotification && (
                     <ul className="menu__notify--dropdown">
-                        <h5 style={{ marginLeft: '12px', marginTop: '12px' }}>Thông báo</h5>
+                        <div className="menu__notify--header">
+                            <h5>Thông báo</h5>
+                            <div 
+                                className="menu__notify--header-clear-all-notif"
+                                onClick={seenAllNotification}
+                            >
+                                <i className="fal fa-check"></i>
+                                Đánh dấu xem tất cả
+                            </div>
+                        </div>
                         <InfiniteScroll
                             dataLength={notifications.length}
                             next={getNotifications}

@@ -24,6 +24,7 @@
     "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-textarea-autosize": "^8.3.3",
     "react-toastify": "^7.0.4",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
@@ -55,6 +56,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://illusion.codes/"
+  "proxy": "http://langthang.tech/"
 }
-

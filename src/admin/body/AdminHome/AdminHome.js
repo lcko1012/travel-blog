@@ -25,7 +25,11 @@ function AdminHome() {
         }
 
         const getTopUsers = async () => {
-            const res = await axios.get(homeApis.getTopUsers)
+            const res = await axios.get(homeApis.getTopUsers, {
+                params: {
+                    size: 10
+                }
+            })
             if (res) {
                 setTopUsers(res.data)
             }

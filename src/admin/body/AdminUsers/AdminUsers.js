@@ -53,9 +53,7 @@ function AdminUsers() {
             try {
                 const res = await axios.put(userApis.updateRole(id))
                 if (res) {
-                    var newUserList = userList.filter((item) =>
-                        item.accountId !== userToAdm.accountId
-                    )
+                    var newUserList = userList.map((item) => (item.accountId === userToAdm.accountId ? { ...item, role: "ROLE_ADMIN" } : item))
                     setUserList(newUserList)
                     successNotification(`${userToAdm.name} đã thành admin 🎉`)
                     setUserToAdm({})

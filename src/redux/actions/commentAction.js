@@ -1,6 +1,7 @@
 import ACTIONS from './index'
 import axios from 'axios'
 import commentApis from '../../users/body/post/enum/comment-apis'
+import { errorNotification } from '../../users/utils/notification/ToastNotification'
 
 
 export const dispatchNextCommentsPage = (id, page) => async dispatch => {
@@ -89,7 +90,7 @@ export const dispatchSubmitComments = (id, commentForm) => async dispatch => {
 export const dispatchDeleteCmt = (commentId) => async dispatch => {
     try {
         await axios.delete(commentApis.deleteComment(commentId))
-        
+
         dispatch({
             type: ACTIONS.DELETE_COMMENT,
             payload: commentId
@@ -114,10 +115,20 @@ export const dispatchLikeCmt = (commentId) => async dispatch => {
             }
         })
     } catch (error) {
-        dispatch({
-            type: ACTIONS.COMMENT_ERROR,
-            payload: "Không thể thích bình luận"
-        })
+        if(error.response.status === 404) {
+            errorNotification("Bình luận này không tồn tại")
+            dispatch({
+                type: ACTIONS.DELETE_COMMENT,
+                payload: commentId
+            })
+        }
+        else {
+            dispatch({
+                type: ACTIONS.COMMENT_ERROR,
+                payload: "Không thể thích bình luận"
+            })
+        }
+        
     }
 }
 

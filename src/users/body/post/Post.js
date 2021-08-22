@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, Link, useHistory } from 'react-router-dom'
+import { useParams, Link, useHistory, useLocation } from 'react-router-dom'
 import "./Post.css"
 import axios from 'axios'
 import ReactHtmlParser from 'react-html-parser'
@@ -10,12 +10,13 @@ import CommentPost from '../home/components/CommentPost'
 import { useSelector } from 'react-redux'
 import postApi from './enum/post-api'
 import { errorNotification, successNotification } from '../../utils/notification/ToastNotification'
+import NotFound from '../../utils/NotFound/NotFound'
 
 function Post() {
+  const location = useLocation()
   const params = useParams()
   const history = useHistory()
   const auth = useSelector(state => state.auth)
-  const { user } = auth
   const initialState = {
     postId: 0,
     title: '',
@@ -29,7 +30,6 @@ function Post() {
     categories: [],
     owner: false
   }
-  //lay bai bang slug
   const [post, setPost] = useState(initialState)
   const [author, setAuthor] = useState({})
   const [loading, setLoading] = useState(false)
@@ -37,9 +37,8 @@ function Post() {
   const [isReport, setIsReport] = useState(false)
   const [userPosts, setUserPosts] = useState([])
   const [reportTxt, setReportTxt] = useState('')
-  const [showBtnUp, setShowBtnUp] = useState(false)
+  const [notFound, setNotFound] = useState(false)
 
-  //Cu moi lan render lai
   useEffect(() => {
     const getPost = async () => {
       try {
@@ -67,7 +66,9 @@ function Post() {
         setAuthor(resContent.author)
         setLoading(true)
       } catch (err) {
-        console.log(err)
+        if (err.response.status === 404) {
+          setNotFound(true)
+        }
       }
     }
     if (params.slug) {
@@ -78,6 +79,7 @@ function Post() {
       setPost(initialState)
       setLoading(false)
       setAuthor({})
+      setNotFound(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.slug])
@@ -100,11 +102,9 @@ function Post() {
   }, [author])
 
 
-
   const handleBookmark = () => {
     //Muon bookmark
-    const token = Cookies.get("token")
-    if (!token) return history.push('/login')
+    if (!Cookies.get("token")) return history.push(`/login?redirectTo=${location.pathname}`)
     var bookmarkForm = new FormData()
     bookmarkForm.append("postId", post.postId)
 
@@ -156,13 +156,12 @@ function Post() {
   }
 
   const handleShowReport = () => {
-    const token = Cookies.get("token")
-    if (!token) return history.push('/login')
+    if (!Cookies.get("token")) return history.push(`/login?redirectTo=${location.pathname}`)
     setIsReport(true)
   }
 
   const handleReportPost = async () => {
-    if(!reportTxt.trim()) {
+    if (!reportTxt.trim()) {
       return errorNotification('Hãy điền nội dung báo cáo')
     }
     try {
@@ -177,7 +176,7 @@ function Post() {
         successNotification('Báo cáo thành công ✔')
       }
     } catch (error) {
-      if(error.response.status === 400){
+      if (error.response.status === 400) {
         errorNotification('Hãy điền nội dung báo cáo')
       }
       else {
@@ -185,6 +184,7 @@ function Post() {
       }
     }
   }
+  
   const handleChangeInput = (e) => {
     const { value } = e.target
     setReportTxt(value)
@@ -235,125 +235,129 @@ function Post() {
     )
   }
 
+
+
   return (
     <>
-      <main className="main__home" >
-        <div className="container">
-          {loading ?
-            <div className="row">
-              {isDel ? showDelAlert() : null}
-              {isReport ? showReportForm() : null}
-              <div className="col-lg-8 mt-50">
-                <div className="content-area">
-                  <h1 className="post__title">{ReactHtmlParser(post.title)}</h1>
-                  {/* Catalogy area */}
-                  <div className="post__category-area">
-                    {post.categories.map((item) => {
-                      return (
-                        <Link to={{ pathname: `/category/${item.categoryId}` }} key={item.categoryId}>
-                          <div className="post__category"
-                            key={item.categoryId}>{item.categoryName}
+      {notFound ? <NotFound content="Bài viết này không tồn tại" /> :
+        <>
+          <main className="main__home" >
+            <div className="container">
+              {
+                loading ?
+                  <div className="row">
+                    {isDel ? showDelAlert() : null}
+                    {isReport ? showReportForm() : null}
+                    <div className="col-lg-8 mt-50">
+                      <div className="content-area">
+                        <h1 className="post__title">{ReactHtmlParser(post.title)}</h1>
+
+                        <div className="post__category-area">
+                          {post.categories.map((item) => {
+                            return (
+                              <Link to={{ pathname: `/category/${item.categoryId}` }} key={item.categoryId}>
+                                <div className="post__category"
+                                  key={item.categoryId}>{item.categoryName}
+                                </div>
+                              </Link>
+                            )
+                          })}
+                        </div>
+
+                        <div className="write-by mb-30">
+                          <div className="d-flex">
+                            <Link to={`/profile/${author.accountId}`}>
+                              <div className="avatar-write-by inline-item"
+                                style={{ backgroundImage: `url(${ReactHtmlParser(author.avatarLink)})` }}
+                              >
+                              </div>
+                            </Link>
+
+                            <div style={{ margin: 'auto 0' }}>
+                              <div className="name-write-by">
+                                <Link to={`/profile/${author.accountId}`}>{author.name}</Link>
+                              </div>
+
+                              <p className="date-write-by">{post.publishedDate}</p>
+                            </div>
                           </div>
-                        </Link>
-                      )
-                    })}
-                  </div>
 
-                  {/* TODO:WRITE BY AREA */}
-                  <div className="write-by mb-30">
-                    <div className="d-flex">
-                      <Link to={`/profile/${author.accountId}`}>
-                        <div className="avatar-write-by inline-item"
-                          style={{ backgroundImage: `url(${ReactHtmlParser(author.avatarLink)})` }}
-                        >
+                          {post.owner ?
+                            <div >
+                              <Link to={`/posts/${post.slug}/edit`}>
+                                <button className="button button-primary mr-5">
+                                  <i className="fal fa-pen mr-5"></i>
+                                  Sửa bài viết
+                                </button>
+                              </Link>
+
+                              <button className="button button-red" onClick={() => handleClickDel(true)}>
+                                <i className="fal fa-trash-alt"></i>
+                              </button>
+                            </div> :
+                            //neu khong chủ bài viết thì ktra admin hay user thường: admin xóa bài được, user là báo cáo
+                            auth.isAdmin ? null :
+                              <button className="button button-warn" onClick={handleShowReport}>
+                                <i className="fal fa-exclamation-triangle"></i>
+                              </button>
+                          }
                         </div>
-                      </Link>
 
-                      <div style={{ margin: 'auto 0' }}>
-                        <div className="name-write-by">
-                            <Link to={`/profile/${author.accountId}`}>{author.name}</Link>
+                        <div className="post-content" >
+                          {ReactHtmlParser(ReactHtmlParser(post.content))}
                         </div>
-
-                        <p className="date-write-by">{post.publishedDate}</p>
                       </div>
-                    </div>
-                    {/* TODO: SUA BAI VIET */}
-                    {post.owner ?
-                      <div >
-                        <Link to={`/posts/${post.slug}/edit`}>
-                          <button className="button button-primary mr-5">
-                            <i className="fal fa-pen" style={{ marginRight: '5px' }}></i>
-                            Sửa bài viết</button>
-                        </Link>
 
-                        <button className="button button-red" onClick={() => handleClickDel(true)}>
-                          <i className="fal fa-trash-alt"></i>
-                        </button>
-                      </div> :
-                      //neu khong chủ bài viết thì ktra admin hay user thường: admin xóa bài được, user là báo cáo
-                      auth.isAdmin ? null :
-                        <button className="button button-warn" onClick={handleShowReport}>
-                          <i className="fal fa-exclamation-triangle"></i>
-                        </button>
-                    }
-
-                  </div>
-
-                  <div className="post-content" >
-                    {ReactHtmlParser(ReactHtmlParser(post.content))}
-                  </div>
-                </div>
-                {/* TODO: COMMENT AREA */}
-                <Comments setPost={setPost} id={post.postId} post={post} />
-              </div>
-
-              {/* TODO: POST's INFORMATION */}
-              <div className="col-lg-4 mt-50" style={{ paddingLeft: '30px' }}>
-                <div className="post-info">
-                  <div className="post-info-count">
-                    <div className="bookmark-count child-1">
-                      <h5>{post.bookmarkedCount}</h5>
-                      <p>Bookmark</p>
+                      <Comments setPost={setPost} id={post.postId} post={post} />
                     </div>
 
-                    <div className="bookmark-count">
-                      <h5>{post.commentCount}</h5>
-                      <p>Bình Luận</p>
+                    <div className="col-lg-4 mt-50" style={{ paddingLeft: '30px' }}>
+                      <div className="post-info">
+                        <div className="post-info-count">
+                          <div className="bookmark-count child-1">
+                            <h5>{post.bookmarkedCount}</h5>
+                            <p>Bookmark</p>
+                          </div>
+
+                          <div className="bookmark-count">
+                            <h5>{post.commentCount}</h5>
+                            <p>Bình Luận</p>
+                          </div>
+                        </div>
+                        <div className="post-info-button">
+                          {post.bookmarked ?
+                            <button className="button button-light bookmark-btn"
+                              onClick={handleUnBookmark}
+                            >
+                              <i className="fal fa-check mr-5"></i>
+                              Đã bookmark</button>
+                            :
+                            <button className="button button-primary bookmark-btn" onClick={handleBookmark}
+
+                            >
+                              <i className="fas fa-bookmark mr-5" ></i>
+                              Bookmark</button>
+                          }
+                        </div>
+                      </div>
+
+                      {userPosts.length - 1 > 0 ?
+                        <div>
+                          <h5 className="mb-20">Các bài viết cùng tác giả</h5>
+                          {userPosts.map(item => {
+                            return item.postId !== post.postId ? <CommentPost item={item} key={item.postId} /> : null
+                          })}
+                        </div>
+                        : null
+                      }
+
                     </div>
                   </div>
-                  <div className="post-info-button">
-                    {post.bookmarked ?
-                      <button className="button button-light bookmark-btn"
-                        onClick={handleUnBookmark}
-                      >
-                        <i className="fal fa-check" style={{ marginRight: '5px' }}></i>
-                        Đã bookmark</button>
-                      :
-                      <button className="button button-primary bookmark-btn" onClick={handleBookmark}
-
-                      >
-                        <i className="fas fa-bookmark" style={{ marginRight: '5px' }}></i>
-                        Bookmark</button>
-                    }
-                  </div>
-                </div>
-
-                {/* TODO: Same author */}
-                {userPosts.length - 1 > 0 ?
-                  <div>
-                    <h5 className="mb-20">Các bài viết cùng tác giả</h5>
-                    {userPosts.map(item => {
-                      return item.postId !== post.postId ? <CommentPost item={item} key={item.postId} /> : null
-                    })}
-                  </div>
-                  : null
-                }
-
-              </div>
+                  : <Loading />}
             </div>
-            : <Loading />}
-        </div>
-      </main>
+          </main>
+        </>
+      }
     </>
   )
 }

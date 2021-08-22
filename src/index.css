@@ -133,6 +133,10 @@ a:hover{
   font-size: 12px;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .pb-50 {
   padding-bottom: 50px !important;
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import {dispatchLogin} from '../../../redux/actions/authAction'
 import {useDispatch} from 'react-redux'
@@ -21,6 +21,11 @@ const initialState = {
 
 function Login() {
     // const auth = useSelector(state => state.auth)
+    const location = useLocation()
+    const search = location.search;
+    const params = new URLSearchParams(search);
+    const redirectTo = params.get('redirectTo');
+
     const [user, setUser] = useState(initialState)
     const dispatch = useDispatch()
     const history = useHistory()
@@ -33,7 +38,6 @@ function Login() {
         setUser({...user, [name]: value, err: '', success: ''})
     }
 
-    //TODO: LOGIN: Nếu người dùng nhấn đăng nhập thì lưu local là đã đăng nhập
     const handleSubmit = async e => {
         e.preventDefault()
         if(isEmpty(email) || isEmpty(password)){
@@ -61,7 +65,12 @@ function Login() {
                 dispatch(dispatchLogin())
                 cookiesService.setToken(res.data.token)
                 Subscribe_notification(email)
-                history.push("/")
+                if(redirectTo) {
+                    history.push(redirectTo)
+                }
+                else {
+                    history.push("/")
+                }
             }
         }catch(err){
             if(err.response.status === 401){
@@ -76,7 +85,6 @@ function Login() {
             else {
                 setUser({...user, err: 'Đã có lỗi xảy ra', success: ''})
             }
-            
         }
     }
 
@@ -92,7 +100,10 @@ function Login() {
                 dispatch(dispatchLogin())
                 cookiesService.setToken(res.data.token)
                 Subscribe_notification(response.profileObj.email)
-                history.push('/')
+                
+                if(redirectTo) history.push(redirectTo)
+                else history.push("/")
+                
             }
         }catch(err){
             setUser({...user, err: 'Đã có lỗi xảy ra', success: ''})

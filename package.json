@@ -55,6 +55,10 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://illusion.codes/"
+  "proxy": "http://langthang.tech/",
+  "devDependencies": {
+    "@editorjs/editorjs": "^2.22.2",
+    "@editorjs/paragraph": "^2.8.0",
+    "react-editor-js": "^1.10.0"
+  }
 }
-

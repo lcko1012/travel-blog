@@ -1,3 +1,4 @@
+import { Editor } from 'draft-js'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
@@ -56,7 +57,7 @@ export default () => {
                 <AppRoute path="/auth/active/:token" component={isLogged ? Home : ActiveGmail} exact layout={UserLayout} />
 
 
-                <AppRoute path="/posts/new" component={isLogged ? NewPosts : Home} exact layout={UserLayout}/>
+                <AppRoute path="/posts/new" component={isLogged ? Editor : Home} exact layout={UserLayout}/>
                 <AppRoute path='/posts/:slug/edit' component={isLogged ? NewPosts : Home} exact layout={UserLayout} />
                 <AppRoute path='/posts/:slug' component={Post} exact layout={UserLayout}/>
 

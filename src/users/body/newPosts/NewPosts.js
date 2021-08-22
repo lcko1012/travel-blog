@@ -12,6 +12,7 @@ import newpostApis from './enum/newpost-apis';
 import { errorNotification, successNotification } from '../../utils/notification/ToastNotification';
 import image from '../../../asset/editor-imgs/image.svg'
 import { isImgFormat, isImgSize } from '../../utils/validation/Validation';
+import { useSelector } from 'react-redux';
 
 
 function NewPosts() {
@@ -27,6 +28,7 @@ function NewPosts() {
   const [post, setPost] = useState({})
   const [category, setCategory] = useState([])
   const unmounted = useRef(false)
+  const auth = useSelector(state => state.auth)
 
   useEffect(() => {
     const getCate = async () => {
@@ -247,7 +249,7 @@ function NewPosts() {
           const res = await axios.post(newpostApis.saveDraft, formDraft)
           if (res) {
             successNotification('Đã lưu lại bản nháp ✔')
-            history.push('/myprofile')
+            history.push(`/profile/${auth.user.accountId}`)
           }
         } catch (error) {
           errorNotification("Không thể lưu bản nháp")
@@ -270,7 +272,7 @@ function NewPosts() {
       const res = await axios.put(newpostApis.updateDraft(post.postId), formDraft)
       if (res) {
         successNotification('Đã lưu thành bản nháp')
-        history.push('/myprofile')
+        history.push(`/profile/${auth.user.accountId}`)
       }
     } catch (error) {
       errorNotification("Không thể lưu bản nháp")

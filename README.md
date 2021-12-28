@@ -39,7 +39,8 @@ After that, you can run the app.
 ### `npm start`
 
 ## Next Tasks
-- [ ] Replying comment feature
+- [X] Replying comment feature
+- [ ] Comment Reaction
 - [ ] Use react-md-editor to create a new text editor instead of Draft.js
 - [ ] Update homepage
 - [ ] Update post page

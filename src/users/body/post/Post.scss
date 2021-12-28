@@ -105,8 +105,8 @@ h1 {
 
 
 .avatar-comment {
-    max-width: 50px;
-    max-height: 50px;
+    max-width: 35px;
+    max-height: 35px;
     vertical-align: middle;
     border-radius: 50%;
     margin-bottom: 15px;
@@ -140,12 +140,12 @@ h1 {
     background-size: cover;
     margin-right: 5px;
     display: inline-block;
-}
 
-.social-icon:hover {
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-    transform: scale(1.1);
-    transition-duration: 0.25s;
+    &:hover {
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+        transform: scale(1.1);
+        transition-duration: 0.25s;
+    }
 }
 
 .content-area {
@@ -154,53 +154,26 @@ h1 {
     font-weight: 400;
 }
 
-.write-by {
-    /* display: block;
-    margin-top: 25px;
-    margin-bottom: 25px; */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 
-.avatar-write-by {
-    width: 40px;
-    height: 40px;
-    vertical-align: middle;
-    border-radius: 50%;
-    margin-right: 15px;
-    background-size: cover;
-    float: left;
-    background-position: center;
-}
 
-.name-write-by {
-    display: block;
-    margin: auto 0;
-}
 
-.date-write-by {
-    font-size: small;
-    margin: auto 0;
 
-}
 
-.post-content img{
-    object-fit: contain !important;
-    width: 100%;
-}
 
 /*====================== Comment================ */
 
 .comment__title {
     align-items: center;
-    display: flex;
+    margin-bottom: 10px;
+    line-height: 20px; 
+    justify-content: space-between;
 }
 
 .comment__title--name {
     font-weight: 600;
     margin: 0;
     color: black;
+    margin-right: 10px;
 }
 
 .comment__title--name a:hover {
@@ -217,27 +190,60 @@ h1 {
     font-size: 16px;
     word-break: break-all;
     white-space: pre-wrap;
+    margin-bottom: 10px;
+    margin-right: 10px;
 }
 
-.comment__like {
-    font-size: 14px;
-    display: flex;
+.comment__like-container {
+    font-size: 14px ;
     align-items: center;
-    padding-left: 5px;
-}
 
-.comment__like i {
-    font-size: 12px;
-    margin-bottom: 4px;
+    i {
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+
+    .comment__like--btn {
+        font-size: 14px;
+    }
+
+    .btn-primary {
+        background-color: var(--color-primary);
+        
+    }
 }
 
 
 .comment__like-btn {
     cursor: pointer;
-    
+    line-height: 25px;
+    vertical-align: middle;
+    animation-delay: 0.3;
+    padding: 5px;
+    border-radius: 5px;
 }
-.comment__like-btn:hover {
-    color: var(--color-primary);
+
+
+.comment__like-btn-liked {
+    background-color: rgba(0, 123, 255, 0.253);
+    
+    i {
+        color: var(--color-primary);
+    }
+}
+
+.comment__like-btn-no-liked:hover {
+    background-color: rgba(0,0,0,0.04)
+}
+
+.comment__choose-icon {
+    border-radius: 5px;
+    height: 20px;
+    width: 20px;
+
+    &:hover {
+        background-color: rgba(0,0,0,0.04);
+    }
 }
 
 .comment__choose {
@@ -260,60 +266,24 @@ h1 {
 
 .comment-form--edit{
     align-items: center;
-    
-}
-.comment-form--edit input{
-    background-color:#f0f2f5 ;
-    border-radius: 5px;
-    padding-left: 5px;
-    outline: none;
-    border: none ;
-}
-.comment-form--edit p {
-    margin-left: 5px;
-    cursor: pointer;
-    text-decoration: underline;
-    color: var(--color-muted);
 }
 
+// .comment__input-submit {
+//     box-sizing: border-box;
+//     display: inline-block;
+//     border-radius: 10px;
+//     border: 1px solid rgb(225, 225, 225);
+//     outline: none;
+//     font-size: 16px;
+//     padding: 10px;
+//     flex-grow: 1;
+//     background-color: #f0f2f5;
+//     height: auto;
+//     line-height: 24px;
+//     margin-bottom: 10px;
+// }
 
-.comment-form--edit p:hover {
-    color: var(--color-primary);
-}
 
-
-.comment__input-submit {
-    box-sizing: border-box;
-    display: inline-block;
-    border-radius: 10px;
-    border: 1px solid rgb(225, 225, 225);
-    outline: none;
-    font-size: 16px;
-    padding: 10px;
-    flex-grow: 1;
-    background-color: #f0f2f5;
-    height: auto;
-    line-height: 24px;
-    margin-bottom: 10px;
-}
-
-.comment__input-edit {
-    flex-grow: 1;
-    box-sizing: border-box;
-    display: inline-block;
-    border-radius: 10px;
-    /* border: 1px solid rgb(225, 225, 225); */
-    border: none;
-    outline: none;
-    font-size: 16px;
-    flex-grow: 1;
-    background-color: #f0f2f5;
-    min-height: 30px;
-    height: auto;
-    line-height: 24px;
-    margin-bottom: 10px;
-
-}
 
 .post__cmt--morecmt {
     cursor: pointer;
@@ -323,7 +293,7 @@ h1 {
     padding: 10px 0;
     transition: 0.5s;
     color: var(--color-muted);
-
+    border-radius: 5px;
 }
 
 .post__cmt--morecmt:hover {
@@ -361,12 +331,12 @@ h1 {
     border-radius: 10px;
     background-color: white;
     margin-bottom: 30px;
-}
 
-.most-popular:hover {
-    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.2);
-    transform: scale(1.05);
-    transition-duration: 0.25s;
+    &:hover {
+        box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+        transition-duration: 0.25s;
+    }
 }
 
 .most-popular-hr {
@@ -491,9 +461,194 @@ h1 {
     }
 }
 
-.comment__content--container {
+// .comment__content--container {
+//     background-color: #f0f2f5;
+//     padding: 10px 10px;
+//     border-radius: 16px;
+//     margin-bottom: 5px;
+// }
+
+
+.background-test {
     background-color: #f0f2f5;
-    padding: 10px 10px;
-    border-radius: 16px;
+}
+
+//------ version 1 ------
+
+.post__left {
+    padding-top: 50px;
+    position: fixed;
+    z-index: 1;
+    padding-left: 35px;
+
+    div {
+        padding: 0 10px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        i {
+            font-size: 18px;
+            text-align: center;
+            height: 35px;
+            width: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        //using when this post is not bookmarked, it will change color when hover it
+        .post__left--bookmark-icon {
+            &:hover {
+                background-color: rgba(0, 123, 255, 0.1);
+                color: rgb(0, 123, 255);
+            }
+        }
+        //using when this post is bookmarked, it will not change color when hover it
+        .post__left--bookmarked-icon {
+            background-color: rgba(0, 123, 255, 0.1);
+            color: rgb(0, 123, 255);
+            border: 2px solid rgb(0, 123, 255);
+        }
+    }
+}
+
+
+.post__center {
+    height: auto;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 0 0 1px var(--card-border);
+}
+
+.post__center--image-thumb {
+    height: 350px;
+    
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+}
+
+.post__center--main {
+    padding: 2rem 3rem;
+    // border: 1px solid #bebebe;
+    // box-shadow:  0 0 0 1px rgba(9,9,9,0.1);
+}
+
+.post__center--write-by {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post__center--avatar-write-by {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    border-radius: 50%;
+    margin-right: 15px;
+    background-size: cover;
+    // float: left;
+    background-position: center;
+}
+
+.post__center--name-write-by {
+    display: block;
+    margin: auto 0;
+}
+
+.post__center--date-write-by {
+    font-size: small;
+    margin: auto 0;
+
+}
+
+.post__center--content {
+    img{
+        object-fit: contain !important;
+        width: 100%;
+    }
+}
+
+
+.post__right {
+    position: fixed;
+    z-index: 1;
+    width: 250px; 
+}
+
+.post__right--author-infor {
+    // height: 300px;
+    background-color: white;
+    border-radius: 5px;
+    border-top: 30px solid #000;
+    padding: 0 15px 15px 15px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 0 1px var(--card-border);
+}
+
+.post__right--author-name {
+    margin-top: -20px;
+    height: fit-content;
+    height: 70px;
+    h2 {
+        margin-top: 10px;
+    }
+}
+
+.post__right--author-more-infor {
+    label {
+        color: var(--color-muted);
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+}
+
+.comment__input-submit {
+    box-sizing: border-box;
+    display: inline-block;
+    border-radius: 5px;
+    border: 1px solid rgb(225, 225, 225);
+    font-size: 16px;
+    padding: 15px 10px ;
+    flex-grow: 1;
+    background-color: #ffffff;
+    min-height: 100px;
+    line-height: 24px;
+    margin-bottom: 10px;
+    outline-color: var(--color-primary);
+}
+
+.comment__content--container {
+    background-color: #ffffff;
+    padding: 15px 10px 0px 10px;
+    border-radius: 5px;
     margin-bottom: 5px;
+    border: 1px solid rgb(225, 225, 225);
+    flex-grow: 1;
+    margin-bottom: 10px;
+}
+
+
+.comment__child {
+    padding-left: 50px;
+}
+
+.post__right--author-follow {
+    margin: 20px 0px;
+    button {
+        width: 100%;
+        border: none !important;
+        
+    }
+    
+    .post__right--follow-btn {
+        background-color: var(--color-primary);
+        &:hover {
+            background-color: #2e44d3;
+        }
+    }
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, Link, useHistory, useLocation } from 'react-router-dom'
-import "./Post.css"
+import "./Post.scss"
 import axios from 'axios'
 import ReactHtmlParser from 'react-html-parser'
 import Loading from '../../utils/Loading/Loading'

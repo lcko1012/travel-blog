@@ -74,7 +74,6 @@ export const dispatchGetComments = (id) => async dispatch => {
 export const dispatchSubmitComments = (id, commentForm) => async dispatch => {
     try {
         const res = await axios.post(commentApis.postComment(id), commentForm)
-
         dispatch({
             type: ACTIONS.SUBMIT_COMMENT,
             payload: res.data
@@ -87,13 +86,14 @@ export const dispatchSubmitComments = (id, commentForm) => async dispatch => {
     }
 }
 
-export const dispatchDeleteCmt = (commentId) => async dispatch => {
+// comment object
+export const dispatchDeleteCmt = (comment) => async dispatch => {
     try {
-        await axios.delete(commentApis.deleteComment(commentId))
+        await axios.delete(commentApis.deleteComment(comment.commentId))
 
         dispatch({
             type: ACTIONS.DELETE_COMMENT,
-            payload: commentId
+            payload: comment
         })
     } catch (error) {
         dispatch({
@@ -103,14 +103,14 @@ export const dispatchDeleteCmt = (commentId) => async dispatch => {
     }
 }
 
-export const dispatchLikeCmt = (commentId) => async dispatch => {
+// comment object
+export const dispatchLikeCmt = (comment) => async dispatch => {
     try {
-        const res = await axios.put(commentApis.likeComment(commentId), null)
-
+        const res = await axios.put(commentApis.likeComment(comment.commentId), null)
         dispatch({
             type: ACTIONS.LIKE_COMMENT,
             payload: {
-                commentId: commentId,
+                comment: comment,
                 likeCount: res.data
             }
         })
@@ -119,7 +119,7 @@ export const dispatchLikeCmt = (commentId) => async dispatch => {
             errorNotification("Bình luận này không tồn tại")
             dispatch({
                 type: ACTIONS.DELETE_COMMENT,
-                payload: commentId
+                payload: comment
             })
         }
         else {
@@ -133,17 +133,14 @@ export const dispatchLikeCmt = (commentId) => async dispatch => {
 }
 
 
-export const dispatchEditCmt = (commentId, formData) => async dispatch => {
-    dispatch({ type: ACTIONS.LOADING_COMMENT, payload: commentId })
+export const dispatchEditCmt = (comment, formData) => async dispatch => {
+    dispatch({ type: ACTIONS.LOADING_COMMENT, payload: comment.commentId })
     try {
-        const res = await axios.put(commentApis.updateComment(commentId), formData)
-
+        const res = await axios.put(commentApis.updateComment(comment.commentId), formData)
+        console.log(res.data)
         dispatch({
             type: ACTIONS.EDIT_COMMENT,
-            payload: {
-                commentId: commentId,
-                comment: res.data
-            }
+            payload: res.data
         })
     } catch (error) {
         dispatch({

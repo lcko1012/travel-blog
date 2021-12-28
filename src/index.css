@@ -66,7 +66,7 @@ code {
   --color-gray: #D1D5DB;
   --color-deep-gray: #374151;
   --mutted-border-color: #eaecee;
-
+  --card-border: rgba(9,9,9,0.1);
   
 }
 

@@ -20,6 +20,7 @@ import Category from '../users/body/category/Category'
 import Home from '../users/body/home/Home'
 import NewPosts from '../users/body/newPosts/NewPosts'
 import Post from '../users/body/post/Post'
+import Post_v1 from '../users/body/post/Post_v1'
 import EditProfile from '../users/body/profile/EditProfile'
 import MyProfile from '../users/body/profile/MyProfile'
 import Profile from '../users/body/profile/Profile'
@@ -58,7 +59,7 @@ export default () => {
 
                 <AppRoute path="/posts/new" component={isLogged ? NewPosts : Home} exact layout={UserLayout}/>
                 <AppRoute path='/posts/:slug/edit' component={isLogged ? NewPosts : Home} exact layout={UserLayout} />
-                <AppRoute path='/posts/:slug' component={Post} exact layout={UserLayout}/>
+                <AppRoute path='/posts/:slug' component={Post_v1} exact layout={UserLayout}/>
 
 
                 <AppRoute path='/search' component={SearchPage} exact layout={UserLayout}/>

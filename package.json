@@ -28,6 +28,7 @@
     "react-toastify": "^7.0.4",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "sass": "^1.45.1",
     "sockjs-client": "^1.5.1",
     "stompjs": "^2.3.3",
     "web-vitals": "^1.1.1"
@@ -56,5 +57,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://langthang.tech/"
+  "proxy": "https://langthang.tech"
 }

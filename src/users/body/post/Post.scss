@@ -475,16 +475,25 @@ h1 {
 
 //------ version 1 ------
 
+.post__sidebar-left {
+    display: flex;
+    justify-content: center;
+
+    @media screen and (max-width: 768px) {
+        justify-content: unset;
+    }
+}
+
 .post__left {
     padding-top: 50px;
     position: fixed;
     z-index: 1;
-    padding-left: 35px;
 
     div {
         padding: 0 10px;
         margin-bottom: 10px;
         font-size: 14px;
+
         i {
             font-size: 18px;
             text-align: center;
@@ -494,6 +503,7 @@ h1 {
             align-items: center;
             justify-content: center;
             border-radius: 50%;
+            margin-right: 0px !important;
         }
         //using when this post is not bookmarked, it will change color when hover it
         .post__left--bookmark-icon {
@@ -572,15 +582,16 @@ h1 {
     }
 }
 
-
-.post__right {
-    position: fixed;
-    z-index: 1;
-    width: 250px; 
+.post__sidebar-right {
+    display: block;
 }
 
+// .post__right {
+    // position: fixed;
+    // width: 340px;
+// }
+
 .post__right--author-infor {
-    // height: 300px;
     background-color: white;
     border-radius: 5px;
     border-top: 30px solid #000;

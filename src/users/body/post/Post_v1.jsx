@@ -10,6 +10,7 @@ import { errorNotification } from '../../utils/notification/ToastNotification'
 import Cookies from 'js-cookie'
 import profileApis from '../profile/enum/profile-apis'
 import { useSelector } from 'react-redux'
+import GridCustom from '../../../core/components/GridCustom'
 
 
 const ACTIONS = {
@@ -171,11 +172,12 @@ function Post_v1() {
     function MainPage() {
         return (
             <main className='main__home'>
-                <div className=' pt-4 pb-50'>
+
+                <div className=''>
                     {
                         loadingPost ? <Loading /> :
-                            <div className='row'>
-                                <aside className='col-lg-1'>
+                            <GridCustom mdGridTemplateColumns="4rem 7fr 3fr" mdGridColumnGap="1rem" smGridTemplateColumns="1fr">
+                                <aside className='post__sidebar-left'>
                                     <div className='post__left'>
                                         <div
                                             className='d-flex flex-column justify-content-center align-items-center cursor-pointer'
@@ -185,12 +187,12 @@ function Post_v1() {
                                             <p>{post.bookmarkedCount}</p>
                                         </div>
                                         <div>
-                                            <i className="far fa-ellipsis-h"></i>
+                                            {/* <i className="far fa-ellipsis-h"></i> */}
                                         </div>
                                     </div>
                                 </aside>
 
-                                <div className='col-lg-8 '>
+                                <div >
                                     <div className='post__center'>
                                         <div className='post__center--image-thumb'>
                                             <img src={ReactHtmlParser(post.postThumbnail)}></img>
@@ -241,7 +243,8 @@ function Post_v1() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-lg-3'>
+
+                                <div className='post__sidebar-right'>
                                     <div className='post__right'>
                                         <div className='post__right--author-infor'>
                                             <div className='post__right--author-name'>
@@ -288,7 +291,7 @@ function Post_v1() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </GridCustom>
                     }
                 </div>
             </main>

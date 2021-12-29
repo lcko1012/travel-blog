@@ -10,6 +10,7 @@ import Routes from './routes';
 import ScrollToTop from './routes/ScrollToTop';
 import ReactGA from 'react-ga'
 import ButtonUp from './users/utils/ButtonUp/ButtonUp';
+import GridCustom from './core/components/GridCustom';
 
 function App() {
   const dispatch = useDispatch()
@@ -51,6 +52,7 @@ function App() {
 
   return (
     <>
+    
       <Router>
         <ScrollToTop></ScrollToTop>
           <div className="App">

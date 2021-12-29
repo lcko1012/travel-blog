@@ -240,6 +240,11 @@ h1 {
     border-radius: 5px;
     height: 20px;
     width: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    position: relative;
 
     &:hover {
         background-color: rgba(0,0,0,0.04);
@@ -251,7 +256,10 @@ h1 {
     background-color: white;
     padding: 5px;
     border-radius: 5px;
-    box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 0 1px var(--card-border);
+    width: 200px;
+    top: 20px;
+    right: 15px;
 }
 
 .comment__choose-option {

@@ -252,7 +252,10 @@ function Post_v1() {
                                                     style={{ backgroundImage: `url(${ReactHtmlParser(post.author.avatarLink)})` }}
                                                 >
                                                 </div>
-                                                <h2>{post.author.name}</h2>
+
+                                                <h2>
+                                                    <Link to={`/profile/${post.author.accountId}`}>{post.author.name}</Link>
+                                                </h2>
                                             </div>
                                             {
                                                 auth.user.accountId !== accountId ?

@@ -112,7 +112,7 @@ const Comment = ({ comment, postId }) => {
                 </div>
 
                 {comment.commenter.email === userInfor.email ?
-                  <i className="far fa-ellipsis-h cursor-pointer comment__choose-icon ml-10" style={{ fontSize: '12px' }} onClick={() => setShowChoose(!showChoose)}>
+                  <i className="far fa-ellipsis-h cursor-pointer comment__choose-icon" onClick={() => setShowChoose(!showChoose)}>
                     <div className="comment__choose" style={showChoose ? { display: 'block' } : { display: 'none' }}>
                       <div className="d-flex comment__choose-option" onClick={handleDeleteCmt}>
                         <i className="fal fa-eraser mr-10 "></i>

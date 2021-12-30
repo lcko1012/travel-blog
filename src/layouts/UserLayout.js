@@ -5,9 +5,9 @@ import Header from '../users/header/Header'
 function UserLayout({children}) {
     return (
         <>
-        <Header />
-        {children}
-        <Footer />
+         <Header /> 
+            {children}
+       <Footer />
         </>
     )
 }

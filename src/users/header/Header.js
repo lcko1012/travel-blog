@@ -7,6 +7,7 @@ import Notification from '../body/notification/Notification'
 import CookiesService from '../../services/CookiesService'
 import useSocketDataObject from '../../real-time/useSocketDataObject'
 
+
 function Header() {
     const dispatch = useDispatch()
     const auth = useSelector(state => state.auth)
@@ -99,6 +100,7 @@ function Header() {
                                 <span>Lang Thang</span>
                             </p>
                         </Link>
+
                         <form onSubmit={handleFindSubmit}>
                             <i className="fal fa-search"></i>
                             <input
@@ -107,8 +109,8 @@ function Header() {
                                 type="text"
                                 placeholder="Tìm kiếm theo tiêu đề bài viết hoặc nội dung" />
                         </form>
-
                     </div>
+
                     {auth.isLogged ? loginMenu() :
                     <div className="menu__right menu__right__login">
                         <Link to="/login">
@@ -121,7 +123,6 @@ function Header() {
                 </div>
             </header>
         </>
-
     )
 }
 

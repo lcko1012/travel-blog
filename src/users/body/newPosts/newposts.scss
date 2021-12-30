@@ -1,0 +1,297 @@
+.ck-editor__editable {
+    max-height: 500px;
+    min-height: 500px;
+}
+
+.newpost {
+    height: auto;
+}
+
+.newpost__input {
+    padding: 10px;
+    width: 100%;
+    margin: 20px 0;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    font-weight: 600;
+    font-size: x-large;
+    background-color: var(--color-background);
+}
+
+
+.newpost__thumnail-btn {
+    padding: 3px 5px;
+    cursor: pointer;
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.newpost__thumnail-btn i {
+    margin-right: 5px;
+}
+
+
+div.DraftEditor-root {
+    background-color: white;
+    height: 80vh;
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+div.DraftEditor-editorContainer,
+  div.public-DraftEditor-content {
+    height: 100%;
+  }
+
+  .newpost__option {
+    outline: none;
+    border: 0px;
+    border-radius: 5px;
+    padding: 5px;
+    width: 200px;
+  }
+
+  .newpost__option option {
+      padding: 5px !important;
+  }
+
+.wrapperClassName {
+    border: 1px solid #ddd;
+}
+
+.toolbarClassName {
+    padding: 10px 8px !important;
+    border: none !important;
+    margin: 0 !important;
+    background-color: #f9f9f9 ;
+}
+
+.toolbarClassName .rdw-option-wrapper {
+    border: none !important;
+}
+
+.toolbarClassName .rdw-link-modal {
+    height: auto !important;
+    border-radius: 5px !important;
+}
+
+.toolbarClassName .rdw-link-modal input {
+    border-radius: 5px !important;
+}
+
+
+.editorClassName figure {
+    margin: 1rem;
+}
+
+.new-post__eidtor--img-custom {
+    height: 20px !important; 
+    width: 25px !important;
+    padding: 0px !important;
+}
+
+.new-post__eidtor--img-custom img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.rdw-option-wrapper {
+    padding: 8px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+
+    &:hover {
+        box-shadow: none !important;
+        background-color: rgba(0,0,0,0.04);
+    }
+}
+
+@media screen and (max-width: 480px){
+    .rdw-image-modal {
+        left: unset !important;
+        right: 20px;
+    }
+}
+
+.new-post {
+    background-color: #efefef;
+    min-height: 100vh;
+
+    &__center-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    &__center-header--button-container {
+        display: flex;
+
+        div:nth-child(1) {
+            margin-right: 10px;
+        }
+
+        div {
+            padding: 3px 10px;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            position: relative;
+            box-sizing: border-box;
+            border-bottom: 3px solid;
+            border-bottom-color: #efefef;
+            
+            &:hover {
+                background-color: var(--link-blue-bg);
+                border-bottom-color : var(--link-blue-bg-hover);
+                color: var(--link-blue-bg-hover);
+            }
+        }
+    }
+
+    &__center-header--button-choosen {
+        font-weight: bold;
+        border-bottom-color : var(--link-blue-bg-hover) !important;
+
+        // &::after {
+        //     left: 2px;
+        //     right: 2px;
+        // }
+    }
+
+    //======center
+
+    &__center-main {
+        padding-top: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 1px var(--card-border);
+        border-radius: 5px;
+    }
+    
+    &__center-main-preview {
+        background-color: #ffffff;
+        box-shadow: 0 0 0 1px var(--card-border);
+        border-radius: 5px;
+    }
+
+
+    &__center-main--infor {
+        padding: 20px;
+    }
+
+    &__center-main--thumbnail {
+        img {
+            width: 300px;
+            height: 150px;
+            object-fit: cover; 
+            border-radius: 5px;
+            display: block;
+            margin-right: 20px;
+        }
+        display: flex;
+    }
+
+    &__center-main--thumbnail-remove {
+        color: var(--danger);
+        font-weight: bold;
+        margin-left: 10px;
+
+        &:hover {
+            color: var(--danger);
+        }
+    }
+
+    &__center-main--title {
+        padding: 10px 0px;
+        width: 100%;
+        margin-top: 20px;
+        outline: none;
+        border: none;
+        font-weight: 600;
+        font-size: x-large;
+    }
+
+    &__center-main--category {
+        position: relative;
+        ul {
+            position: absolute;
+            z-index: 5;
+            overflow-y: scroll;
+            background-color: #fff;
+            top: 40px;
+            height: 200px;
+            width: 300px;
+            box-shadow: 0 0 0 1px var(--card-border);
+            border-radius: 5px;
+
+            input {
+                width: 100%;
+                outline: none;
+                padding: 10px 10px;
+                border: none;
+            }
+
+            li {
+                padding: 10px;
+
+                &:hover {
+                    background-color: #efefef;
+                    cursor: pointer;
+                }
+            }
+
+            li.active {
+                background-color: var(--link-blue-bg);
+                color: var(--link-blue-bg-hover);
+            }
+        }
+    }
+
+    
+
+    &__center-btn-container {
+        margin-top: 20px;
+        button:nth-child(1) {
+            margin-right: 10px;
+            background-color: var(--button-primary-bg);
+            color: white;
+            font-weight: bold;
+
+            &:hover {
+                background-color: var(--button-primary-bg-hover);
+            }
+        }
+
+        button:nth-child(2) {
+            margin-right: 10px;
+            background-color: var(--button-secondary-bg);
+            color: var(--button-secondary-color);
+            border-color: var(--button-secondary-bg);
+            font-weight: bold;
+            &:hover {
+                background-color: var(--button-secondary-bg-hover);
+                color: var(--button-secondary-color-hover);
+            }
+        }
+    }
+
+    &__sidebar--right {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    &__sidebar--right-cancel {
+        font-size: 1.2rem;
+        padding: 5px;
+        height: 35px;
+        width: 35px;
+        cursor: pointer;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:hover {
+            background-color: rgba(0,0,0,0.04);
+        }   
+    }
+}

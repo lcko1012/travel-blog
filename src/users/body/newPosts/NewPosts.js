@@ -13,7 +13,7 @@ import { errorNotification, successNotification } from '../../utils/notification
 import image from '../../../asset/editor-imgs/image.svg'
 import { isImgFormat, isImgSize } from '../../utils/validation/Validation';
 import { useSelector } from 'react-redux';
-
+import "./newposts.scss"
 
 function NewPosts() {
   const params = useParams()

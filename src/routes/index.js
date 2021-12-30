@@ -9,6 +9,7 @@ import AdminReportDetails from '../admin/body/AdminReports/AdminReportDetail'
 import AdminReports from '../admin/body/AdminReports/AdminReports'
 import AdminUsers from '../admin/body/AdminUsers/AdminUsers'
 import AdminLayout from '../layouts/AdminLayout'
+import PostLayout from '../layouts/PostLayout'
 import UserLayout from '../layouts/UserLayout'
 import ActiveGmail from '../users/body/auth/ActiveGmail'
 import ForgotPassword from '../users/body/auth/ForgotPassword'
@@ -19,6 +20,7 @@ import Bookmarks from '../users/body/bookmark/Bookmarks'
 import Category from '../users/body/category/Category'
 import Home from '../users/body/home/Home'
 import NewPosts from '../users/body/newPosts/NewPosts'
+import NewPost_v1 from '../users/body/newPosts/NewPost_v1'
 import Post from '../users/body/post/Post'
 import Post_v1 from '../users/body/post/Post_v1'
 import EditProfile from '../users/body/profile/EditProfile'
@@ -45,9 +47,8 @@ export default () => {
     const auth = useSelector(state => state.auth)
     const { isLogged, isAdmin } = auth
     return(
-        
             <Switch>
-                <AppRoute exact path="/" layout={UserLayout} component={Home} />
+                {/* <AppRoute exact path="/" layout={UserLayout} component={Home} /> */}
                 <AppRoute path="/" component={Home} exact layout={UserLayout}/>
                 <AppRoute path="/register" component={Register} exact layout={UserLayout}/>
                 {/* <AppRoute path="/login" component={Login} /> */}
@@ -57,8 +58,8 @@ export default () => {
                 <AppRoute path="/auth/active/:token" component={isLogged ? Home : ActiveGmail} exact layout={UserLayout} />
 
 
-                <AppRoute path="/posts/new" component={isLogged ? NewPosts : Home} exact layout={UserLayout}/>
-                <AppRoute path='/posts/:slug/edit' component={isLogged ? NewPosts : Home} exact layout={UserLayout} />
+                <AppRoute path="/posts/new" component={isLogged ? NewPost_v1 : Home} exact layout={PostLayout}/>
+                <AppRoute path='/posts/:slug/edit' component={isLogged ? NewPost_v1 : Home} exact layout={PostLayout} />
                 <AppRoute path='/posts/:slug' component={Post_v1} exact layout={UserLayout}/>
 
 

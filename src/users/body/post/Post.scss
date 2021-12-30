@@ -106,7 +106,9 @@ h1 {
 
 .avatar-comment {
     max-width: 35px;
+    min-width: 35px;
     max-height: 35px;
+    min-height: 35px;
     vertical-align: middle;
     border-radius: 50%;
     margin-bottom: 15px;

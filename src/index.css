@@ -67,7 +67,14 @@ code {
   --color-deep-gray: #374151;
   --mutted-border-color: #eaecee;
   --card-border: rgba(9,9,9,0.1);
-  
+  --button-secondary-bg: #d6d6d7;
+  --button-secondary-bg-hover: #bdbdbd;
+  --button-secondary-color: #3d3d3d;
+  --button-secondary-color-hover: #090909;
+  --button-primary-bg: #3b49df;
+  --button-primary-bg-hover: #323ebe;
+  --link-blue-bg: rgba(59, 73, 223, 0.1);
+  --link-blue-bg-hover: #323ebe;
 }
 
 
@@ -376,5 +383,5 @@ a:hover{
 @import url("./users/body/auth/auth.css");
 @import url("./users/footer//footer.css");
 /* @import url("./users//body/home/home.css"); */
-@import url("./users//body/newPosts/newposts.css");
+/* @import url("./users//body/newPosts/newposts.scss"); */
 @import url("./users/utils/Loading/Loading.css");

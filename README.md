@@ -41,9 +41,9 @@ After that, you can run the app.
 ## Next Tasks
 - [X] Replying comment feature
 - [ ] Comment Reaction
-- [ ] Use react-md-editor to create a new text editor instead of Draft.js
+- [X] Update creating post
 - [ ] Update homepage
-- [ ] Update post page
+- [X] Update post page
 - [ ] Refactoring code
 
 ## Conclusion

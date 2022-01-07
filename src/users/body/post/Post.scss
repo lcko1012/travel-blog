@@ -66,11 +66,15 @@ h1 {
 
 .post__category {
     font-size: 15px;
-    padding: 1px 7px;
+    padding: 3px 7px;
     margin-right: 7px;
-    border: 1px solid #b3d7ff;
-    background-color: #8e97ff ;
+    // border: 1px solid #b3d7ff;
+    // background-color: #8e97ff ;
     border-radius: 3px;
+
+    &:hover {
+        background-color: var(--tag-bg);
+    }
 }
 
 
@@ -471,13 +475,6 @@ h1 {
     }
 }
 
-// .comment__content--container {
-//     background-color: #f0f2f5;
-//     padding: 10px 10px;
-//     border-radius: 16px;
-//     margin-bottom: 5px;
-// }
-
 
 .background-test {
     background-color: #f0f2f5;
@@ -570,7 +567,6 @@ h1 {
     border-radius: 50%;
     margin-right: 15px;
     background-size: cover;
-    // float: left;
     background-position: center;
 }
 
@@ -592,14 +588,28 @@ h1 {
     }
 }
 
+.post__center--control {
+    border-radius: 5px;
+    padding: 0.5rem;
+    background-color: rgba(255, 207, 76, 0.1);
+    cursor: pointer;
+    box-sizing: border-box;
+
+    a {
+        padding: 0.3rem;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    a:hover {
+        background-color: rgba(0,0,0,0.04);
+        color: black;
+    }
+}
+
 .post__sidebar-right {
     display: block;
 }
-
-// .post__right {
-    // position: fixed;
-    // width: 340px;
-// }
 
 .post__right--author-infor {
     background-color: white;

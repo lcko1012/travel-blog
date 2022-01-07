@@ -1,16 +1,18 @@
 import axios from 'axios'
-import React, { useEffect, useReducer } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom'
 import Loading from '../../utils/Loading/Loading'
 import NotFound from '../../utils/NotFound/NotFound'
 import postApi from './enum/post-api'
 import ReactHtmlParser from 'react-html-parser'
 import Comments_v1 from './comments/Comments_v1'
-import { errorNotification } from '../../utils/notification/ToastNotification'
+import { errorNotification, successNotification } from '../../utils/notification/ToastNotification'
 import Cookies from 'js-cookie'
 import profileApis from '../profile/enum/profile-apis'
 import { useSelector } from 'react-redux'
 import GridCustom from '../../../core/components/GridCustom'
+import Categories from '../../../core/components/Categories'
+import Modal from '../../../core/components/Modal'
 
 
 const ACTIONS = {
@@ -19,7 +21,7 @@ const ACTIONS = {
     SET_ITEM_POST: 'set-item-post',
     BOOKMARK_POST: 'bookmark-post',
     FOLLOW_USER: 'follow-user',
-    RELOAD_USER: 'reload-user'
+    RELOAD_USER: 'reload-user',
 }
 
 function PostReducer(state, action) {
@@ -77,9 +79,11 @@ function Post_v1() {
         post: {},
         loadingPost: true,
         notFound: false,
-        accountId: null
+        accountId: null,
+        isShowDeleteAlert: false
     }
     const [postState, dispatch] = useReducer(PostReducer, initialPost)
+    const [showDeleteAlert, setShowDeleteAlert] = useState(false)
     const params = useParams()
     const history = useHistory()
     const location = useLocation()
@@ -104,7 +108,6 @@ function Post_v1() {
 
     useEffect(() => {
         const getAuthor = async () => {
-            console.log("get author")
             try {
                 const res = await axios.get(profileApis.getUserInfor(post.author.accountId))
                 dispatch({ type: ACTIONS.RELOAD_USER, payload: res.data })
@@ -169,10 +172,22 @@ function Post_v1() {
         history.push('/myprofile/edit')
     }
 
+    const handleDeletePost = async () => {
+        try {
+          const res = await axios.delete(postApi.deletePost(post.postId))
+          if (res) {
+            successNotification('Successfully deleted ✔')
+            history.push("/")
+          }
+        } catch (error) {
+          errorNotification('An error occurs 😢')
+        }
+      }
+        
+
     function MainPage() {
         return (
             <main className='main__home'>
-
                 <div className=''>
                     {
                         loadingPost ? <Loading /> :
@@ -215,6 +230,21 @@ function Post_v1() {
                                                         <p className="post__center--date-write-by">{post.publishedDate}</p>
                                                     </div>
                                                 </div>
+                                                {post.author.email === auth.user.email ?
+                                                    <div className='post__center--control'>
+                                                        <Link to={`/posts/${post.slug}/edit`}>
+                                                            Edit
+                                                        </Link>
+
+                                                        <a onClick={() => setShowDeleteAlert(true)}>
+                                                            Delete
+                                                        </a>
+
+                                                        {showDeleteAlert && <Modal setIsOpen={setShowDeleteAlert} handleAccept={handleDeletePost} />}
+                                                    </div> : null
+
+                                                }
+                                                
                                             </div>
 
                                             <div>
@@ -222,17 +252,7 @@ function Post_v1() {
                                                     {post.title}
                                                 </h1>
 
-                                                <div className="post__category-area">
-                                                    {post.categories.map((item) => {
-                                                        return (
-                                                            <Link to={{ pathname: `/category/${item.categoryId}` }} key={item.categoryId}>
-                                                                <div className="post__category"
-                                                                    key={item.categoryId}>{item.categoryName}
-                                                                </div>
-                                                            </Link>
-                                                        )
-                                                    })}
-                                                </div>
+                                                <Categories categories={post.categories} />
                                             </div>
 
                                             <div className="post__center--content" >

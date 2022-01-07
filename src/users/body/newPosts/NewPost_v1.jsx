@@ -141,9 +141,7 @@ function NewPost_v1() {
         //check if category is exist in categories
         const indexOfCategory = post.categories.findIndex(item => item.categoryId === category.categoryId)
         // if not exist, add to categories
-        if (indexOfCategory === -1) setPost({ ...post, categories: [...post.categories, category] })
-
-        if (post.categories.length === 5) return
+        if (indexOfCategory === -1 && post.categories.length < 5) setPost({ ...post, categories: [...post.categories, category] })
 
         // else remove from categories
         if (indexOfCategory !== -1) setPost({ ...post, categories: post.categories.filter(item => item.categoryId !== category.categoryId) })

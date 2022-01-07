@@ -2,6 +2,7 @@ import React from 'react'
 import ReactHtmlParser from 'react-html-parser'
 import { Link } from 'react-router-dom'
 import { stateToHTML } from "draft-js-export-html";
+import Categories from '../../../core/components/Categories';
 
 function NewPostPreview({ post, content }) {
     console.log(content)
@@ -16,17 +17,9 @@ function NewPostPreview({ post, content }) {
                 <h1 className='post__center--title'>
                     {post.title}
                 </h1>
-                <div className="post__category-area">
-                    {post.categories.map((item) => {
-                        return (
-                            <Link to={{ pathname: `/category/${item.categoryId}` }} key={item.categoryId}>
-                                <div className="post__category"
-                                    key={item.categoryId}>{item.categoryName}
-                                </div>
-                            </Link>
-                        )
-                    })}
-                </div>
+
+                <Categories categories={post.categories} />
+                
                 <div className="post__center--content" >
                     {
                         ReactHtmlParser(stateToHTML(content.getCurrentContent()))

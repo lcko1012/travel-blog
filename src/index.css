@@ -75,6 +75,10 @@ code {
   --button-primary-bg-hover: #323ebe;
   --link-blue-bg: rgba(59, 73, 223, 0.1);
   --link-blue-bg-hover: #323ebe;
+  --tag-bg: rgba(59, 73, 223, 0.10);
+  --tag-bg-hover: rgba(59, 73, 223, 0.10);
+  --accent-danger: #d31616;
+  --accent-danger-darker: #b90909;
 }
 
 

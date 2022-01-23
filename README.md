@@ -40,10 +40,11 @@ After that, you can run the app.
 
 ## Next Tasks
 - [X] Replying comment feature
-- [ ] Comment Reaction
-- [X] Update creating post
-- [ ] Update homepage
 - [X] Update post page
+- [X] Update creating post
+- [ ] Comment Reaction
+- [ ] Dark mode
+- [ ] Update homepage
 - [ ] Refactoring code
 
 ## Conclusion
